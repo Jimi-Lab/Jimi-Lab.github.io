@@ -19,32 +19,32 @@
   <meta name="author" content="Jimi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在ida中动态调试linux程序 举例：攻防世界逆向：simple-check-100解题思路 1.题目文件导入kali中 ![](..&#x2F;img&#x2F;yuque&#x2F;1741591410934-33453afe-8a7c-4bd8-b3d1-c91e6bc8d825.png)  赋予执行权限  2.将IDA文件夹dbgsrv下的linux_server或linux_server64文件复制进kali虚拟机">
+    <meta name="description" content="在ida中动态调试linux程序 举例：攻防世界逆向：simple-check-100解题思路 1.题目文件导入kali中 ![](..&#x2F;img&#x2F;28.EasyRe.exe&#x2F;1.png)  赋予执行权限  2.将IDA文件夹dbgsrv下的linux_server或linux_server64文件复制进kali虚拟机 ![](..&#x2F;img&#x2F;28.EasyRe.exe&#x2F;3.png)  赋予执行权限">
 <meta property="og:type" content="article">
-<meta property="og:title" content="yuque">
-<meta property="og:url" content="https://jimi-lab.github.io/2025/05/19/yuque/index.html">
+<meta property="og:title" content="Jimi&#39;s blog">
+<meta property="og:url" content="https://jimi-lab.github.io/2025/05/21/18.simple-check-100/index.html">
 <meta property="og:site_name" content="Jimi&#39;s blog">
-<meta property="og:description" content="在ida中动态调试linux程序 举例：攻防世界逆向：simple-check-100解题思路 1.题目文件导入kali中 ![](..&#x2F;img&#x2F;yuque&#x2F;1741591410934-33453afe-8a7c-4bd8-b3d1-c91e6bc8d825.png)  赋予执行权限  2.将IDA文件夹dbgsrv下的linux_server或linux_server64文件复制进kali虚拟机">
+<meta property="og:description" content="在ida中动态调试linux程序 举例：攻防世界逆向：simple-check-100解题思路 1.题目文件导入kali中 ![](..&#x2F;img&#x2F;28.EasyRe.exe&#x2F;1.png)  赋予执行权限  2.将IDA文件夹dbgsrv下的linux_server或linux_server64文件复制进kali虚拟机 ![](..&#x2F;img&#x2F;28.EasyRe.exe&#x2F;3.png)  赋予执行权限">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741591477936-ade4b6ba-8d79-4b78-8567-c2d059dfc6fb.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741598211225-ced3cbd1-6f24-4906-b1f4-849c8a9a8fb4.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741591641484-8b0b0397-3ae7-4b82-af61-9b54db8b5510.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741591947794-1c11396d-e6d6-4cc6-82fc-ead0c8828729.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741591784288-e08532d3-2b94-4e02-b4cf-bf4ce69c404b.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741591872086-926eefaf-e2ef-41e7-ac40-8d20dc086583.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741598411260-40548531-2358-4067-a2bb-15f6a1d43aea.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741598531992-4644fa34-2a8c-4c06-8885-bee872711e05.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741598583591-a19568d9-be03-426d-b2f6-ecc7a1bfee49.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/yuque/1741598681364-202795ce-6049-4f9c-9660-7f7769aa38c4.png">
-<meta property="article:published_time" content="2025-05-19T02:38:21.000Z">
-<meta property="article:modified_time" content="2025-05-21T02:30:33.312Z">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/2.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/4.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/6.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/7.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/9.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/11.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/12.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/15.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/16.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/17.png">
+<meta property="article:published_time" content="2025-05-21T03:10:15.654Z">
+<meta property="article:modified_time" content="2025-05-21T03:10:42.074Z">
 <meta property="article:author" content="Jimi">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://jimi-lab.github.io/img/yuque/1741591477936-ade4b6ba-8d79-4b78-8567-c2d059dfc6fb.png">
+<meta name="twitter:image" content="https://jimi-lab.github.io/img/28.EasyRe.exe/2.png">
   
   
   
-  <title>yuque - Jimi&#39;s blog</title>
+  <title>Jimi&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -214,7 +214,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="yuque"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -225,8 +225,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-05-19 10:38" pubdate>
-          2025年5月19日 上午
+        <time datetime="2025-05-21 11:10" pubdate>
+          2025年5月21日 上午
         </time>
       </span>
     
@@ -237,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          237 字
+          216 字
         
       </span>
     
@@ -285,7 +285,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">yuque</h1>
+            <h1 id="seo-header"></h1>
             
             
               <div class="markdown-body">
@@ -293,17 +293,17 @@
                 <h2 id="mj1uU">在ida中动态调试linux程序</h2>
 <h3 id="q7ct8">举例：攻防世界逆向：simple-check-100解题思路</h3>
 <h4 id="TyNFL">1.题目文件导入kali中</h4>
-![](../img/yuque/1741591410934-33453afe-8a7c-4bd8-b3d1-c91e6bc8d825.png)
+![](../img/28.EasyRe.exe/1.png)
 
 <p>赋予执行权限</p>
-<p><img src="/../img/yuque/1741591477936-ade4b6ba-8d79-4b78-8567-c2d059dfc6fb.png"></p>
+<p><img src="/../img/28.EasyRe.exe/2.png"></p>
 <h4 id="YQxlT">2.将IDA文件夹dbgsrv下的linux_server或linux_server64文件复制进kali虚拟机</h4>
-![](../img/yuque/1741598145698-c8514bd7-7f86-4141-a1b4-58a7a9904084.png)
+![](../img/28.EasyRe.exe/3.png)
 
 <p>赋予执行权限</p>
-<p><img src="/../img/yuque/1741598211225-ced3cbd1-6f24-4906-b1f4-849c8a9a8fb4.png"></p>
+<p><img src="/../img/28.EasyRe.exe/4.png"></p>
 <h4 id="wrbKm">3.开启linux_server64服务</h4>
-![](../img/yuque/1741598291975-3f491cc8-ddb3-4f51-b41c-0cb982caad90.png)
+![](../img/28.EasyRe.exe/5.png)
 
 
 
@@ -312,34 +312,34 @@
 <h4 id="xh1cY">4.查看虚拟机ip地址</h4>
 这里我虚拟机的ip地址是：192.168.17.136
 
-<p><img src="/../img/yuque/1741591641484-8b0b0397-3ae7-4b82-af61-9b54db8b5510.png"></p>
+<p><img src="/../img/28.EasyRe.exe/6.png"></p>
 <h4 id="FpNEk">5.获取需调试的文件的路径</h4>
 /home/kali/CTF/Re/JiAnNiXiang/18.simple-check-100
 
-<p><img src="/../img/yuque/1741591947794-1c11396d-e6d6-4cc6-82fc-ead0c8828729.png"></p>
+<p><img src="/../img/28.EasyRe.exe/7.png"></p>
 <h4 id="dWk1x"></h4>
 <h4 id="P8M4p">6.在ida中打开64位程序</h4>
-![](../img/yuque/1741591725943-889d705c-4b1d-4fe3-88f7-9370a288e4de.png)
+![](../img/28.EasyRe.exe/8.png)
 
-<p><img src="/../img/yuque/1741591784288-e08532d3-2b94-4e02-b4cf-bf4ce69c404b.png"></p>
+<p><img src="/../img/28.EasyRe.exe/9.png"></p>
 <h4 id="Dl5TZ">7.选择linux远程调试，并设置相关参数</h4>
-![](../img/yuque/1741591811044-8943ee9b-2ad4-4252-a515-5085d71864f6.png)
+![](../img/28.EasyRe.exe/10.png)
 
-<p><img src="/../img/yuque/1741591872086-926eefaf-e2ef-41e7-ac40-8d20dc086583.png"></p>
-<p><img src="/../img/yuque/1741598411260-40548531-2358-4067-a2bb-15f6a1d43aea.png"></p>
+<p><img src="/../img/28.EasyRe.exe/11.png"></p>
+<p><img src="/../img/28.EasyRe.exe/12.png"></p>
 <p>设置完成后点击OK</p>
 <h4 id="RMalH">8.运行程序</h4>
-![](../img/yuque/1741597929321-06071e4f-4215-41d3-87ad-f04c271c567a.png)
+![](../img/28.EasyRe.exe/13.png)
 
 <h4 id="tuLLY">9.调试出flag</h4>
-![](../img/yuque/1741598502170-a3890116-42aa-426a-a579-6ecbb4f679c2.png)
+![](../img/28.EasyRe.exe/14.png)
 
-<p><img src="/../img/yuque/1741598531992-4644fa34-2a8c-4c06-8885-bee872711e05.png"></p>
+<p><img src="/../img/28.EasyRe.exe/15.png"></p>
 <p>F8运行，发现rax的值变成0</p>
 <p>将rax的值修改成1</p>
-<p><img src="/../img/yuque/1741598583591-a19568d9-be03-426d-b2f6-ecc7a1bfee49.png"></p>
+<p><img src="/../img/28.EasyRe.exe/16.png"></p>
 <p>F9运行结束</p>
-<p><img src="/../img/yuque/1741598681364-202795ce-6049-4f9c-9660-7f7769aa38c4.png"></p>
+<p><img src="/../img/28.EasyRe.exe/17.png"></p>
 <p>惊现flag！</p>
 <p>结束！</p>
 
@@ -359,8 +359,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>yuque</div>
-      <div>https://jimi-lab.github.io/2025/05/19/yuque/</div>
+      <div></div>
+      <div>https://jimi-lab.github.io/2025/05/21/18.simple-check-100/</div>
     </div>
     <div class="license-meta">
       
@@ -372,7 +372,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年5月19日</div>
+          <div>2025年5月21日</div>
         </div>
       
       
@@ -408,8 +408,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/05/19/test/" title="test">
-                        <span class="hidden-mobile">test</span>
+                      <a href="/2025/05/21/yuque/" title="">
+                        <span class="hidden-mobile"></span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -27,8 +27,10 @@
 <meta property="og:description" content="工具：Cloudflare+GitHub+Hexo FluidHexohexo 是一个快速、简洁，而且功能强大的静态博客框架。我们可以使用 Markdown 编写博客文章，然后 hexo 帮我们把 Markdown 文件渲染成静态 HTML 页面。因此 hexo 非常适合用来搭建技术类博客，以及项目文档和个人网站。 需要安装node.js依赖 github托管将博客项目托管到github仓库，并使">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-18T10:29:02.000Z">
-<meta property="article:modified_time" content="2025-05-19T02:21:57.453Z">
+<meta property="article:modified_time" content="2025-05-21T03:43:26.446Z">
 <meta property="article:author" content="Jimi">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="博客搭建">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -226,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          338 字
+          497 字
         
       </span>
     
@@ -237,7 +239,7 @@
         
         
         
-          3 分钟
+          5 分钟
         
       </span>
     
@@ -287,9 +289,13 @@
 
 <h2 id="修改Hexo主题"><a href="#修改Hexo主题" class="headerlink" title="修改Hexo主题"></a>修改Hexo主题</h2><p>我选择Fluid主题，再加一些个性化的设计，大家可以自行选择。</p>
 <h2 id="添加评论功能"><a href="#添加评论功能" class="headerlink" title="添加评论功能"></a>添加评论功能</h2><p>使用github utterances插件</p>
+<h2 id="md中添加截图"><a href="#md中添加截图" class="headerlink" title="md中添加截图"></a>md中添加截图</h2><p>cursor中使用了Paste Image插件。<br>F1截图之后，Ctrl+Alt+V,直接粘贴到特定目录，并在当前md文档中引用该图片。</p>
 <h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="发布新文章"><a href="#发布新文章" class="headerlink" title="发布新文章"></a>发布新文章</h2><p>1.在Hexo项目根目录下使用命令：</p>
 <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">hexo <span class="hljs-keyword">new</span> <span class="hljs-string">&quot;Hello World&quot;</span><br></code></pre></td></tr></table></figure>
-<p>2.这样会在 source&#x2F;_posts&#x2F; 目录下自动生成一个 Hello-World.md 的新文章文件。你只需要编辑这个 Markdown 文件，写入你的内容即可。<br>md文档快速插入图片、文字：</p>
+<p>使用该命令会在文件中自动生成文件头。<br>2.这样会在 source&#x2F;_posts&#x2F; 目录下自动生成一个 Hello-World.md 的新文章文件。你只需要编辑这个 Markdown 文件，写入你的内容即可。</p>
+<h4 id="将语雀文档同步到个人博客："><a href="#将语雀文档同步到个人博客：" class="headerlink" title="将语雀文档同步到个人博客："></a>将语雀文档同步到个人博客：</h4><p>1.将语雀文章以md格式导出。<br>2.将导出的文件复制粘贴进Hello-World.md文件（直接将导出的文件拖入source&#x2F;_posts&#x2F; 目录也可以）<br>3.运行：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">R:\MyProject\MyBlog\my-blog&gt;<span class="hljs-keyword">python</span> yuque.<span class="hljs-keyword">py</span> Hello-World.md<br></code></pre></td></tr></table></figure>
+<p>（这条命令会将Hello-World.md中的cdn链接转储到本地source&#x2F;img&#x2F;Hello-World目录下并在Hello-World.md更改引用本地图片）</p>
 <p>运行以下命令可在本地查看编辑效果。</p>
 <figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hexo <span class="hljs-keyword">server</span><br></code></pre></td></tr></table></figure>
 
@@ -321,6 +327,13 @@
   <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
   
   
+    <span>></span>
+    
+  <a href="/categories/%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2/" class="category-chain-item">博客</a>
+  
+  
+
+  
 
       </span>
     
@@ -329,6 +342,15 @@
 
     </div>
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Hexo/" class="print-no-link">#Hexo</a>
+      
+        <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="print-no-link">#博客搭建</a>
+      
+    </div>
   
 </div>
 
@@ -382,12 +404,6 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
-                    
-                      <a href="/2025/05/19/test/" title="test">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">test</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
                     
                   </article>
                   <article class="post-next col-6">

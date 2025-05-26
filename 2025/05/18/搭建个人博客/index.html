@@ -27,7 +27,7 @@
 <meta property="og:description" content="工具：Cloudflare+GitHub+Hexo FluidHexohexo 是一个快速、简洁，而且功能强大的静态博客框架。我们可以使用 Markdown 编写博客文章，然后 hexo 帮我们把 Markdown 文件渲染成静态 HTML 页面。因此 hexo 非常适合用来搭建技术类博客，以及项目文档和个人网站。 需要安装node.js依赖 github托管将博客项目托管到github仓库，并使">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-18T10:29:02.000Z">
-<meta property="article:modified_time" content="2025-05-21T04:25:40.794Z">
+<meta property="article:modified_time" content="2025-05-26T08:34:17.735Z">
 <meta property="article:author" content="Jimi">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="博客搭建">
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          497 字
+          614 字
         
       </span>
     
@@ -239,7 +239,7 @@
         
         
         
-          5 分钟
+          6 分钟
         
       </span>
     
@@ -306,6 +306,11 @@
 <hr>
 <p>最终URL：<br>github：<a href="https://jimi-lab.github.io/">https://jimi-lab.github.io/</a><br>cloudflare：<a target="_blank" rel="noopener" href="https://jimi-lab-github-io.pages.dev/">https://jimi-lab-github-io.pages.dev/</a></p>
 <p>最终效果图如下：<br><img src = "/img/搭建个人博客/background.png"></p>
+<p><strong>报错信息汇总</strong>：</p>
+<p>1.如果遇到以下错误：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs subunit">Please make sure you have the correct access rights<br>and the repository exists.<br>FATAL Something&#x27;s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html<br><span class="hljs-keyword">Error: </span>Spawn failed<br>    at ChildProcess.&lt;anonymous&gt; (R:\MyProject\MyBlog\my-blog\node_modules\hexo-deployer-git\node_modules\hexo-util\lib\spawn.js:51:21)<br>    at ChildProcess.emit (node:events:524:28)<br>    at cp.emit (R:\MyProject\MyBlog\my-blog\node_modules\cross-spawn\lib\enoent.js:34:29)<br>    at ChildProcess._handle.onexit (node:internal/child_process:293:12)<br></code></pre></td></tr></table></figure>
+
+<p>可能是因为ssh连接github时候连接不上报错，可以尝试打开代理&#x2F;电脑使用自己手机热点&#x2F;等方法解决。</p>
 
                 
               </div>

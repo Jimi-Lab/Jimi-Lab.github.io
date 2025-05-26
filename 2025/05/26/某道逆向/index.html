@@ -19,15 +19,16 @@
   <meta name="author" content="Jimi">
   <meta name="keywords" content="">
   
-    <meta name="description" content=":::infohttps:&#x2F;&#x2F;fanyi.youdao.com&#x2F;#&#x2F;TextTranslate ::: 开始分析 抓取得三个包，可看出来是 aes 加密   sign 和时间戳是变化的  逆sign 1. 搜索 sign ![](..&#x2F;img&#x2F;某道逆向.md&#x2F;3.png)  根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找  再次翻译，成功断到此处  2.s">
+    <meta name="description" content=":::infohttps:&#x2F;&#x2F;fanyi.youdao.com&#x2F;#&#x2F;TextTranslate ::: 开始分析 抓取得三个包，可看出来是 aes 加密   sign 和时间戳是变化的  逆sign 1. 搜索 sign   根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找  再次翻译，成功断到此处  2.sign(a,e) a 为：a &#x3D; (new Dat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="某道逆向（翻译软件）">
 <meta property="og:url" content="https://jimi-lab.github.io/2025/05/26/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91/index.html">
 <meta property="og:site_name" content="Jimi&#39;s blog">
-<meta property="og:description" content=":::infohttps:&#x2F;&#x2F;fanyi.youdao.com&#x2F;#&#x2F;TextTranslate ::: 开始分析 抓取得三个包，可看出来是 aes 加密   sign 和时间戳是变化的  逆sign 1. 搜索 sign ![](..&#x2F;img&#x2F;某道逆向.md&#x2F;3.png)  根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找  再次翻译，成功断到此处  2.s">
+<meta property="og:description" content=":::infohttps:&#x2F;&#x2F;fanyi.youdao.com&#x2F;#&#x2F;TextTranslate ::: 开始分析 抓取得三个包，可看出来是 aes 加密   sign 和时间戳是变化的  逆sign 1. 搜索 sign   根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找  再次翻译，成功断到此处  2.sign(a,e) a 为：a &#x3D; (new Dat">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/1.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/2.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/3.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/4.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/5.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/6.png">
@@ -35,6 +36,7 @@
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/8.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/9.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/10.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/11.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/12.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/13.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/14.png">
@@ -42,11 +44,12 @@
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/16.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/17.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/18.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/19.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/20.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/22.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/23.png">
 <meta property="article:published_time" content="2025-05-26T08:14:46.000Z">
-<meta property="article:modified_time" content="2025-05-26T08:17:58.822Z">
+<meta property="article:modified_time" content="2025-05-26T08:37:22.950Z">
 <meta property="article:author" content="Jimi">
 <meta property="article:tag" content="js逆向">
 <meta name="twitter:card" content="summary_large_image">
@@ -310,8 +313,8 @@
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/2.png"></p>
 <h3 id="LTkUz">逆sign</h3>
 <h4 id="QQ0to">1. 搜索 sign</h4>
-![](../img/某道逆向.md/3.png)
 
+<p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/3.png"></p>
 <p>根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找</p>
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/4.png"></p>
 <p>再次翻译，成功断到此处</p>
@@ -340,10 +343,8 @@ a 为：a = (new Date).getTime();
 
 
 <h3 id="WPU0g">逆 webtranslate</h3>
-![](../img/某道逆向.md/11.png)
 
-
-
+<p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/11.png"></p>
 <p>:::info<br>看到一大串数据无从下手，三种可能：</p>
 <p>JSON.parse</p>
 <p>decrypt</p>
@@ -364,10 +365,8 @@ a 为：a = (new Date).getTime();
 <p>arg 为 O 函数传入的 e</p>
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/18.png"></p>
 <h3 id="uBPVj">Py 脚本</h3>
-![](../img/某道逆向.md/19.png)
 
-
-
+<p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/19.png"></p>
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/20.png"></p>
 <h4 id="Lfn38">得到密文</h4>
 ![](../img/某道逆向.md/21.png)

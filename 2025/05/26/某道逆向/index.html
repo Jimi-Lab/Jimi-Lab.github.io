@@ -46,10 +46,11 @@
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/18.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/19.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/20.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/21.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/22.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/23.png">
 <meta property="article:published_time" content="2025-05-26T08:14:46.000Z">
-<meta property="article:modified_time" content="2025-05-26T08:37:22.950Z">
+<meta property="article:modified_time" content="2025-05-26T08:41:15.637Z">
 <meta property="article:author" content="Jimi">
 <meta property="article:tag" content="js逆向">
 <meta name="twitter:card" content="summary_large_image">
@@ -250,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1k 字
+          997 字
         
       </span>
     
@@ -336,7 +337,7 @@ a 为：a = (new Date).getTime();
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/10.png"></p>
 <p>client、product、key 的值是固定的</p>
 <h4 id="JOGSR">sign 解密代码</h4>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">CryptoJs</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>);<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getsign</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">const</span> a = (<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>).<span class="hljs-title function_">getTime</span>();<br><br>    test = <span class="hljs-string">`client=fanyideskweb&amp;mysticTime=<span class="hljs-subst">$&#123;a&#125;</span>&amp;product=webfanyi&amp;key=Vy4EQ1uwPkUoqvcP1nIu6WiAjxFeA3Y3`</span><br>    sign = <span class="hljs-title class_">CryptoJs</span>.<span class="hljs-title class_">MD5</span>(test).<span class="hljs-title function_">toString</span>();<br>    <span class="hljs-keyword">return</span> [a,sign]<br><br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">getsign</span>());<br><br><br><br><br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">CryptoJs</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>);<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getsign</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">const</span> a = (<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>).<span class="hljs-title function_">getTime</span>();<br><br>    test = <span class="hljs-string">`client=fanyideskweb&amp;mysticTime=<span class="hljs-subst">$&#123;a&#125;</span>&amp;product=webfanyi&amp;key=Vy4EQ1uwPkUoqvcP1nIu6WiAjxFeA3Y3`</span><br>    sign = <span class="hljs-title class_">CryptoJs</span>.<span class="hljs-title class_">MD5</span>(test).<span class="hljs-title function_">toString</span>();<br>    <span class="hljs-keyword">return</span> [a,sign]<br><br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">getsign</span>());<br><br></code></pre></td></tr></table></figure>
 
 
 
@@ -345,7 +346,7 @@ a 为：a = (new Date).getTime();
 <h3 id="WPU0g">逆 webtranslate</h3>
 
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/11.png"></p>
-<p>:::info<br>看到一大串数据无从下手，三种可能：</p>
+<p>看到一大串数据无从下手，三种可能：</p>
 <p>JSON.parse</p>
 <p>decrypt</p>
 <p>join</p>
@@ -369,8 +370,8 @@ a 为：a = (new Date).getTime();
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/19.png"></p>
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/20.png"></p>
 <h4 id="Lfn38">得到密文</h4>
-![](../img/某道逆向.md/21.png)
 
+<p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/21.png"></p>
 <p>运行 py 脚本，得到值（这个值是服务器传给客户端的密文）</p>
 <p><img src="/../img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/22.png"></p>
 <h4 id="nUGim">解密</h4>

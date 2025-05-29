@@ -19,12 +19,12 @@
   <meta name="author" content="Jimi">
   <meta name="keywords" content="">
   
-    <meta name="description" content=":::infohttps:&#x2F;&#x2F;fanyi.youdao.com&#x2F;#&#x2F;TextTranslate ::: 开始分析 抓取得三个包，可看出来是 aes 加密   sign 和时间戳是变化的  逆sign 1. 搜索 sign   根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找  再次翻译，成功断到此处  2.sign(a,e) a 为：a &#x3D; (new Dat">
+    <meta name="description" content="目标：https:&#x2F;&#x2F;fanyi.youdao.com&#x2F;#&#x2F;TextTranslate 开始分析 抓取得三个包，可看出来是 aes 加密   sign 和时间戳是变化的  逆sign 1. 搜索 sign   根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找  再次翻译，成功断到此处  2.sign(a,e) a 为：a &#x3D; (new Date).getTi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="某道逆向（翻译软件）">
 <meta property="og:url" content="https://jimi-lab.github.io/2025/05/26/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91/index.html">
 <meta property="og:site_name" content="Jimi&#39;s blog">
-<meta property="og:description" content=":::infohttps:&#x2F;&#x2F;fanyi.youdao.com&#x2F;#&#x2F;TextTranslate ::: 开始分析 抓取得三个包，可看出来是 aes 加密   sign 和时间戳是变化的  逆sign 1. 搜索 sign   根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找  再次翻译，成功断到此处  2.sign(a,e) a 为：a &#x3D; (new Dat">
+<meta property="og:description" content="目标：https:&#x2F;&#x2F;fanyi.youdao.com&#x2F;#&#x2F;TextTranslate 开始分析 抓取得三个包，可看出来是 aes 加密   sign 和时间戳是变化的  逆sign 1. 搜索 sign   根据数据包中的 sign 周围的变量来定位 sign，若断点打不到本行就不是，接着往下找  再次翻译，成功断到此处  2.sign(a,e) a 为：a &#x3D; (new Date).getTi">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/1.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/2.png">
@@ -50,7 +50,7 @@
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/22.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/%E6%9F%90%E9%81%93%E9%80%86%E5%90%91.md/23.png">
 <meta property="article:published_time" content="2025-05-26T08:14:46.000Z">
-<meta property="article:modified_time" content="2025-05-26T08:42:08.259Z">
+<meta property="article:modified_time" content="2025-05-29T13:59:02.976Z">
 <meta property="article:author" content="Jimi">
 <meta property="article:tag" content="js逆向">
 <meta name="twitter:card" content="summary_large_image">
@@ -251,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          997 字
+          999 字
         
       </span>
     
@@ -304,8 +304,7 @@
             
               <div class="markdown-body">
                 
-                <p>:::info<br><a target="_blank" rel="noopener" href="https://fanyi.youdao.com/#/TextTranslate">https://fanyi.youdao.com/#/TextTranslate</a></p>
-<p>:::</p>
+                <p>目标：<a target="_blank" rel="noopener" href="https://fanyi.youdao.com/#/TextTranslate">https://fanyi.youdao.com/#/TextTranslate</a></p>
 <h3 id="Pawto">开始分析</h3>
 抓取得三个包，可看出来是 aes 加密
 

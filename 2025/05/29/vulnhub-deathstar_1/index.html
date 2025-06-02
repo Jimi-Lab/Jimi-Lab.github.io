@@ -79,13 +79,13 @@
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-deathstar_1.md/50.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-deathstar_1.md/51.png">
 <meta property="article:published_time" content="2025-05-29T08:52:28.000Z">
-<meta property="article:modified_time" content="2025-05-29T14:02:52.136Z">
+<meta property="article:modified_time" content="2025-05-29T14:16:37.964Z">
 <meta property="article:author" content="Jimi">
 <meta property="article:tag" content="Vulnhub靶场">
+<meta property="article:tag" content="ret2libc">
 <meta property="article:tag" content="图片隐写">
 <meta property="article:tag" content="端口敲门">
 <meta property="article:tag" content="ASLR绕过">
-<meta property="article:tag" content="ret2libc">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://jimi-lab.github.io/img/vulnhub-deathstar_1.md/1.png">
   
@@ -394,8 +394,7 @@
 <p>nmap 成功扫描到了 1440 开放端口</p>
 <h4 id="nc-连接"><a href="#nc-连接" class="headerlink" title="nc 连接"></a>nc 连接</h4><p><img src="/../img/vulnhub-deathstar_1.md/18.png"></p>
 <p><strong>想到提示</strong>：访问死星蓝图的代码（需在重新装填时间内输入）：DS-1@OBS</p>
-<p>:::info<br>echo “DS-1@OBS” | nc -u 192.168.17.143 1440 | tee mass</p>
-<p>:::</p>
+<p>echo “DS-1@OBS” | nc -u 192.168.17.143 1440 | tee mass</p>
 <p><img src="/../img/vulnhub-deathstar_1.md/19.png"></p>
 <h4 id="对-mass-分析"><a href="#对-mass-分析" class="headerlink" title="对 mass 分析"></a>对 mass 分析</h4><p>看起来像 base64 </p>
 <p><img src="/../img/vulnhub-deathstar_1.md/20.png"></p>
@@ -429,8 +428,7 @@
 <p>查看包含字符串：</p>
 <p><img src="/../img/vulnhub-deathstar_1.md/33.png"></p>
 <p>该文件是一个 elf 文件，将文件提取到 kali</p>
-<p>:::info<br>scp -P 10110 <a href="mailto:&#101;&#x72;&#115;&#x6f;&#x40;&#49;&#x39;&#x32;&#46;&#49;&#x36;&#56;&#x2e;&#x31;&#x37;&#46;&#49;&#52;&#51;">erso@192.168.17.143</a>:&#x2F;bin&#x2F;dartVader .</p>
-<p>:::</p>
+<p>scp -P 10110 <a href="mailto:&#x65;&#114;&#115;&#111;&#x40;&#49;&#x39;&#50;&#46;&#49;&#54;&#x38;&#x2e;&#x31;&#x37;&#x2e;&#49;&#52;&#x33;">erso@192.168.17.143</a>:&#x2F;bin&#x2F;dartVader .</p>
 <p>使用 kali 中 gdb 和 gdb-peda</p>
 <p><img src="/../img/vulnhub-deathstar_1.md/34.png"></p>
 <p><strong>开启了 NX 保护</strong>(checksec 讲解：<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-250538.htm">https://bbs.kanxue.com/thread-250538.htm</a>)</p>
@@ -526,13 +524,13 @@
       
         <a href="/tags/Vulnhub%E9%9D%B6%E5%9C%BA/" class="print-no-link">#Vulnhub靶场</a>
       
+        <a href="/tags/ret2libc/" class="print-no-link">#ret2libc</a>
+      
         <a href="/tags/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/" class="print-no-link">#图片隐写</a>
       
         <a href="/tags/%E7%AB%AF%E5%8F%A3%E6%95%B2%E9%97%A8/" class="print-no-link">#端口敲门</a>
       
         <a href="/tags/ASLR%E7%BB%95%E8%BF%87/" class="print-no-link">#ASLR绕过</a>
-      
-        <a href="/tags/ret2libc/" class="print-no-link">#ret2libc</a>
       
     </div>
   
@@ -588,6 +586,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/06/02/vulnhub-Brainpan1/" title="vulnhub-brainpan1">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">vulnhub-brainpan1</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

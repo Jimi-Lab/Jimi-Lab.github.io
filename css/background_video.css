@@ -1,1 +1,23 @@
  
+.about-me-img {
+  display: block;
+  margin: 0 auto;
+  width: clamp(160px, 28vw, 360px);
+  height: auto;
+  border-radius: 8px;
+}
+
+.about-name {
+  text-align: center;
+  font-weight: 700;
+  font-size: clamp(24px, 3.6vw, 40px);
+  line-height: 1.25;
+  margin: 12px auto 16px;
+}
+
+.about-name-cn {
+  font-weight: 500;
+  font-size: clamp(18px, 2.4vw, 28px);
+  opacity: 0.85;
+  margin-left: 4px;
+}

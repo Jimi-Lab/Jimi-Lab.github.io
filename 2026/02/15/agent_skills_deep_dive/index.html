@@ -1,0 +1,950 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Anthropic Agent Skills：Agent 能力扩展的开放标准与产业实践 关键词：Agent, Agent Skills, 渐进式信息披露, Anthropic  目录 引言与背景 核心设计理念 技术架构与实现 SKILL.md 规范详解 2025 年产业采纳与生态发展 企业级部署实践 安全领域应用与研究 开放标准战略分析 局限性与挑战 未来研究方向 结论   1. 引言与背景1.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jimi&#39;s blog">
+<meta property="og:url" content="https://jimi-lab.github.io/2026/02/15/agent_skills_deep_dive/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="Anthropic Agent Skills：Agent 能力扩展的开放标准与产业实践 关键词：Agent, Agent Skills, 渐进式信息披露, Anthropic  目录 引言与背景 核心设计理念 技术架构与实现 SKILL.md 规范详解 2025 年产业采纳与生态发展 企业级部署实践 安全领域应用与研究 开放标准战略分析 局限性与挑战 未来研究方向 结论   1. 引言与背景1.1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-15T02:11:53.216Z">
+<meta property="article:modified_time" content="2026-02-15T00:58:34.726Z">
+<meta property="article:author" content="Jimi">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-02-15 10:11" pubdate>
+          2026年2月15日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Anthropic-Agent-Skills：Agent-能力扩展的开放标准与产业实践"><a href="#Anthropic-Agent-Skills：Agent-能力扩展的开放标准与产业实践" class="headerlink" title="Anthropic Agent Skills：Agent 能力扩展的开放标准与产业实践"></a>Anthropic Agent Skills：Agent 能力扩展的开放标准与产业实践</h1><hr>
+<p><strong>关键词</strong>：Agent, Agent Skills, 渐进式信息披露, Anthropic</p>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#1-%E5%BC%95%E8%A8%80%E4%B8%8E%E8%83%8C%E6%99%AF">引言与背景</a></li>
+<li><a href="#2-%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5">核心设计理念</a></li>
+<li><a href="#3-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%AE%9E%E7%8E%B0">技术架构与实现</a></li>
+<li><a href="#4-skillmd-%E8%A7%84%E8%8C%83%E8%AF%A6%E8%A7%A3">SKILL.md 规范详解</a></li>
+<li><a href="#5-2025-%E5%B9%B4%E4%BA%A7%E4%B8%9A%E9%87%87%E7%BA%B3%E4%B8%8E%E7%94%9F%E6%80%81%E5%8F%91%E5%B1%95">2025 年产业采纳与生态发展</a></li>
+<li><a href="#6-%E4%BC%81%E4%B8%9A%E7%BA%A7%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5">企业级部署实践</a></li>
+<li><a href="#7-%E5%AE%89%E5%85%A8%E9%A2%86%E5%9F%9F%E5%BA%94%E7%94%A8%E4%B8%8E%E7%A0%94%E7%A9%B6">安全领域应用与研究</a></li>
+<li><a href="#8-%E5%BC%80%E6%94%BE%E6%A0%87%E5%87%86%E6%88%98%E7%95%A5%E5%88%86%E6%9E%90">开放标准战略分析</a></li>
+<li><a href="#9-%E5%B1%80%E9%99%90%E6%80%A7%E4%B8%8E%E6%8C%91%E6%88%98">局限性与挑战</a></li>
+<li><a href="#10-%E6%9C%AA%E6%9D%A5%E7%A0%94%E7%A9%B6%E6%96%B9%E5%90%91">未来研究方向</a></li>
+<li><a href="#11-%E7%BB%93%E8%AE%BA">结论</a></li>
+</ol>
+<hr>
+<h2 id="1-引言与背景"><a href="#1-引言与背景" class="headerlink" title="1. 引言与背景"></a>1. 引言与背景</h2><h3 id="1-1-问题的提出"><a href="#1-1-问题的提出" class="headerlink" title="1.1 问题的提出"></a>1.1 问题的提出</h3><p>随着大型语言模型（LLM）能力的指数级提升，我们已经能够构建与完整计算环境交互的通用 AI Agent。Claude Code、GitHub Copilot、OpenAI Codex 等工具展示了 Agent 在代码生成、系统操作、复杂任务执行方面的潜力。然而，这些通用 Agent 面临一个核心挑战：</p>
+<p><strong>如何让 Agent 获得特定领域的专业知识和组织上下文，同时保持可组合性、可扩展性和跨平台可移植性？</strong></p>
+<p>传统方法存在以下根本性局限：</p>
+<table>
+<thead>
+<tr>
+<th>传统方法</th>
+<th>核心问题</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>专用 Agent 构建</strong></td>
+<td>为每个用例开发独立 Agent</td>
+<td>知识孤岛、维护成本高</td>
+</tr>
+<tr>
+<td><strong>System Prompt 膨胀</strong></td>
+<td>将所有知识塞入系统提示词</td>
+<td>上下文窗口耗尽、token 成本高</td>
+</tr>
+<tr>
+<td><strong>硬编码工作流</strong></td>
+<td>将流程固化在代码中</td>
+<td>缺乏灵活性、难以迁移</td>
+</tr>
+<tr>
+<td><strong>文档外挂</strong></td>
+<td>提供大量参考文档</td>
+<td>Agent 难以有效定位和利用</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-Agent-Skills-的提出"><a href="#1-2-Agent-Skills-的提出" class="headerlink" title="1.2 Agent Skills 的提出"></a>1.2 Agent Skills 的提出</h3><p>Anthropic 于 <strong>2024 年 10 月</strong>首次推出 Agent Skills，并在 <strong>2024 年 12 月 18 日</strong>将其作为开放标准发布（agentskills.io）。该技术代表了一种<strong>范式转变</strong>：</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sqf">传统范式：多个专用 <span class="hljs-built_in">Agent</span>，各自为政<br>         ↓<br>新型范式：通用 <span class="hljs-built_in">Agent</span> + 模块化专业知识库<br></code></pre></td></tr></table></figure>
+
+<p><strong>核心洞察</strong>：将专业知识、工作流程和组织上下文打包成<strong>可发现、可动态加载、跨平台可移植</strong>的资源包，Agent 根据任务需要按需加载。</p>
+<h3 id="1-3-时间线与里程碑"><a href="#1-3-时间线与里程碑" class="headerlink" title="1.3 时间线与里程碑"></a>1.3 时间线与里程碑</h3><table>
+<thead>
+<tr>
+<th>时间</th>
+<th>事件</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2024年10月16日</td>
+<td>Agent Skills 发布</td>
+<td>首次引入技能概念</td>
+</tr>
+<tr>
+<td>2024年12月18日</td>
+<td>开放标准发布</td>
+<td>agentskills.io 上线</td>
+</tr>
+<tr>
+<td>2024年12月18日</td>
+<td>GitHub Copilot 采纳</td>
+<td>微软在 VS Code 中集成</td>
+</tr>
+<tr>
+<td>2024年12月20日</td>
+<td>OpenAI Codex 支持</td>
+<td>OpenAI 正式文档化支持</td>
+</tr>
+<tr>
+<td>2025年全年</td>
+<td>生态爆发式增长</td>
+<td>25,000+ 社区技能，多平台支持</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-核心设计理念"><a href="#2-核心设计理念" class="headerlink" title="2. 核心设计理念"></a>2. 核心设计理念</h2><h3 id="2-1-渐进式信息披露（Progressive-Disclosure）"><a href="#2-1-渐进式信息披露（Progressive-Disclosure）" class="headerlink" title="2.1 渐进式信息披露（Progressive Disclosure）"></a>2.1 渐进式信息披露（Progressive Disclosure）</h3><p>这是 Agent Skills 最关键的设计原则，也是其能够实现”近乎无界上下文扩展”的理论基础。</p>
+<h4 id="类比：技术手册的组织结构"><a href="#类比：技术手册的组织结构" class="headerlink" title="类比：技术手册的组织结构"></a>类比：技术手册的组织结构</h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs scss">┌─────────────────────────────────────────┐<br>│   技术手册目录（元数据）               │  ← 始终可见<br>│   • 第<span class="hljs-number">1</span>章：系统架构                    │     (~<span class="hljs-number">20</span> tokens/skill)<br>│   • 第<span class="hljs-number">2</span>章：API 参考                    │<br>│   • 第<span class="hljs-number">3</span>章：故障排除                    │<br>├─────────────────────────────────────────┤<br>│   选定章节内容（指令）                 │  ← 需要时加载<br>│   <span class="hljs-number">2.1</span> <span class="hljs-attribute">REST</span> API 设计规范                │     (~<span class="hljs-number">5</span>k tokens)<br>│   <span class="hljs-number">2.2</span> 认证机制                         │<br>│   <span class="hljs-number">2.3</span> 错误处理                         │<br>├─────────────────────────────────────────┤<br>│   详细附录（资源）                     │  ← 按需引用<br>│   附录 <span class="hljs-selector-tag">A</span>：示例代码                     │     (动态 tokens)<br>│   附录 <span class="hljs-selector-tag">B</span>：配置模板                     │<br>│   附录 C：测试数据集                   │<br>└─────────────────────────────────────────┘<br></code></pre></td></tr></table></figure>
+
+<h4 id="三层加载机制"><a href="#三层加载机制" class="headerlink" title="三层加载机制"></a>三层加载机制</h4><p><strong>Layer 1: 元数据层（Metadata）</strong></p>
+<ul>
+<li><strong>何时加载</strong>：Agent 启动时始终加载</li>
+<li><strong>包含内容</strong>：技能名称、简短描述（&lt; 1024 字符）</li>
+<li><strong>Token 消耗</strong>：约 10-20 tokens&#x2F;技能</li>
+<li><strong>作用</strong>：帮助 Agent 快速判断是否需要该技能</li>
+</ul>
+<p><strong>Layer 2: 指令层（Instructions）</strong></p>
+<ul>
+<li><strong>何时加载</strong>：Agent 决定使用该技能时</li>
+<li><strong>包含内容</strong>：SKILL.md 的主体内容（Markdown）</li>
+<li><strong>Token 消耗</strong>：建议 &lt; 5000 tokens，可更多</li>
+<li><strong>作用</strong>：提供详细的任务执行指导</li>
+</ul>
+<p><strong>Layer 3: 资源层（Resources）</strong></p>
+<ul>
+<li><strong>何时加载</strong>：Agent 执行过程中按需</li>
+<li><strong>包含内容</strong>：脚本、模板、参考文档、数据文件</li>
+<li><strong>Token 消耗</strong>：完全动态，仅加载实际使用的部分</li>
+<li><strong>作用</strong>：支持复杂操作和确定性执行</li>
+</ul>
+<h4 id="数学模型"><a href="#数学模型" class="headerlink" title="数学模型"></a>数学模型</h4><p>设有 $N$ 个技能，每个技能的元数据为 $m_i$，指令为 $c_i$，资源集合为 $R_i$。</p>
+<p>传统方法的上下文消耗：<br>$$C_{\text{traditional}} &#x3D; \sum_{i&#x3D;1}^{N} (m_i + c_i + |R_i|)$$</p>
+<p>Agent Skills 的实际消耗（假设仅激活 $k$ 个技能，访问 $r$ 个资源）：<br>$$C_{\text{skills}} &#x3D; \sum_{i&#x3D;1}^{N} m_i + \sum_{j&#x3D;1}^{k} c_j + \sum_{l&#x3D;1}^{r} |R_l|$$</p>
+<p>其中 $k \ll N$，$r \ll \sum |R_i|$，因此 $C_{\text{skills}} \ll C_{\text{traditional}}$。</p>
+<p><strong>关键优势</strong>：技能可包含的上下文量实际上是<strong>无界的</strong>（unbounded），因为大部分内容在不需要时不占用上下文窗口。</p>
+<h3 id="2-2-工具-vs-技能：本质区别"><a href="#2-2-工具-vs-技能：本质区别" class="headerlink" title="2.2 工具 vs 技能：本质区别"></a>2.2 工具 vs 技能：本质区别</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>传统工具（Tools&#x2F;Functions）</th>
+<th>Agent Skills</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>执行模式</strong></td>
+<td>调用后立即执行，返回结果</td>
+<td>加载知识到上下文，准备 Agent 执行</td>
+</tr>
+<tr>
+<td><strong>作用对象</strong></td>
+<td>外部系统或数据源</td>
+<td>Agent 的认知和工作流程</td>
+</tr>
+<tr>
+<td><strong>上下文影响</strong></td>
+<td>不修改 Agent 行为模式</td>
+<td>临时扩展 Agent 的专业能力</td>
+</tr>
+<tr>
+<td><strong>类比</strong></td>
+<td>使用外部计算器</td>
+<td>学习数学知识</td>
+</tr>
+<tr>
+<td><strong>示例</strong></td>
+<td><code>search_web(query)</code></td>
+<td>加载”如何进行学术文献综述”的指导</td>
+</tr>
+</tbody></table>
+<p><strong>关键洞察</strong>：技能不是让 Agent “调用某个功能”，而是让 Agent “学会如何做某件事”。</p>
+<h3 id="2-3-设计哲学：Simple-but-Powerful"><a href="#2-3-设计哲学：Simple-but-Powerful" class="headerlink" title="2.3 设计哲学：Simple but Powerful"></a>2.3 设计哲学：Simple but Powerful</h3><p>Anthropic 在设计 Agent Skills 时遵循的核心原则：</p>
+<ol>
+<li><strong>文件系统优先</strong>：基于标准文件系统，无需新协议</li>
+<li><strong>Markdown 为王</strong>：人类可读，机器可解析</li>
+<li><strong>渐进式加载</strong>：避免上下文窗口拥堵</li>
+<li><strong>可组合性</strong>：技能可以相互组合和引用</li>
+<li><strong>跨平台移植</strong>：一次编写，到处运行</li>
+</ol>
+<hr>
+<h2 id="3-技术架构与实现"><a href="#3-技术架构与实现" class="headerlink" title="3. 技术架构与实现"></a>3. 技术架构与实现</h2><h3 id="3-1-系统架构概览"><a href="#3-1-系统架构概览" class="headerlink" title="3.1 系统架构概览"></a>3.1 系统架构概览</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs nix">┌───────────────────────────────────────────────────────────────┐<br>│                     Agent 启动阶段（T0）                       │<br>│  ┌──────────────────────────────────────────────────────┐    │<br>│  │ System Prompt <span class="hljs-operator">+</span> 所有技能元数据                        │    │<br>│  │ • <span class="hljs-params">pdf-processing:</span> <span class="hljs-string">&quot;Extract, fill PDFs...&quot;</span> (<span class="hljs-number">15</span> tokens)│    │<br>│  │ • <span class="hljs-params">code-review:</span> <span class="hljs-string">&quot;Review code security...&quot;</span> (<span class="hljs-number">18</span> tokens) │    │<br>│  │ • <span class="hljs-params">data-viz:</span> <span class="hljs-string">&quot;Create charts and graphs...&quot;</span> (<span class="hljs-number">16</span> tokens)│    │<br>│  │ ... (共 <span class="hljs-number">100</span> 个技能)                                   │    │<br>│  │ 总消耗：~<span class="hljs-number">2</span>,<span class="hljs-number">000</span> tokens                                 │    │<br>│  └──────────────────────────────────────────────────────┘    │<br>│                            ↓                                   │<br>│                    用户消息：<span class="hljs-string">&quot;Review this code for SQL injection&quot;</span><br>└───────────────────────────────────────────────────────────────┘<br>                             ↓<br>┌───────────────────────────────────────────────────────────────┐<br>│                    技能发现阶段（T1）                         │<br>│  Agent 扫描可用技能的描述：                                    │<br>│  • <span class="hljs-params">pdf-processing:</span> ❌ 不匹配（PDF相关）                       │<br>│  • <span class="hljs-params">code-review:</span> ✅ 匹配（包含<span class="hljs-string">&quot;security&quot;</span>关键词）               │<br>│  • <span class="hljs-params">data-viz:</span> ❌ 不匹配（可视化相关）                          │<br>│                                                                │<br>│  决策：激活 code-review 技能                                  │<br>└───────────────────────────────────────────────────────────────┘<br>                             ↓<br>┌───────────────────────────────────────────────────────────────┐<br>│                    技能激活阶段（T2）                         │<br>│  Agent 使用 bash_read_file 工具：                             │<br>│  <span class="hljs-operator">&gt;</span> read_file(<span class="hljs-string">&quot;.claude/skills/code-review/SKILL.md&quot;</span>)          │<br>│                                                                │<br>│  加载内容示例：                                                │<br>│  ```markdown                                                   │<br>│  <span class="hljs-comment"># Code Security Review                                       │</span><br>│  <span class="hljs-comment">## Process                                                    │</span><br>│  <span class="hljs-number">1</span>. Check for SQL <span class="hljs-params">injection:</span> look for string concatenation... │<br>│  <span class="hljs-number">2</span>. Verify input <span class="hljs-params">validation:</span> ensure all user inputs...        │<br>│  <span class="hljs-number">3</span>. Review <span class="hljs-params">authentication:</span> check session management...        │<br>│  ```                                                           │<br>│  新增消耗：~<span class="hljs-number">3</span>,<span class="hljs-number">500</span> tokens                                       │<br>└───────────────────────────────────────────────────────────────┘<br>                             ↓<br>┌───────────────────────────────────────────────────────────────┐<br>│                   资源按需加载（T3，可选）                    │<br>│  Agent 读取 SKILL.md 后发现：                                 │<br>│  <span class="hljs-string">&quot;For SQL injection patterns, see references/sqli-patterns.md&quot;</span>│<br>│                                                                │<br>│  Agent 决定需要额外信息：                                      │<br>│  <span class="hljs-operator">&gt;</span> read_file(<span class="hljs-string">&quot;code-review/references/sqli-patterns.md&quot;</span>)      │<br>│  新增消耗：~<span class="hljs-number">1</span>,<span class="hljs-number">500</span> tokens                                       │<br>└───────────────────────────────────────────────────────────────┘<br>                             ↓<br>┌───────────────────────────────────────────────────────────────┐<br>│                      任务执行（T4）                           │<br>│  Agent 基于加载的知识执行代码审查                             │<br>│  总上下文消耗：~<span class="hljs-number">7</span>,<span class="hljs-number">000</span> tokens                                  │<br>│  （相比将所有技能内容预加载节省了 <span class="hljs-operator">&gt;</span><span class="hljs-number">90</span>% 的 tokens）           │<br>└───────────────────────────────────────────────────────────────┘<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-2-Prompt-注入机制详解"><a href="#3-2-Prompt-注入机制详解" class="headerlink" title="3.2 Prompt 注入机制详解"></a>3.2 Prompt 注入机制详解</h3><p>Agent Skills 的核心实现是<strong>基于提示的元工具架构</strong>（Prompt-based Meta-tool Architecture）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 简化的实现概念（伪代码）</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SkillManager</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, skills_directory</span>):<br>        <span class="hljs-variable language_">self</span>.skills = &#123;&#125;<br>        <span class="hljs-variable language_">self</span>.load_metadata_only(skills_directory)<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">load_metadata_only</span>(<span class="hljs-params">self, directory</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;启动时仅加载元数据，轻量级&quot;&quot;&quot;</span><br>        <span class="hljs-keyword">for</span> skill_folder <span class="hljs-keyword">in</span> os.listdir(directory):<br>            yaml_frontmatter = extract_yaml(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;skill_folder&#125;</span>/SKILL.md&quot;</span>)<br>            <span class="hljs-variable language_">self</span>.skills[yaml_frontmatter[<span class="hljs-string">&#x27;name&#x27;</span>]] = &#123;<br>                <span class="hljs-string">&#x27;name&#x27;</span>: yaml_frontmatter[<span class="hljs-string">&#x27;name&#x27;</span>],<br>                <span class="hljs-string">&#x27;description&#x27;</span>: yaml_frontmatter[<span class="hljs-string">&#x27;description&#x27;</span>],<br>                <span class="hljs-string">&#x27;path&#x27;</span>: skill_folder,<br>                <span class="hljs-string">&#x27;loaded&#x27;</span>: <span class="hljs-literal">False</span>  <span class="hljs-comment"># 指令内容尚未加载</span><br>            &#125;<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">activate_skill</span>(<span class="hljs-params">self, skill_name</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;动态激活技能 = 将指令注入为新的用户消息&quot;&quot;&quot;</span><br>        skill = <span class="hljs-variable language_">self</span>.skills[skill_name]<br>        <br>        <span class="hljs-comment"># 1. 读取完整的 SKILL.md 文件</span><br>        full_content = read_file(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;skill[<span class="hljs-string">&#x27;path&#x27;</span>]&#125;</span>/SKILL.md&quot;</span>)<br>        metadata, instructions = parse_skill_md(full_content)<br>        <br>        <span class="hljs-comment"># 2. 关键步骤：将指令作为&quot;用户消息&quot;注入对话</span><br>        <span class="hljs-comment">#    （而非修改系统提示词，保持系统提示不变）</span><br>        skill_message = &#123;<br>            <span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;user&quot;</span>,  <span class="hljs-comment"># 注意：角色是 user，不是 system</span><br>            <span class="hljs-string">&quot;content&quot;</span>: <span class="hljs-string">f&quot;&quot;&quot;</span><br><span class="hljs-string">[SKILL ACTIVATED: <span class="hljs-subst">&#123;skill_name&#125;</span>]</span><br><span class="hljs-string">Base Directory: <span class="hljs-subst">&#123;skill[<span class="hljs-string">&#x27;path&#x27;</span>]&#125;</span></span><br><span class="hljs-string"></span><br><span class="hljs-string"><span class="hljs-subst">&#123;instructions&#125;</span></span><br><span class="hljs-string"></span><br><span class="hljs-string">[END SKILL INSTRUCTIONS]</span><br><span class="hljs-string"></span><br><span class="hljs-string">Now, continue with the original task using this guidance.</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br>        &#125;<br>        <br>        <span class="hljs-comment"># 3. 修改执行上下文（如果指定）</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;model&#x27;</span> <span class="hljs-keyword">in</span> metadata:<br>            switch_model(metadata[<span class="hljs-string">&#x27;model&#x27;</span>])<br>        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;allowed-tools&#x27;</span> <span class="hljs-keyword">in</span> metadata:<br>            restrict_tools(metadata[<span class="hljs-string">&#x27;allowed-tools&#x27;</span>])<br>        <br>        <span class="hljs-comment"># 4. 将技能激活消息插入对话历史</span><br>        conversation.insert_before_last_user_message(skill_message)<br>        <br>        <span class="hljs-comment"># 5. Agent 现在&quot;知道&quot;如何执行任务</span><br>        skill[<span class="hljs-string">&#x27;loaded&#x27;</span>] = <span class="hljs-literal">True</span><br>        <span class="hljs-keyword">return</span> continue_generation()<br></code></pre></td></tr></table></figure>
+
+<p><strong>关键点</strong>：</p>
+<ul>
+<li>技能内容以<strong>用户消息</strong>的形式注入，而非系统提示</li>
+<li>这允许在不重启 Agent 的情况下动态加载多个技能</li>
+<li>Agent 将技能指令视为”来自用户的额外上下文”</li>
+</ul>
+<h3 id="3-3-上下文窗口动态管理"><a href="#3-3-上下文窗口动态管理" class="headerlink" title="3.3 上下文窗口动态管理"></a>3.3 上下文窗口动态管理</h3><p><strong>案例研究</strong>：假设有 100 个可用技能</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">启动时 (T0)</span><span class="hljs-punctuation">:</span><br><span class="hljs-attribute">┌─────────────────────────────────────────┐</span><br><span class="hljs-attribute">│ Context Window</span><span class="hljs-punctuation">:</span> <span class="hljs-string">200,000 tokens         │</span><br><span class="hljs-attribute">├─────────────────────────────────────────┤</span><br><span class="hljs-attribute">│ System Prompt</span><span class="hljs-punctuation">:</span> <span class="hljs-string">500 tokens              │</span><br><span class="hljs-attribute">│ 100 Skills Metadata</span><span class="hljs-punctuation">:</span> <span class="hljs-string">2,000 tokens      │  ← 每个 ~20 tokens</span><br><span class="hljs-attribute">│ Available</span><span class="hljs-punctuation">:</span> <span class="hljs-string">197,500 tokens              │</span><br><span class="hljs-attribute">└─────────────────────────────────────────┘</span><br><span class="hljs-attribute"></span><br><span class="hljs-attribute">激活 pdf-processing 技能后 (T1)</span><span class="hljs-punctuation">:</span><br><span class="hljs-attribute">┌─────────────────────────────────────────┐</span><br><span class="hljs-attribute">│ Context Window</span><span class="hljs-punctuation">:</span> <span class="hljs-string">200,000 tokens         │</span><br><span class="hljs-attribute">├─────────────────────────────────────────┤</span><br><span class="hljs-attribute">│ System Prompt</span><span class="hljs-punctuation">:</span> <span class="hljs-string">500 tokens              │</span><br><span class="hljs-attribute">│ 100 Skills Metadata</span><span class="hljs-punctuation">:</span> <span class="hljs-string">2,000 tokens      │</span><br><span class="hljs-attribute">│ pdf-processing/SKILL.md</span><span class="hljs-punctuation">:</span> <span class="hljs-string">4,000 tokens  │  ← 新增</span><br><span class="hljs-attribute">│ User Message</span><span class="hljs-punctuation">:</span> <span class="hljs-string">300 tokens               │</span><br><span class="hljs-attribute">│ Available</span><span class="hljs-punctuation">:</span> <span class="hljs-string">193,200 tokens              │</span><br><span class="hljs-attribute">└─────────────────────────────────────────┘</span><br><span class="hljs-attribute"></span><br><span class="hljs-attribute">按需加载资源 (T2)</span><span class="hljs-punctuation">:</span><br><span class="hljs-attribute">┌─────────────────────────────────────────┐</span><br><span class="hljs-attribute">│ Context Window</span><span class="hljs-punctuation">:</span> <span class="hljs-string">200,000 tokens         │</span><br><span class="hljs-attribute">├─────────────────────────────────────────┤</span><br><span class="hljs-attribute">│ System Prompt</span><span class="hljs-punctuation">:</span> <span class="hljs-string">500 tokens              │</span><br><span class="hljs-attribute">│ 100 Skills Metadata</span><span class="hljs-punctuation">:</span> <span class="hljs-string">2,000 tokens      │</span><br><span class="hljs-attribute">│ pdf-processing/SKILL.md</span><span class="hljs-punctuation">:</span> <span class="hljs-string">4,000 tokens  │</span><br><span class="hljs-attribute">│ references/form-filling.md</span><span class="hljs-punctuation">:</span> <span class="hljs-string">2,500 tokens│  ← 新增</span><br><span class="hljs-attribute">│ User Message</span><span class="hljs-punctuation">:</span> <span class="hljs-string">300 tokens               │</span><br><span class="hljs-attribute">│ Agent Response (so far)</span><span class="hljs-punctuation">:</span> <span class="hljs-string">1,000 tokens  │</span><br><span class="hljs-attribute">│ Available</span><span class="hljs-punctuation">:</span> <span class="hljs-string">189,700 tokens              │</span><br>└─────────────────────────────────────────┘<br></code></pre></td></tr></table></figure>
+
+<p><strong>效率对比</strong>：</p>
+<ul>
+<li>传统方法（预加载所有内容）：~450,000 tokens（超出窗口！）</li>
+<li>Agent Skills：~10,300 tokens（仅 2.3% 的消耗）</li>
+</ul>
+<h3 id="3-4-执行环境能力矩阵"><a href="#3-4-执行环境能力矩阵" class="headerlink" title="3.4 执行环境能力矩阵"></a>3.4 执行环境能力矩阵</h3><table>
+<thead>
+<tr>
+<th>环境</th>
+<th>文件系统访问</th>
+<th>代码执行</th>
+<th>包安装</th>
+<th>网络访问</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>claude.ai</strong></td>
+<td>✅ 临时沙箱</td>
+<td>✅ Python&#x2F;JS&#x2F;Bash</td>
+<td>✅ pip&#x2F;npm</td>
+<td>⚠️ 可配置</td>
+<td>个人使用、快速原型</td>
+</tr>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>✅ 完整本地</td>
+<td>✅ 全语言</td>
+<td>✅ 全局（需谨慎）</td>
+<td>✅ 完全开放</td>
+<td>开发工作流、企业集成</td>
+</tr>
+<tr>
+<td><strong>Claude API</strong></td>
+<td>❌ 无</td>
+<td>✅ 预装环境</td>
+<td>❌ 无</td>
+<td>❌ 无</td>
+<td>生产服务、受控环境</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>✅ VS Code 工作区</td>
+<td>✅ 通过终端</td>
+<td>✅ 通过终端</td>
+<td>✅</td>
+<td>IDE 集成开发</td>
+</tr>
+<tr>
+<td><strong>OpenAI Codex</strong></td>
+<td>✅ 项目目录</td>
+<td>✅ 多语言</td>
+<td>✅</td>
+<td>✅</td>
+<td>CLI 编码助手</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-SKILL-md-规范详解"><a href="#4-SKILL-md-规范详解" class="headerlink" title="4. SKILL.md 规范详解"></a>4. SKILL.md 规范详解</h2><h3 id="4-1-完整文件结构"><a href="#4-1-完整文件结构" class="headerlink" title="4.1 完整文件结构"></a>4.1 完整文件结构</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs markdown">---<br><span class="hljs-section"># ============ 必需字段 ============</span><br>name: vulnerability-scanner<br>description: Scan code for security vulnerabilities using OWASP Top 10 as baseline. Identifies SQL injection, XSS, CSRF, and auth issues. Use when analyzing application code or conducting security reviews.<br><br><span class="hljs-section"># ============ 可选字段 ============</span><br>license: MIT<br>metadata:<br>  author: security-team@company.com<br>  version: &quot;2.1.0&quot;<br>  category: security<br>  tags: [security, OWASP, vulnerability, code-review]<br>  <br>  # 强制使用特定模型（可选）<br>  model: claude-opus-4-20250514<br>  <br>  # 限制可用工具（可选，用于安全隔离）<br>  allowed-tools:<br><span class="hljs-bullet">    -</span> bash<span class="hljs-emphasis">_read_</span>file<br><span class="hljs-bullet">    -</span> bash<span class="hljs-emphasis">_list_</span>directory<br><span class="hljs-code">    # 注意：不包含 bash_execute，防止执行任意代码</span><br><span class="hljs-code">  </span><br><span class="hljs-code">  # 自定义元数据（产品特定）</span><br><span class="hljs-code">  requires:</span><br><span class="hljs-code">    - python: &quot;&gt;=3.8&quot;</span><br><span class="hljs-code">    - packages: [bandit, semgrep]</span><br><span class="hljs-code">  estimated_runtime: &quot;5-10 minutes&quot;</span><br><span class="hljs-code">  complexity: medium</span><br><span class="hljs-code">---</span><br><span class="hljs-code"></span><br><span class="hljs-section"># Vulnerability Scanner Skill</span><br><br><span class="hljs-section">## 📋 概述</span><br><br>本技能使用 OWASP Top 10 作为基准扫描代码中的安全漏洞。支持多种编程语言，集成主流静态分析工具，提供详细的漏洞报告和修复建议。<br><br><span class="hljs-section">## 🎯 使用场景</span><br><br><span class="hljs-strong">**触发条件**</span>：<br><span class="hljs-bullet">-</span> 用户提到&quot;安全审查&quot;、&quot;漏洞扫描&quot;、&quot;代码审计&quot;<br><span class="hljs-bullet">-</span> 需要检查特定的漏洞类型（SQL注入、XSS等）<br><span class="hljs-bullet">-</span> Pull Request 合并前的自动化检查<br><br><span class="hljs-strong">**不适用于**</span>：<br><span class="hljs-bullet">-</span> 动态应用测试（需要运行时环境）<br><span class="hljs-bullet">-</span> 渗透测试（需要实际攻击向量）<br><span class="hljs-bullet">-</span> 合规性审计（需要特定框架）<br><br><span class="hljs-section">## 🔍 扫描流程</span><br><br><span class="hljs-section">### 第一步：环境准备</span><br><span class="hljs-bullet">1.</span> 确认项目根目录<br><span class="hljs-bullet">2.</span> 识别编程语言和框架<br><span class="hljs-bullet">3.</span> 检查依赖文件（requirements.txt, package.json等）<br><br><span class="hljs-section">### 第二步：静态分析</span><br>运行以下工具组合：<br><span class="hljs-bullet">-</span> <span class="hljs-strong">**Python**</span>: Bandit + Semgrep<br><span class="hljs-bullet">-</span> <span class="hljs-strong">**JavaScript**</span>: ESLint security插件<br><span class="hljs-bullet">-</span> <span class="hljs-strong">**Java**</span>: SpotBugs + Find Security Bugs<br><span class="hljs-bullet">-</span> <span class="hljs-strong">**通用**</span>: CodeQL queries<br><br>​<span class="hljs-code">```bash</span><br><span class="hljs-code"># Python 扫描示例</span><br><span class="hljs-code">python scripts/scan_python.py --target ./src --output scan_results.json</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="第三步：结果整理"><a href="#第三步：结果整理" class="headerlink" title="第三步：结果整理"></a>第三步：结果整理</h3><p>解析工具输出，按照以下格式组织：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;total_findings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">42</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;critical&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;high&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;medium&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;low&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">17</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;findings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>...<span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="第四步：生成报告"><a href="#第四步：生成报告" class="headerlink" title="第四步：生成报告"></a>第四步：生成报告</h3><p>使用模板 <code>templates/report.md</code> 生成人类可读的报告。</p>
+<h2 id="📊-输出格式"><a href="#📊-输出格式" class="headerlink" title="📊 输出格式"></a>📊 输出格式</h2><h3 id="控制台输出"><a href="#控制台输出" class="headerlink" title="控制台输出"></a>控制台输出</h3><figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">🔍 Security Scan Results</span><br><span class="hljs-attribute">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span><br><span class="hljs-attribute">  Critical</span><span class="hljs-punctuation">:</span> <span class="hljs-string">2 issues found</span><br>  <span class="hljs-attribute">High</span><span class="hljs-punctuation">:</span> <span class="hljs-string">    8 issues found</span><br>  <span class="hljs-attribute">Medium</span><span class="hljs-punctuation">:</span> <span class="hljs-string">  15 issues found</span><br>  <span class="hljs-attribute">Low</span><span class="hljs-punctuation">:</span> <span class="hljs-string">     17 issues found</span><br><br><span class="hljs-attribute">📝 Detailed report saved to</span><span class="hljs-punctuation">:</span> <span class="hljs-string">security_report.md</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Markdown-报告"><a href="#Markdown-报告" class="headerlink" title="Markdown 报告"></a>Markdown 报告</h3><p>参考 <code>references/report-template.md</code> 了解完整格式。</p>
+<h2 id="🚨-漏洞类别"><a href="#🚨-漏洞类别" class="headerlink" title="🚨 漏洞类别"></a>🚨 漏洞类别</h2><h3 id="A01-SQL-Injection"><a href="#A01-SQL-Injection" class="headerlink" title="A01: SQL Injection"></a>A01: SQL Injection</h3><p><strong>检测模式</strong>：</p>
+<ul>
+<li>字符串拼接构建SQL查询</li>
+<li>缺少参数化查询</li>
+<li>ORM使用不当</li>
+</ul>
+<p><strong>示例（Python）</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># ❌ 不安全</span><br>query = <span class="hljs-string">f&quot;SELECT * FROM users WHERE id = <span class="hljs-subst">&#123;user_id&#125;</span>&quot;</span><br><br><span class="hljs-comment"># ✅ 安全</span><br>query = <span class="hljs-string">&quot;SELECT * FROM users WHERE id = ?&quot;</span><br>cursor.execute(query, (user_id,))<br></code></pre></td></tr></table></figure>
+
+<h3 id="A02-认证失效"><a href="#A02-认证失效" class="headerlink" title="A02: 认证失效"></a>A02: 认证失效</h3><p>检查项：</p>
+<ul>
+<li><input disabled="" type="checkbox"> 密码强度策略</li>
+<li><input disabled="" type="checkbox"> 会话管理</li>
+<li><input disabled="" type="checkbox"> 多因素认证</li>
+<li><input disabled="" type="checkbox"> 密码存储（bcrypt&#x2F;argon2）</li>
+</ul>
+<p>[… 其他 OWASP Top 10 类别 …]</p>
+<h2 id="🔧-高级配置"><a href="#🔧-高级配置" class="headerlink" title="🔧 高级配置"></a>🔧 高级配置</h2><h3 id="自定义规则"><a href="#自定义规则" class="headerlink" title="自定义规则"></a>自定义规则</h3><p>在 <code>config/custom-rules.yaml</code> 中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">custom_patterns:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">CUSTOM001</span><br>    <span class="hljs-attr">pattern:</span> <span class="hljs-string">|</span><br><span class="hljs-string">      eval($_POST[&#x27;code&#x27;])</span><br><span class="hljs-string"></span>    <span class="hljs-attr">severity:</span> <span class="hljs-string">CRITICAL</span><br>    <span class="hljs-attr">message:</span> <span class="hljs-string">&quot;Remote code execution via eval()&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="忽略规则"><a href="#忽略规则" class="headerlink" title="忽略规则"></a>忽略规则</h3><p>创建 <code>.vulnerability-ignore</code> 文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"># 格式：<span class="hljs-tag">&lt;<span class="hljs-name">文件路径</span>&gt;</span>:<span class="hljs-tag">&lt;<span class="hljs-name">规则ID</span>&gt;</span>:<span class="hljs-tag">&lt;<span class="hljs-name">原因</span>&gt;</span><br>src/legacy/old_api.py:B201:已计划重构<br></code></pre></td></tr></table></figure>
+
+<h2 id="📚-参考资源"><a href="#📚-参考资源" class="headerlink" title="📚 参考资源"></a>📚 参考资源</h2><ul>
+<li><code>references/owasp-top10.md</code> - OWASP Top 10 详细说明</li>
+<li><code>references/cwe-catalog.md</code> - CWE 漏洞分类</li>
+<li><code>scripts/scan_*.py</code> - 各语言扫描脚本</li>
+<li><code>templates/report.md</code> - 报告模板</li>
+<li><code>config/tool-configs/</code> - 工具配置文件</li>
+</ul>
+<h2 id="⚙️-故障排除"><a href="#⚙️-故障排除" class="headerlink" title="⚙️ 故障排除"></a>⚙️ 故障排除</h2><h3 id="问题：工具未安装"><a href="#问题：工具未安装" class="headerlink" title="问题：工具未安装"></a>问题：工具未安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 自动安装依赖</span><br>python scripts/install_tools.py<br></code></pre></td></tr></table></figure>
+
+<h3 id="问题：扫描超时"><a href="#问题：扫描超时" class="headerlink" title="问题：扫描超时"></a>问题：扫描超时</h3><p>增加 <code>config/settings.yaml</code> 中的超时设置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">timeouts:</span><br>  <span class="hljs-attr">per_file:</span> <span class="hljs-number">30</span>  <span class="hljs-comment"># 秒</span><br>  <span class="hljs-attr">total:</span> <span class="hljs-number">600</span>    <span class="hljs-comment"># 秒</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="📈-性能优化"><a href="#📈-性能优化" class="headerlink" title="📈 性能优化"></a>📈 性能优化</h2><ul>
+<li>使用 <code>--parallel</code> 标志启用多核扫描</li>
+<li>排除 <code>node_modules/</code>、<code>vendor/</code> 等目录</li>
+<li>缓存扫描结果（<code>--cache</code> 标志）</li>
+</ul>
+<h2 id="🔒-安全注意事项"><a href="#🔒-安全注意事项" class="headerlink" title="🔒 安全注意事项"></a>🔒 安全注意事项</h2><p>⚠️ <strong>重要</strong>：</p>
+<ul>
+<li>本技能仅进行静态分析，不执行代码</li>
+<li>扫描结果可能包含误报，需人工审查</li>
+<li>切勿在生产环境运行未验证的扫描脚本</li>
+</ul>
+<hr>
+<p><strong>版本历史</strong>：</p>
+<ul>
+<li>v2.1.0 (2025-12): 添加 JavaScript 支持</li>
+<li>v2.0.0 (2025-06): 重构为技能格式</li>
+<li>v1.0.0 (2024-10): 初始版本</li>
+</ul>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><br><span class="hljs-comment">### 4.2 YAML Frontmatter 字段规范</span><br><br><span class="hljs-comment">#### 必需字段</span><br><br>|<span class="hljs-string"> 字段 </span>|<span class="hljs-string"> 类型 </span>|<span class="hljs-string"> 约束 </span>|<span class="hljs-string"> 说明 </span>|<br>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<br>|<span class="hljs-string"> `name` </span>|<span class="hljs-string"> string </span>|<span class="hljs-string"> • 最大 64 字符&lt;br&gt;• 仅 `[a-z0-9-]`&lt;br&gt;• 不能以 `-` 开头或结尾 </span>|<span class="hljs-string"> 技能的唯一标识符，用于代码引用 </span>|<br>|<span class="hljs-string"> `description` </span>|<span class="hljs-string"> string </span>|<span class="hljs-string"> • 最大 1024 字符&lt;br&gt;• 非空&lt;br&gt;• 应包含关键词 </span>|<span class="hljs-string"> **最关键字段**：Agent 判断是否激活技能的依据 </span>|<br><br><span class="hljs-comment">#### 可选但推荐的字段</span><br><br>|<span class="hljs-string"> 字段 </span>|<span class="hljs-string"> 类型 </span>|<span class="hljs-string"> 说明 </span>|<span class="hljs-string"> 示例 </span>|<br>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<br>|<span class="hljs-string"> `license` </span>|<span class="hljs-string"> string </span>|<span class="hljs-string"> 许可证 </span>|<span class="hljs-string"> `MIT`, `Apache-2.0`, `./LICENSE` </span>|<br>|<span class="hljs-string"> `metadata.author` </span>|<span class="hljs-string"> string </span>|<span class="hljs-string"> 作者 </span>|<span class="hljs-string"> `security-team@company.com` </span>|<br>|<span class="hljs-string"> `metadata.version` </span>|<span class="hljs-string"> string </span>|<span class="hljs-string"> 语义化版本 </span>|<span class="hljs-string"> `2.1.0` </span>|<br>|<span class="hljs-string"> `metadata.category` </span>|<span class="hljs-string"> string </span>|<span class="hljs-string"> 分类 </span>|<span class="hljs-string"> `security`, `data-science`, `creative` </span>|<br>|<span class="hljs-string"> `metadata.tags` </span>|<span class="hljs-string"> array </span>|<span class="hljs-string"> 标签 </span>|<span class="hljs-string"> `[&quot;security&quot;, &quot;OWASP&quot;, &quot;python&quot;]` </span>|<br><br><span class="hljs-comment">#### 高级字段（执行控制）</span><br><br>|<span class="hljs-string"> 字段 </span>|<span class="hljs-string"> 类型 </span>|<span class="hljs-string"> 说明 </span>|<span class="hljs-string"> 用途 </span>|<br>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<span class="hljs-string">------</span>|<br>|<span class="hljs-string"> `metadata.model` </span>|<span class="hljs-string"> string </span>|<span class="hljs-string"> 强制使用特定模型 </span>|<span class="hljs-string"> 需要高推理能力的技能可指定 Opus </span>|<br>|<span class="hljs-string"> `metadata.allowed-tools` </span>|<span class="hljs-string"> array </span>|<span class="hljs-string"> 限制可用工具列表 </span>|<span class="hljs-string"> 安全隔离，防止技能滥用工具 </span>|<br>|<span class="hljs-string"> `metadata.requires` </span>|<span class="hljs-string"> object </span>|<span class="hljs-string"> 依赖声明 </span>|<span class="hljs-string"> 环境检查、包要求 </span>|<br><br><span class="hljs-comment">### 4.3 Description 编写最佳实践</span><br><br><span class="hljs-symbol">*</span><span class="hljs-symbol">*</span>核心原则<span class="hljs-symbol">*</span><span class="hljs-symbol">*</span>：Description 是技能被发现的唯一机会。<br><br><span class="hljs-comment">#### ❌ 差的 Description 示例</span><br><br>​```yaml<br>description: Helps with security stuff<br></code></pre></td></tr></table></figure>
+<p><strong>问题</strong>：</p>
+<ul>
+<li>过于宽泛，Agent 无法判断何时适用</li>
+<li>缺少关键词，难以匹配用户意图</li>
+<li>没有明确的使用场景</li>
+</ul>
+<h4 id="✅-优秀的-Description-示例"><a href="#✅-优秀的-Description-示例" class="headerlink" title="✅ 优秀的 Description 示例"></a>✅ 优秀的 Description 示例</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">description:</span> <span class="hljs-string">Scan</span> <span class="hljs-string">Python,</span> <span class="hljs-string">JavaScript,</span> <span class="hljs-string">and</span> <span class="hljs-string">Java</span> <span class="hljs-string">code</span> <span class="hljs-string">for</span> <span class="hljs-string">OWASP</span> <span class="hljs-string">Top</span> <span class="hljs-number">10</span> <span class="hljs-string">vulnerabilities</span> <span class="hljs-string">including</span> <span class="hljs-string">SQL</span> <span class="hljs-string">injection,</span> <span class="hljs-string">XSS,</span> <span class="hljs-string">CSRF,</span> <span class="hljs-string">insecure</span> <span class="hljs-string">authentication,</span> <span class="hljs-string">and</span> <span class="hljs-string">sensitive</span> <span class="hljs-string">data</span> <span class="hljs-string">exposure.</span> <span class="hljs-string">Integrates</span> <span class="hljs-string">Bandit,</span> <span class="hljs-string">ESLint</span> <span class="hljs-string">security,</span><br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://jimi-lab.github.io/2026/02/15/agent_skills_deep_dive/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年2月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/15/cve-FH1202-bufferoverflow/" title="cve-FH1202-bufferoverflow">
+                        <span class="hidden-mobile">cve-FH1202-bufferoverflow</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

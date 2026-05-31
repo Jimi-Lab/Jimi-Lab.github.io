@@ -6,6 +6,7 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
+    "deploy:site": "npm run clean && npm run build && npm run deploy",
     "server": "hexo server",
     "import:yuque": "node tools/import-yuque-posts.js",
     "verify:posts": "node tools/verify-post-assets.js"

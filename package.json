@@ -6,13 +6,16 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
-    "server": "hexo server"
+    "server": "hexo server",
+    "import:yuque": "node tools/import-yuque-posts.js",
+    "verify:posts": "node tools/verify-post-assets.js"
   },
   "hexo": {
     "version": "7.3.0"
   },
   "dependencies": {
     "hexo": "^7.3.0",
+    "hexo-deployer-git": "^4.0.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-index": "^4.0.0",
@@ -21,6 +24,7 @@
     "hexo-renderer-marked": "^7.0.0",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
-    "hexo-theme-landscape": "^1.0.0"
+    "hexo-theme-landscape": "^1.0.0",
+    "marked": "^15.0.11"
   }
 }

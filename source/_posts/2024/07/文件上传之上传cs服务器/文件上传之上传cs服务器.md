@@ -1,0 +1,68 @@
+---
+title: "文件上传之上传cs服务器"
+date: 2024-07
+categories: [漏洞挖掘]
+tags:
+  - CS
+---
+
+**<font style="color:#c00000;background-color:#b8cce4;">师傅笔记：</font>**
+
+
+
+msfconsole监听 msfvenom生成exe都可以
+
+
+
+ConbaltStrike
+
+
+
+网址:https://res2m.age06.com/
+
+**漏洞前提****:**可以上传exe程序 √
+
+且必须有下载exe的全部url地址 [https://res2m.age06.com/Download/1/1111.exe](https://res2m.age06.com/Download/1/1111.exe)
+
+
+
+第一步:找到文件上传地址（随意上传exe后缀)
+
+
+
+第二步:使用Cs工具生成恶意exe
+
+
+
+第三步:上传第二步构造的exe 必须是可以文件下载的前提下
+
+
+
+第四步:让自己或者受害人电脑来下载exe然后上线cs 截图证明危害即可
+
+
+
+第五步:写报告提交漏洞
+
+
+
+第六步:等着打钱即可
+
+
+
+
+
+
+
+**<font style="color:#c00000;background-color:#b8cce4;">个人笔记：</font>**
+
+
+
+
+
+
+
+
+
+
+

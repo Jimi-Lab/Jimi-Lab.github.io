@@ -1,4 +1,1 @@
-"# Jimi.github.io"  
-
-
-# Jimi's Blog
+Source code for https://jimi-lab.github.io/

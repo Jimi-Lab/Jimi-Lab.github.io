@@ -65,9 +65,9 @@ session：[DC2AD5E360C566D36FC06D16A0981A03](http://139.9.230.174:50001/druid/we
 
 
 
-<font style="background-color:#FF0000;">发现</font><font style="background-color:#FF0000;">url</font><font style="background-color:#FF0000;">监控，</font><font style="background-color:#FF0000;">session</font><font style="background-color:#FF0000;">监控，</font><font style="background-color:#FF0000;">spring</font><font style="background-color:#FF0000;">监控</font>
+**发现url监控，session监控，spring监控**
 
-<font style="background-color:#dbe5f1;">1.session</font><font style="background-color:#dbe5f1;">使用：</font>
+**1.session使用：**
 
 burp抓包，修改为正确的session和url
 
@@ -91,9 +91,9 @@ burp抓包，修改为正确的session和url
 <!-- 这是一张图片，ocr 内容为：HO国讲:1080P家 (那不压正) 十 139.9.230.174:50001/VERSION 包公中一 不安全 AR   139.9.230.174:50001/DRUID/WEBURI.HTM 你涂老子好学英 论文 项目部等 其他收 夏令营 比卖+考证 小迪网站 读研 网安学院 口 网安 考证 CVE-2024) 门室家 中北 口科技 数据漂 西灾 DRUID MONITOR 记录日志并重置 SQL监控 SQL防火墙 JSON API WEB应用 WEB URI STAT VIEW JSON API 刷新时间 有信刷新 区问分布 执行中 半分因染效 请求品假(单次) JDBC执行数 请求时间(利) JDBC时间 最大并发 事务提交数 请求次数 读取行数 JDBC出错数 更新行数 [32,34,2.0.0.0.0.0] 68 194 68 222 13.374 9.135 19,693 4.453 13.390 [0.4284.175,3.0,0.0] 917 178 16.272 00089890000 15,300 10.591 24 HT/SHANGPINIQETGG2LIST 93 587 886 18 09 304 156 242 368 [0.87.3.0.0.0.0] HISHANGPINIGETEXPANDGUIGE1LIST 14 15 196 196 [0.0.0.1.0.0.0.0] 7 705 705 664 31 35 20 279 35 [0.30,1.0.0.0.0] 109 172 62 17.140 792 1,299 34 11 34 91 34 HT/CANGKU/INFO 18 (0.33.1.0.0.0.0] 34 41 109 (0.32.2.0.0.0.0) 47 5 102 102 102 280 [0.102.0.0.0,0,0,0] 5.720 22 6.272 6.33G 1,066 2.603 [0.0.1.20,1.0.0] 1 45 2 [0.0.1.0.0.0.0] OR 60 OEC 125 [0.29.1.0.0.0.0] 30 30 OC 92 10 3 10 10 23 -->
 ![](img/4-f75719de.png)
 
-<font style="color:#e84c22;"></font>
 
-**<font style="color:#e84c22;">url</font>****<font style="color:#e84c22;">中有</font>****<font style="color:#e84c22;">example/a.action;example/a.do</font>****<font style="color:#e84c22;">这俩后缀的，</font>**
+
+**url中有example/a.action;example/a.do这俩后缀的，**
 
 可以打Struts2漏洞
 

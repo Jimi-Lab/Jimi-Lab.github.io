@@ -6,7 +6,7 @@ tags:
   - Swagger
 ---
 
-**<font style="color:#c00000;">Swagger 是一个开源工具集，提供了一整套工具，帮助开发者设计、文档化、测试和生成 RESTful API。</font>**
+**Swagger 是一个开源工具集，提供了一整套工具，帮助开发者设计、文档化、测试和生成 RESTful API。**
 
 **Swagger ****的主要作用**
 
@@ -15,11 +15,11 @@ tags:
 + **代码生成**：通过 Swagger，可以自动生成客户端 SDK 和服务器端代码，减少手动编写的工作量，并确保代码和文档的一致性。
 + **API ****测试和调试**：使用 Swagger UI，开发者可以直接在浏览器中测试 API，发送请求并查看响应，极大地简化了调试过程。
 
-<font style="color:black;"></font>
 
-<font style="color:#c00000;"></font>
 
-**<font style="color:#c00000;background-color:#b8cce4;">师傅笔记：</font>**
+
+
+**师傅笔记：**
 
 （1）：
 
@@ -71,11 +71,11 @@ result:id:2131232
 
 
 
-**<font style="color:#c00000;background-color:#b8cce4;">个人笔记：</font>**
+**个人笔记：**
 
 
 
-**<font style="background-color:#b8cce4;">案例一：</font>**
+**案例一：**
 
 工具：swagger-hack：自动化爬取并自动测试所有[swagger接口](https://so.csdn.net/so/search?q=swagger%E6%8E%A5%E5%8F%A3&spm=1001.2101.3001.7020)
 
@@ -119,7 +119,7 @@ result:id:2131232
 
 
 
-**<font style="background-color:#b8cce4;">案例二：</font>**
+**案例二：**
 
 
 
@@ -153,7 +153,7 @@ result:id:2131232
 
 
 
-**<font style="background-color:#b8cce4;">案例三：</font>**
+**案例三：**
 
 站点：https://ttqp.oldace.cn/swagger/V2/swagger.json
 
@@ -193,7 +193,7 @@ Swagger-hack工具扫描
 
 
 
-**<font style="background-color:#b8cce4;">案例四：</font>**
+**案例四：**
 
 网址：http://181.119.123.109:5000/info/index.html
 

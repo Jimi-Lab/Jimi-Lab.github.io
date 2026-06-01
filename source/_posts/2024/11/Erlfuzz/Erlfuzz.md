@@ -88,7 +88,7 @@ bash
 
 
 #### erlfuzz 已经发现了 Erlang 和相关工具中的一些问题，并列出了具体的 GitHub 问题链接，帮助开发者查找和定位可能的错误：
-<font style="color:rgb(37, 43, 58);">BEAM VM:</font>
+BEAM VM:
 
 + [https://github.com/erlang/otp/issues/6634](https://github.com/erlang/otp/issues/6634)
 + [https://github.com/erlang/otp/issues/6645](https://github.com/erlang/otp/issues/6645)
@@ -99,7 +99,7 @@ bash
 + [https://github.com/erlang/otp/pull/6839](https://github.com/erlang/otp/pull/6839)
 + [https://github.com/erlang/otp/issues/7282](https://github.com/erlang/otp/issues/7282)
 
-<font style="color:rgb(37, 43, 58);">erlc:</font>
+erlc:
 
 + [https://github.com/erlang/otp/issues/6163](https://github.com/erlang/otp/issues/6163)
 + [https://github.com/erlang/otp/issues/6164](https://github.com/erlang/otp/issues/6164)
@@ -193,7 +193,7 @@ bash
 + [https://github.com/erlang/otp/pull/7902#issuecomment-1825299276](https://github.com/erlang/otp/pull/7902#issuecomment-1825299276)
 + [https://github.com/erlang/otp/pull/7902#issuecomment-1825301929](https://github.com/erlang/otp/pull/7902#issuecomment-1825301929)
 
-<font style="color:rgb(37, 43, 58);">dialyzer:</font>
+dialyzer:
 
 + [https://github.com/erlang/otp/issues/6419](https://github.com/erlang/otp/issues/6419)
 + [https://github.com/erlang/otp/issues/6473](https://github.com/erlang/otp/issues/6473)
@@ -204,11 +204,11 @@ bash
 + [https://github.com/erlang/otp/issues/7181](https://github.com/erlang/otp/issues/7181)
 + [https://github.com/erlang/otp/issues/7325](https://github.com/erlang/otp/issues/7325)
 
-<font style="color:rgb(37, 43, 58);">erlfmt:</font>
+erlfmt:
 
 + [https://github.com/WhatsApp/erlfmt/issues/338](https://github.com/WhatsApp/erlfmt/issues/338)
 
-<font style="color:rgb(37, 43, 58);">eqWAlizer:</font>
+eqWAlizer:
 
 + [https://github.com/WhatsApp/eqwalizer/commit/56634681d5de33819c371285ff5682d58384518b](https://github.com/WhatsApp/eqwalizer/commit/56634681d5de33819c371285ff5682d58384518b)
 + [https://github.com/WhatsApp/eqwalizer/commit/a253f6ee5c202d683c2719d325fd31acc46221a3](https://github.com/WhatsApp/eqwalizer/commit/a253f6ee5c202d683c2719d325fd31acc46221a3)
@@ -217,12 +217,12 @@ bash
 + [https://github.com/WhatsApp/eqwalizer/commit/ae608820ec08c2108e438a92b9d7a0fdf999a06b](https://github.com/WhatsApp/eqwalizer/commit/ae608820ec08c2108e438a92b9d7a0fdf999a06b)
 + [https://github.com/WhatsApp/eqwalizer/commit/904449753e68388bc5b33f8b12217b6af6978bf7](https://github.com/WhatsApp/eqwalizer/commit/904449753e68388bc5b33f8b12217b6af6978bf7)
 
-<font style="color:rgb(37, 43, 58);">inferl:</font>
+inferl:
 
 + [https://github.com/facebook/infer/commit/dbdcf4863ee2751a6b671f072850b29b4916bf5b](https://github.com/facebook/infer/commit/dbdcf4863ee2751a6b671f072850b29b4916bf5b)
 + [https://github.com/facebook/infer/commit/5453911ea7a69dfb66f2cb697976eeeb9c30b176](https://github.com/facebook/infer/commit/5453911ea7a69dfb66f2cb697976eeeb9c30b176)
 
-<font style="color:rgb(37, 43, 58);">Gradualizer</font>
+Gradualizer
 
 + [https://github.com/josefs/Gradualizer/issues/542](https://github.com/josefs/Gradualizer/issues/542)
 + [https://github.com/josefs/Gradualizer/issues/543](https://github.com/josefs/Gradualizer/issues/543)

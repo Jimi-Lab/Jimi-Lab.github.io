@@ -42,7 +42,7 @@ xml它需要上传2个文件 首先上传第一个xml文件(url地址我们首�
 
 
 xml1：https://res2m.age06.com/File/1/shangxin1.xml
-
+```
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -58,7 +58,7 @@ xml1：https://res2m.age06.com/File/1/shangxin1.xml
 </xsl:template>
 
 </xsl:stylesheet>
-
+```
 
 
 xml2:

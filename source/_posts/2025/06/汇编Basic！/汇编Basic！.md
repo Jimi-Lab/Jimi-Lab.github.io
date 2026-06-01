@@ -244,14 +244,14 @@ PEB是为了防止他人调试我发布的软件，主要使用到的地址是0x
 
 
 ### 位操作指令
-#### <font style="color:rgb(77, 77, 77);">逻辑运算指令：</font>
-+ `<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">AND</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">OR</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">XOR</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">NOT</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">TEST</font>`
+#### 逻辑运算指令：
++ `**AND**``**OR**``**XOR**``**NOT**``**TEST**`
 
-#### <font style="color:rgb(77, 77, 77);">移位指令：</font>
-+ <font style="color:rgba(0, 0, 0, 0.75);">逻辑、算术移位指令：  
-</font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">SHL</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">SHR</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">SAL</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">SAR</font>`
-+ <font style="color:rgba(0, 0, 0, 0.75);">循环、带进位循环移位指令：  
-</font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">ROL</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">ROR</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">RCL</font>`<font style="color:rgba(0, 0, 0, 0.75);"> </font>`<font style="color:rgb(199, 37, 78);background-color:rgb(249, 242, 244);">RCR</font>`
+#### 移位指令：
++ 逻辑、算术移位指令：  
+`**SHL**``**SHR**``**SAL**``**SAR**`
++ 循环、带进位循环移位指令：  
+`**ROL**``**ROR**``**RCL**``**RCR**`
 
 
 
@@ -263,19 +263,19 @@ PEB是为了防止他人调试我发布的软件，主要使用到的地址是0x
 
 `SHL`：逻辑左移指令，整体向左移动一位，最低位用 0 填充，最高位移入进位标志位(CF)，该标志位原来的值被丢弃（举例：0110 0011--》1100 0110）
 
-`<font style="color:rgb(77, 77, 77);">SHR</font>`<font style="color:rgb(77, 77, 77);">：逻辑右移指令。将寄存器或内存单元的数据右移，最高位用 0 补充，最低位进入 CF</font>
+`SHR`：逻辑右移指令。将寄存器或内存单元的数据右移，最高位用 0 补充，最低位进入 CF
 
-`<font style="color:rgb(77, 77, 77);">ROL</font>`<font style="color:rgb(77, 77, 77);">：循环左移指令，（举例：1110 0011--》1100 0111）</font>
+`ROL`：循环左移指令，（举例：1110 0011--》1100 0111）
 
-`<font style="color:rgb(77, 77, 77);">ROR</font>`<font style="color:rgb(77, 77, 77);">：循环右移指令</font>
+`ROR`：循环右移指令
 
-`<font style="color:rgb(77, 77, 77);">sal</font>`<font style="color:rgb(77, 77, 77);">：算数左移。功能与shl相同</font>
+`sal`：算数左移。功能与shl相同
 
-`<font style="color:rgb(77, 77, 77);">sar</font>`<font style="color:rgb(77, 77, 77);">：算数右移。</font><font style="color:rgb(34, 34, 34);">每位右移, 低位进 CF, 高位不变</font>
+`sar`：算数右移。每位右移, 低位进 CF, 高位不变
 
-`<font style="color:rgb(34, 34, 34);">RCL</font>`<font style="color:rgb(34, 34, 34);">: 循环左移, 进位值(原CF)到低位, 高位进 CF</font>
+`RCL`: 循环左移, 进位值(原CF)到低位, 高位进 CF
 
-`<font style="color:rgb(34, 34, 34);">RCR</font>`<font style="color:rgb(34, 34, 34);">: 循环右移, 进位值(原CF)到高位, 低位进 CF</font>
+`RCR`: 循环右移, 进位值(原CF)到高位, 低位进 CF
 
 
 
@@ -283,7 +283,7 @@ PEB是为了防止他人调试我发布的软件，主要使用到的地址是0x
 
 ###  逻辑比较指令
 #### cmp指令
-cmp："比较"，cmp会对两个操作数进行减法运算，通过计算两个操作数的差值来影响标志位。cmp不会存储减法的结果，而是仅更新标志寄存器（如<font style="background-color:#D8DAD9;">零标志ZF、进位标志CF、符号标志SF、溢出标志OF、偶校验标志PF、辅助进位标志AF</font>），通常的比较操作数之间的关系有（大于、小于、等于）
+cmp："比较"，cmp会对两个操作数进行减法运算，通过计算两个操作数的差值来影响标志位。cmp不会存储减法的结果，而是仅更新标志寄存器（如**零标志ZF、进位标志CF、符号标志SF、溢出标志OF、偶校验标志PF、辅助进位标志AF**），通常的比较操作数之间的关系有（大于、小于、等于）
 
 cmp最常见的应用是与条件跳转指令（JE、JNE、JG、JL等）配合使用，以决定程序的执行流。
 
@@ -324,7 +324,7 @@ jb    		如果小于则跳转			      jb label
 
 
 
-`je/jz`        <font style="color:rgb(77, 77, 77);">Jump if Equal/</font>Jump if Zero
+`je/jz`        Jump if Equal/Jump if Zero
 
 `jne/jnz`    Jump if Not Equal/Jump if Not Zero
 
@@ -393,7 +393,7 @@ F7可以步入到call子程序里面
 FPU的组成：
 
 1. 寄存器堆栈：
-    1. <font style="background-color:#F3BB2F;">8个80位宽的浮点寄存器（ST0-ST7），以堆栈形式组织。</font>
+    1. **8个80位宽的浮点寄存器（ST0-ST7），以堆栈形式组织。**
     2. 通过push和pop模式操作寄存器
 2. 状态寄存器：用于保存堆栈状态（如堆栈深度）和计算标志（如c0-c3）
 3. 控制寄存器：配置FPU的工作模式（如精度、舍入模式等）
@@ -403,10 +403,10 @@ FPU的组成：
 #### X87指令集
 + 定义：X87是专门为FPU设计的一套指令集，早期专用于处理浮点运算
 + 特点：
-    - <font style="background-color:#F3BB2F;">操作对象是FPU的堆栈寄存器（ST0-ST7）</font>
-    - <font style="background-color:#F3BB2F;">指令风格通常是Fxxx开头</font>，比如FLD（加载浮点数）、FADD（浮点数加法）
+    - **操作对象是FPU的堆栈寄存器（ST0-ST7）**
+    - **指令风格通常是Fxxx开头**，比如FLD（加载浮点数）、FADD（浮点数加法）
     - 支持扩展精度（80位），比SSE的单精度和双精度浮点数更高
-+ <font style="background-color:#F3BB2F;">代表指令：</font>
++ **代表指令：**
     - FLD/FST：加载/存储浮点数
     - FADD/FSUB：浮点数加法/减法
     - FMUL/FDIV：浮点数乘法/除法
@@ -420,9 +420,9 @@ FPU的组成：
 #### SSE（Streaming SIMD Extensions）
 + 定义：SSE是intel在x86处理器上引入的一套SIMD（单指令多数据）扩展指令集
 + 特点：
-    - <font style="background-color:#F3BB2F;">采用xmm寄存器（每个128位宽）</font>
-    - 支持并行处理多个<font style="background-color:#F3BB2F;">单</font>精度（32位）或<font style="background-color:#F3BB2F;">双</font>精度（64位）浮点数
-    - <font style="background-color:#F3BB2F;">指令风格是xxxPS（处理单精度矢量）或xxxSD(处理双精度矢量）</font>
+    - **采用xmm寄存器（每个128位宽）**
+    - 支持并行处理多个**单**精度（32位）或**双**精度（64位）浮点数
+    - **指令风格是xxxPS（处理单精度矢量）或xxxSD(处理双精度矢量）**
 + 优势：
     - 更快的浮点计算（无需堆栈操作）
     - 并行处理多个浮点数（提高性能）
@@ -444,7 +444,7 @@ FPU的组成：
 #### 函数的汇编代码的样子
 **外层看：一个地址标识的入口**
 
-call xxx相当于入口，其中xxx是要<font style="background-color:#F3BB2F;">跳转过去</font>执行的<font style="background-color:#F3BB2F;">代码地址</font>
+call xxx相当于入口，其中xxx是要**跳转过去**执行的**代码地址**
 
 系统函数基本上都是有名字的，工具可能会标注
 
@@ -523,7 +523,7 @@ sub esp,0x10    为局部变量分配空间
 #### c调用约定
 ![](img/53.png)
 
-<font style="background-color:#F3BB2F;">！！！ c调用约定的特征</font>：push push push  /  call  /  add esp，xxx
+**！！！ c调用约定的特征**：push push push  /  call  /  add esp，xxx
 
 由于push的时候，esp是不断减小的，所以恢复栈地址的时候，需要反其道而行之，需要`add esp，xxx`(xxx/4的结果为push的参数的个数)（外平栈） 
 
@@ -532,7 +532,7 @@ sub esp,0x10    为局部变量分配空间
 
 ![](img/55.png)
 
-<font style="background-color:#F3BB2F;">！！！stdcall的特征：</font>push push push  / call xxx / 无需清理栈
+**！！！stdcall的特征：**push push push  / call xxx / 无需清理栈
 
 内平栈：在retn 0xc平栈，无需在call下平栈
 
@@ -543,7 +543,7 @@ sub esp,0x10    为局部变量分配空间
 
 
 
-<font style="background-color:#F3BB2F;">！！！fastcall的特征</font>：ecx、edx同时用到了 / push /  call xxx / 无需平栈
+**！！！fastcall的特征**：ecx、edx同时用到了 / push /  call xxx / 无需平栈
 
 前两个参数通过寄存器传递，其余参数通过栈传递。
 
@@ -552,7 +552,7 @@ sub esp,0x10    为局部变量分配空间
 #### thiscall
 ![](img/57.png)
 
-<font style="background-color:#F3BB2F;">！！！thiscall特征：</font>仅用到了ecx寄存器 / push / push / call xxx / add esp , xxx
+**！！！thiscall特征：**仅用到了ecx寄存器 / push / push / call xxx / add esp , xxx
 
  thiscall可外平栈可内平栈
 

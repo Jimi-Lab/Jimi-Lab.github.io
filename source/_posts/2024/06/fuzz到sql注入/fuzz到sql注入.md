@@ -14,7 +14,7 @@ tags:
 
 
 
-<font style="background-color:#cc99ff;">师傅笔记：</font>
+**师傅笔记：**
 
 判断注入
 
@@ -36,7 +36,7 @@ sqlmap语句为:
 
 
 
-**<font style="background-color:#cc99ff;">个人笔记：</font>**
+**个人笔记：**
 
 php写的页面，考虑是否能注入
 
@@ -67,7 +67,7 @@ fuzz工具：argun
 
 
 
-**<font style="background-color:#b8cce4;">arjun</font>****<font style="background-color:#b8cce4;">找到</font>****<font style="background-color:#b8cce4;">id</font>****<font style="background-color:#b8cce4;">参数</font>****<font style="background-color:#b8cce4;">  </font>****<font style="background-color:#b8cce4;">（</font>****<font style="background-color:#b8cce4;">found id</font>****<font style="background-color:#b8cce4;">）</font>**
+**arjun找到id参数（found id）**
 
 
 
@@ -112,7 +112,7 @@ Arjun_kali地址：cd /home/jimi/.local/bin  -->arjun
 
 
 
-1.对id进行测试**<font style="background-color:#cc99ff;"> id=14-1</font>****<font style="background-color:#cc99ff;">；</font>****<font style="background-color:#cc99ff;">id=13 ; id=15-2 </font>**观察是否会跳转，如果跳转则大概率存在注入点
+1.对id进行测试** id=14-1；id=13 ; id=15-2 **观察是否会跳转，如果跳转则大概率存在注入点
 
 2.?id=14' and 618=618 and sleep(5）--+ 
 
@@ -143,7 +143,7 @@ Contact.php页面也存在sql注入
 
 
 
-**<font style="color:#c00000;background-color:#b8cce4;">如果一个网站的一个</font>****<font style="color:#c00000;background-color:#b8cce4;">id</font>****<font style="color:#c00000;background-color:#b8cce4;">存在</font>****<font style="color:#c00000;background-color:#b8cce4;">sql</font>****<font style="color:#c00000;background-color:#b8cce4;">注入，则整个网站存在多处的</font>****<font style="color:#c00000;background-color:#b8cce4;">sql</font>****<font style="color:#c00000;background-color:#b8cce4;">注入</font>**
+**如果一个网站的一个id存在sql注入，则整个网站存在多处的sql注入**
 
 
 

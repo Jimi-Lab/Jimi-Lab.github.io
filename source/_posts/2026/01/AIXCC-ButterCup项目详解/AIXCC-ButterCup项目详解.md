@@ -3047,7 +3047,7 @@ print(snippets)
 
 
 ## 3.多智能体补丁生成
-### <font style="color:rgb(51, 51, 51);">智能体架构</font>
+### 智能体架构
 ```plain
 # buttercup/patcher/src/buttercup/patcher/agents/leader.py
 
@@ -3088,10 +3088,10 @@ class PatcherLeaderAgent:
         return workflow
 ```
 
-<font style="color:rgb(51, 51, 51);"></font>
 
-#### <font style="color:rgb(51, 51, 51);">智能体 1：Root Cause Agent（根因分析专家）</font>
-**<font style="color:rgb(51, 51, 51);">职责</font>**<font style="color:rgb(51, 51, 51);">：分析漏洞的根本原因</font>
+
+#### 智能体 1：Root Cause Agent（根因分析专家）
+**职责**：分析漏洞的根本原因
 
 ```plain
 # buttercup/patcher/src/buttercup/patcher/agents/rootcause.py
@@ -3119,7 +3119,7 @@ Request additional code snippets if they are *critical* to understand the root c
   - Failed security checks
 ```
 
-**<font style="color:rgb(51, 51, 51);">输出示例：</font>**
+**输出示例：**
 
 ```plain
 <root_cause_analysis>
@@ -3149,8 +3149,8 @@ Heap corruption → potential RCE
 
 ---
 
-#### <font style="color:rgb(51, 51, 51);">智能体 2：SWE Agent（软件工程师）</font>
-**<font style="color:rgb(51, 51, 51);">职责</font>**<font style="color:rgb(51, 51, 51);">：设计补丁策略并生成补丁代码</font>
+#### 智能体 2：SWE Agent（软件工程师）
+**职责**：设计补丁策略并生成补丁代码
 
 ```plain
 # buttercup/patcher/src/buttercup/patcher/agents/swe.py
@@ -3195,7 +3195,7 @@ Clear explanation of changes
 """
 ```
 
-**<font style="color:rgb(51, 51, 51);">输出示例：</font>**
+**输出示例：**
 
 ```plain
 --- a/src/png.c
@@ -3213,8 +3213,8 @@ Clear explanation of changes
 
 ---
 
-#### <font style="color:rgb(51, 51, 51);">智能体 3：QE Agent（质量工程师）</font>
-**<font style="color:rgb(51, 51, 51);">职责</font>**<font style="color:rgb(51, 51, 51);">：测试补丁的正确性</font>
+#### 智能体 3：QE Agent（质量工程师）
+**职责**：测试补丁的正确性
 
 ```plain
 # buttercup/patcher/src/buttercup/patcher/agents/qe.py
@@ -3246,7 +3246,7 @@ class QEAgent:
         return END  # 所有测试通过
 ```
 
-**<font style="color:rgb(51, 51, 51);">测试流程：</font>**
+**测试流程：**
 
 ```plain
 1. 应用补丁
@@ -3270,8 +3270,8 @@ class QEAgent:
 
 ---
 
-#### <font style="color:rgb(51, 51, 51);">智能体 4：Reflection Agent（反思专家）</font>
-**<font style="color:rgb(51, 51, 51);">职责</font>**<font style="color:rgb(51, 51, 51);">：当补丁失败时，分析原因并改进</font>
+#### 智能体 4：Reflection Agent（反思专家）
+**职责**：当补丁失败时，分析原因并改进
 
 ```plain
 # buttercup/patcher/src/buttercup/patcher/agents/reflection.py
@@ -3298,9 +3298,9 @@ Instructions:
 MAX_REFLECTIONS = 3
 ```
 
-<font style="color:rgb(51, 51, 51);"></font>
 
-<font style="color:rgb(51, 51, 51);">完整工作流程</font>
+
+完整工作流程
 
 ```plain
 ConfirmedVulnerability 到达

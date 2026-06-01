@@ -7,7 +7,7 @@ tags:
   - URL构造
 ---
 
-**<font style="color:#c00000;background-color:#b8cce4;">师傅笔记：</font>**
+**师傅笔记：**
 
 [http://47.95.7.92/login?redirect=%2Findex](http://47.95.7.92/login?redirect=%2Findex)
 
@@ -42,7 +42,7 @@ npm install reverse-sourcemap来安装该工具包
 
 混淆或转换后的 JavaScript 代码映射回原始的、易于阅读和调试的源代码
 
-<font style="color:#c00000;"></font>
+
 
 URL:https://121.40.71.109/#/login?redirect=%2Fapp.76cb55e0.js.map
 

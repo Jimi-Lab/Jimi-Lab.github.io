@@ -7,8 +7,10 @@
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "deploy:site": "npm run clean && npm run build && npm run deploy",
+    "preview:site": "npm run clean && npm run build && npm run server",
     "server": "hexo server",
     "import:yuque": "node tools/import-yuque-posts.js",
+    "clean:yuque-style": "node tools/clean-yuque-font-tags.js --write",
     "verify:posts": "node tools/verify-post-assets.js"
   },
   "hexo": {

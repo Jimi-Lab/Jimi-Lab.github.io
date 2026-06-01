@@ -35,7 +35,7 @@ webpack是现代前端技术的基石，常规的开发方式，比如jquery,htm
 
 
 
-**<font style="color:#c00000;background-color:#b8cce4;">个人笔记：</font>**
+**个人笔记：**
 
 
 
@@ -45,11 +45,11 @@ webpack是现代前端技术的基石，常规的开发方式，比如jquery,htm
 
 
 
-**<font style="color:#c00000;">工具：</font>****<font style="color:#c00000;">Packer-Fuzzer</font>****<font style="color:#c00000;">：（可能会捡到未授权的洞）</font>**
+**工具：Packer-Fuzzer：（可能会捡到未授权的洞）**
 
-Packer-Fuzzer是一款<font style="color:#c00000;">针对</font><font style="color:#c00000;">Webpack</font>等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具。
+Packer-Fuzzer是一款针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具。
 
-支持自动模糊提取对应目标站点的<font style="color:#c00000;">API</font>以及<font style="color:#c00000;">API</font><font style="color:#c00000;">对应的参数内容</font>，并支持对：<u>未授权访问、敏感信息泄露、</u><u>CORS</u><u>、</u><u>SQL</u><u>注入、水平越权、弱口令、任意文件上传</u><font style="color:#c00000;">七大漏洞</font>进行模糊高效的快速检测。
+支持自动模糊提取对应目标站点的API以及API对应的参数内容，并支持对：<u>未授权访问、敏感信息泄露、</u><u>CORS</u><u>、</u><u>SQL</u><u>注入、水平越权、弱口令、任意文件上传</u>七大漏洞进行模糊高效的快速检测。
 
 
 
@@ -57,7 +57,7 @@ Kali:/home/jimi/Packer-Fuzzer-master
 
 
 
-**<font style="background-color:#b8cce4;">实例一：</font>**
+**实例一：**
 
 进入网站：https://www.hvsen-mc.com/
 
@@ -98,7 +98,7 @@ Kali:/home/jimi/Packer-Fuzzer-master
 
 
 
-**<font style="background-color:#b8cce4;">实例二：</font>**
+**实例二：**
 
 
 

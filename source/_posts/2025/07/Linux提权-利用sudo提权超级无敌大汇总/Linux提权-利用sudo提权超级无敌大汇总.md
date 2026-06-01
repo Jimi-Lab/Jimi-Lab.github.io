@@ -618,7 +618,7 @@ sudo nice /bin/bash 		#nice可以指定一个程序以10权限运行
 
 
 ## sudo nmap
-**<font style="background-color:#FBDE28;">nmap 的不同版本有不同的提权方式</font>**
+**nmap 的不同版本有不同的提权方式**
 
 nmap 可以指定执行脚本文件
 

@@ -35,15 +35,15 @@ tags:
 
 
 
-<font style="color:rgb(85, 85, 85);">在BinAbsInspector中整个运行时环境被分为Local（抽象栈）、Heap（抽象堆）、Global（全局变量和数值）、Unique（对应Ghidra中产生的临时变量区）和Register（注册区）五种区域。在这些不同的抽象区域上加上偏移量数值offset，则可以组成一个抽象变量ALoc（Abstract Location/Variable）。因为在二进制程序中，变量并非全部显式表示，ALoc实际上是对程序中变量的一种指示和识别。不同的程序点，记录此处可能需要的抽象变量及其对应的抽象值，称为AbsEnv（Abstract Environment）。</font>
+在BinAbsInspector中整个运行时环境被分为Local（抽象栈）、Heap（抽象堆）、Global（全局变量和数值）、Unique（对应Ghidra中产生的临时变量区）和Register（注册区）五种区域。在这些不同的抽象区域上加上偏移量数值offset，则可以组成一个抽象变量ALoc（Abstract Location/Variable）。因为在二进制程序中，变量并非全部显式表示，ALoc实际上是对程序中变量的一种指示和识别。不同的程序点，记录此处可能需要的抽象变量及其对应的抽象值，称为AbsEnv（Abstract Environment）。
 
-<font style="color:rgb(85, 85, 85);">因为是静态的抽象，那么对于一个程序点的一个抽象变量来说，它可能会包含多个抽象值，这些抽象值组成了一个集合。虽然这个集合可能会包含无数个元素，但是为了保证整个计算过程实践上可收敛，令此集合取一个上限K，这种集合称为KSet。一旦其中包含的元素超过K，则将其设为一个Top，即包含所有抽象值。此方法与前人重要相关工作</font>[<font style="color:rgb(85, 85, 85);">Jakstab[9]</font>](http://www.jakstab.org/)<font style="color:rgb(85, 85, 85);">中的KSet很相似。KSet支持多种运算数和逻辑腐蚀。另外每个KSet对象还包含一个污点的位图，用于跟踪多个污点的同时传播，从而实现静态污点分析。这样AbsEnv便可以认为是一个从Aloc到KSet的map。</font>
+因为是静态的抽象，那么对于一个程序点的一个抽象变量来说，它可能会包含多个抽象值，这些抽象值组成了一个集合。虽然这个集合可能会包含无数个元素，但是为了保证整个计算过程实践上可收敛，令此集合取一个上限K，这种集合称为KSet。一旦其中包含的元素超过K，则将其设为一个Top，即包含所有抽象值。此方法与前人重要相关工作[Jakstab[9]](http://www.jakstab.org/)中的KSet很相似。KSet支持多种运算数和逻辑腐蚀。另外每个KSet对象还包含一个污点的位图，用于跟踪多个污点的同时传播，从而实现静态污点分析。这样AbsEnv便可以认为是一个从Aloc到KSet的map。
 
-<font style="color:rgb(85, 85, 85);">由于BinAbsInspector的分析是上下文敏感的，对于被调用者的上下文即Context，我们使用最近的调用字符串（call site）来进行唯一标识。对于同一个被调用者，不同的调用者会生成不同的Context，一般只记录最近的几个调用者。这样我们就把程序点处的AbsEnv记录在不同的Context中。</font>
+由于BinAbsInspector的分析是上下文敏感的，对于被调用者的上下文即Context，我们使用最近的调用字符串（call site）来进行唯一标识。对于同一个被调用者，不同的调用者会生成不同的Context，一般只记录最近的几个调用者。这样我们就把程序点处的AbsEnv记录在不同的Context中。
 
-<font style="color:rgb(85, 85, 85);">这里，对于流程内部的不动点计算BinAbsInspector里使用了worklist算法，即把待处理的程序点不断地放入worklist中，直到其空状态。流程间分析主要存在于不同的Context之间的转变，这是通过call/return指令的语义实现的。这样通过对整个程序指令的迭代计算值并开始Context的转换，其附属的worklist得到逐一处理，直到所有的worklist计算结束，最后达到不动点。</font>
+这里，对于流程内部的不动点计算BinAbsInspector里使用了worklist算法，即把待处理的程序点不断地放入worklist中，直到其空状态。流程间分析主要存在于不同的Context之间的转变，这是通过call/return指令的语义实现的。这样通过对整个程序指令的迭代计算值并开始Context的转换，其附属的worklist得到逐一处理，直到所有的worklist计算结束，最后达到不动点。
 
-<font style="color:rgb(85, 85, 85);">通过这整个的计算过程，得到所有可能的上下文以及对应的每个程序点的AbsEnv。这样实际上得到了一个对程序行为可靠的说明，给出了这些数据抽象流的信息，我们便可以进行内存破坏漏洞、命令注入漏洞等多种漏洞的检测了。</font>
+通过这整个的计算过程，得到所有可能的上下文以及对应的每个程序点的AbsEnv。这样实际上得到了一个对程序行为可靠的说明，给出了这些数据抽象流的信息，我们便可以进行内存破坏漏洞、命令注入漏洞等多种漏洞的检测了。
 
 
 
@@ -153,7 +153,7 @@ PcodeVisitor 基本上描述了 Pcode 的操作语义，但不包括与浮点相
 
 
 
-#### <font style="color:rgb(74, 74, 74);">论文参考《WYSINWYX:What You See Is Not What You eXecute》</font>
+#### 论文参考《WYSINWYX:What You See Is Not What You eXecute》
 > BinAbsInspector工具参考此论文实现
 >
 

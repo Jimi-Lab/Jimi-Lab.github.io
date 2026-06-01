@@ -195,13 +195,13 @@ win10 虚拟机运行后，kali 连接
 
 
 
-**<font style="color:rgb(51, 51, 51);">确定溢出大小 -> 控制 eip</font>**
+**确定溢出大小 -> 控制 eip**
 
-**<font style="color:rgb(51, 51, 51);">-> 寻找 jmp esp -> 测试坏字符</font>**
+**-> 寻找 jmp esp -> 测试坏字符**
 
-**<font style="color:rgb(51, 51, 51);">-> 生成shellcode -> 添加适量的nop</font>**
+**-> 生成shellcode -> 添加适量的nop**
 
-**<font style="color:rgb(51, 51, 51);">-> 开始攻击</font>**
+**-> 开始攻击**
 
 
 
@@ -368,7 +368,7 @@ badchars = (
 
 
 
-##### <font style="color:rgb(51, 51, 51);">Immunity Debugger -></font>mona.py
+##### Immunity Debugger ->mona.py
 无 rebase 无 safeSEH 无 ASLR 无 CFG 无 NX 无 OS Dll
 
 ![](img/29.png)

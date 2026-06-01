@@ -9,7 +9,7 @@ tags:
 
 
 
-**<font style="background-color:#b8cce4;">师傅笔记：</font>**
+**师傅笔记：**
 
 1%' and extractvalue(1, concat(0x7e,(select version()))) and '%'='
 
@@ -52,7 +52,7 @@ tags:
 
 
 
-<font style="background-color:#b8cce4;">尝试访问端口</font>，看能否成功跳转。
+**尝试访问端口**，看能否成功跳转。
 
 
 

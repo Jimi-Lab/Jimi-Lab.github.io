@@ -322,7 +322,7 @@ tRPC-A2A-Go 框架为开发者提供了完整的 A2A 协议客户端和服务端
 
 
 ### Langfuse
-<font style="color:rgb(25, 27, 31);">Langfuse 是一款开源的 LLM 应用可观测与分析平台，专为大模型驱动的应用（如 Agent、RAG、工具链等）设计。</font>
+Langfuse 是一款开源的 LLM 应用可观测与分析平台，专为大模型驱动的应用（如 Agent、RAG、工具链等）设计。
 
 Eino 框架可以无缝接入 Langfuse
 

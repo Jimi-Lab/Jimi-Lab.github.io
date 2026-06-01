@@ -151,7 +151,7 @@ gobuster：
 
 
 ### 进入后台
-这是一个 cms，**<font style="background-color:#ED740C;">第一想到的就是去找到 cms 的管理员账号/路径</font>**
+这是一个 cms，**第一想到的就是去找到 cms 的管理员账号/路径**
 
 上网找一下
 

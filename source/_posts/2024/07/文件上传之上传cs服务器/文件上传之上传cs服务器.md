@@ -6,7 +6,7 @@ tags:
   - CS
 ---
 
-**<font style="color:#c00000;background-color:#b8cce4;">师傅笔记：</font>**
+**师傅笔记：**
 
 
 
@@ -54,7 +54,7 @@ ConbaltStrike
 
 
 
-**<font style="color:#c00000;background-color:#b8cce4;">个人笔记：</font>**
+**个人笔记：**
 
 
 

@@ -77,7 +77,7 @@ sudo -l
 
 env_reset：重置环境变量，linux 的一条安全属性
 
-env_keep+=LD_PRELOAD：在保持原有环境变量的同时，增加动态连接器（linker  dynamic）预加载共享库功能<font style="background-color:#FBDE28;">（利用点）</font>
+env_keep+=LD_PRELOAD：在保持原有环境变量的同时，增加动态连接器（linker  dynamic）预加载共享库功能**（利用点）**
 
 
 
@@ -206,7 +206,7 @@ find / -perm -u=s -type f 2>/dev/null
 2>/dev/null  丢弃所有报错
 ```
 
-关注：<font style="background-color:#C75C00;">/usr/sbin/exim-version</font>
+关注：**/usr/sbin/exim-version**
 
 ```shell
 searchsploit exim -m			# 下载exp
@@ -238,7 +238,7 @@ chmod +x exp.sh
 find / -perm -u=s -type f 2>/dev/null
 ```
 
-关注：<font style="background-color:#C75C00;">/usr/loacl/bin/suid-so</font>
+关注：**/usr/loacl/bin/suid-so**
 
 
 
@@ -283,7 +283,7 @@ gcc -shared -fPIC -o libcalc.so libcalc.c
 find / -perm -u=s -type f 2>/dev/null
 ```
 
-关注：<font style="background-color:#C75C00;">/usr/local/bin/suid-env</font>
+关注：**/usr/local/bin/suid-env**
 
 
 
@@ -332,7 +332,7 @@ find / -perm -u=s -type f 2>/dev/null
 strings /usr/local/bin/suid-env2
 ```
 
-关注：<font style="background-color:#C75C00;">/usr/sbin/service apache2 start</font>
+关注：**/usr/sbin/service apache2 start**
 
 
 
@@ -476,7 +476,7 @@ uname -a			# 查看内核版本
 
 
 
-使用 linpeas.sh 对内核进行扫描（<font style="background-color:#C75C00;">peass-ng 项目</font>）
+使用 linpeas.sh 对内核进行扫描（**peass-ng 项目**）
 
 ```bash
 wget https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS			# 提权脚本神器
@@ -503,7 +503,7 @@ find / -group user -type f 2>/dev/null
 find / -perm -u=s -type f 2>/dev/null
 ```
 
-关注：<font style="background-color:#C75C00;">/etc/doas.conf</font>
+关注：**/etc/doas.conf**
 
 ![](img/14.png)
 

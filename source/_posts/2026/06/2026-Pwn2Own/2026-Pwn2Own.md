@@ -1,6 +1,6 @@
 ---
 title: "2026-Pwn2Own"
-date: 2026-06
+date: 2026-06-03
 categories: [Report]
 tags:
   - Pwn2Own

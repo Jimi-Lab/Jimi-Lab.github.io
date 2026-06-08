@@ -1,6 +1,6 @@
 ---
 title: "AI时代下弄潮儿的思考-- 避免变成“AI 驱动的低水平勤奋”"
-date: 2026-06
+date: 2026-06-09
 categories: [Report]
 tags:
   - 关于人与人之间的思考

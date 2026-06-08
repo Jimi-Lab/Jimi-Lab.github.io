@@ -1,0 +1,789 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="发表时间：202407 会议&#x2F;期刊：IJCAI 作者：Petr Anokhin Russia 论文链接：https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2407.04363 代码&#x2F;数据集链接： Tag：   ABSTRACTllm 的先进能力已经创造了一个坚实的地基为发展全自动化 agent。有了正确的 tools，这些 agents 能够学习解决环境中遇到的任务通过积累和更新他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents">
+<meta property="og:url" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="发表时间：202407 会议&#x2F;期刊：IJCAI 作者：Petr Anokhin Russia 论文链接：https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2407.04363 代码&#x2F;数据集链接： Tag：   ABSTRACTllm 的先进能力已经创造了一个坚实的地基为发展全自动化 agent。有了正确的 tools，这些 agents 能够学习解决环境中遇到的任务通过积累和更新他">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/img/1-c0a8d838.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/img/2-694ccd9a.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/img/3-22548fd8.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/img/4-9872632a.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/img/5-06d0ce83.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/img/6-e025d688.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/img/7-0bb4dea7.png">
+<meta property="article:published_time" content="2026-06-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T07:03:17.497Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="KG">
+<meta property="article:tag" content="结构化记忆">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/img/1-c0a8d838.png">
+  
+  
+  
+  <title>AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-08 00:00" pubdate>
+          2026年6月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          912 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>发表时间：202407</p>
+<p>会议&#x2F;期刊：IJCAI</p>
+<p>作者：Petr Anokhin Russia</p>
+<p>论文链接：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2407.04363">https://arxiv.org/pdf/2407.04363</a></p>
+<p>代码&#x2F;数据集链接：</p>
+<p>Tag：</p>
+</blockquote>
+<hr>
+<h1 id="ABSTRACT"><a href="#ABSTRACT" class="headerlink" title="ABSTRACT"></a>ABSTRACT</h1><p>llm 的先进能力已经创造了一个坚实的地基为发展全自动化 agent。有了正确的 tools，这些 agents 能够学习解决环境中遇到的任务通过积累和更新他们的知识。</p>
+<p>当前的基于 llm 的 agent 梳理过往经验使用完整的结果记忆，摘要，检索扩充。</p>
+<p>然而，这些非结构化的记忆表征，不能促进推理和规划针对复杂的决策制定。</p>
+<p>在我们的研究中，我们介绍了 AriGraph，一个新颖的方法（agent 构建和更新一个记忆图，整合了语义和一系列探索环境的记忆）。</p>
+<p>我们证明了我们的 Ariadne LLM Agent，由增设了规划和决策制定的新型记忆架构构成，使用交互式文本环境有效解决了复杂的任务，这些任务人都感觉到难。</p>
+<p>结果展示，我们的方法显著的超越了其他资深的记忆方法和强壮的 RL Baseline 在一系列多样性的复杂任务。</p>
+<p>其次，AriGraph 证明了有竞争力的性能对比专门 graph-based 方法在静态 multi-hop 问题提出。</p>
+<h1 id="PROBLEM-TO-SOLVE"><a href="#PROBLEM-TO-SOLVE" class="headerlink" title="PROBLEM TO SOLVE"></a>PROBLEM TO SOLVE</h1><h3 id="problem-description"><a href="#problem-description" class="headerlink" title="problem description:"></a>problem description:</h3><p>RQ1：Can LLM based agents learn useful structured world model <code>&lt;u&gt;</code>from scratch(从 0 开始) <code>&lt;/u&gt;</code>via interaction with an environment?</p>
+<p>RQ2：Does structured knowledge representation improve retrieval of relevant facts from memory and enable effective exploration?</p>
+<h3 id="Limitations-of-Existing-Methods"><a href="#Limitations-of-Existing-Methods" class="headerlink" title="Limitations of Existing Methods"></a>Limitations of Existing Methods</h3><p>现有方法的问题是：记忆是非结构化的</p>
+<p>1.Full history：把所有的历史 observation&#x2F;action 都塞进上下文</p>
+<p>2.Summary mem：不断总结历史</p>
+<p>3.Vector RAG：把过去经验向量化，按相似度检索</p>
+<p>4.Reflection memory：失败后总结经验，下次使用</p>
+<h1 id="METHOD"><a href="#METHOD" class="headerlink" title="METHOD"></a>METHOD</h1><h2 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h2><!-- 这是一张图片，ocr 内容为： -->
+
+<p><img src="/2026/06/08/AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents/img/1-c0a8d838.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+
+<p><img src="/2026/06/08/AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents/img/2-694ccd9a.png"></p>
+<p>Agent 每一步接收文本观察，然后 LLM 抽取三元组，更新语义图；同时把原始 observation 存成 episodic vertex，并用 episodic edge 把这次观察和抽取出的三元组连接起来。之后规划器和决策器都从工作记忆里读取这些图检索结果。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+
+<p><img src="/2026/06/08/AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents/img/3-22548fd8.png"></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AriGraph</strong></td>
+<td>记忆 &#x2F; 世界模型模块</td>
+</tr>
+<tr>
+<td><strong>Ariadne</strong></td>
+<td>使用 AriGraph 的完整 Agent 架构</td>
+</tr>
+</tbody></table>
+<h2 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plain">Environment observation<br>        ↓<br>LLM extracts triplets<br>        ↓<br>AriGraph updates semantic + episodic memory<br>        ↓<br>Graph retrieval returns relevant facts + episodes<br>        ↓<br>Working memory<br>        ↓<br>Planner updates sub-goals<br>        ↓<br>ReAct decision maker selects action<br>        ↓<br>Environment<br></code></pre></td></tr></table></figure>
+
+<h3 id="AriGraph-定义核心数据结构"><a href="#AriGraph-定义核心数据结构" class="headerlink" title="AriGraph 定义核心数据结构"></a>AriGraph 定义核心数据结构</h3><!-- 这是一张图片，ocr 内容为： -->
+
+<p><img src="/2026/06/08/AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents/img/4-9872632a.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+
+<p><img src="/2026/06/08/AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents/img/5-06d0ce83.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+
+<p><img src="/2026/06/08/AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents/img/6-e025d688.png"></p>
+<h3 id="Constructing-AriGraph：From-observation-to-Dynamic-world-model"><a href="#Constructing-AriGraph：From-observation-to-Dynamic-world-model" class="headerlink" title="Constructing AriGraph：From observation to Dynamic world model"></a>Constructing AriGraph：From observation to Dynamic world model</h3><p>step1:LLM 抽取三元组。LLM 从 observation 抽取三元组，抽取的结果要短、具体、原子化</p>
+<p>step2:检测过时的边。环境是动态的，所以图不能只增不删</p>
+<p>step3:更新 semantic graph。把新实体和新边加入，同时删除过时边</p>
+<p>step4:更新 episodic memory（情景记忆）</p>
+<h3 id="图检索过程：semantic-search-Episodic-search"><a href="#图检索过程：semantic-search-Episodic-search" class="headerlink" title="图检索过程：semantic search+Episodic search"></a>图检索过程：semantic search+Episodic search</h3><p>AriGraph 的检索不是简单 top-k 向量检索，而是两阶段。</p>
+<p>1.Semantic Search：先找相关三元组（搜索过程也会定义搜索深度 d 和搜索宽度 w）</p>
+<p>query → relevant triplets → related entities → more triplets</p>
+<p>2.Episodic Search：找相关历史观察。Semantic Search 得到一批相关三元组后，系统会通过 episodic edges 找到与这些三元组相关的历史 observation。</p>
+<h3 id="Ariadne-Agent-架构：图记忆如何参与规划和决策"><a href="#Ariadne-Agent-架构：图记忆如何参与规划和决策" class="headerlink" title="Ariadne Agent 架构：图记忆如何参与规划和决策"></a>Ariadne Agent 架构：图记忆如何参与规划和决策</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plain">Long-term memory: AriGraph<br>Working memory<br>Planner<br>Decision maker<br>Exploration helper<br>Environment interface<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-工作记忆："><a href="#1-工作记忆：" class="headerlink" title="1.工作记忆："></a>1.工作记忆：</h4><ul>
+<li>当前 observation；</li>
+<li>最近几步 observation&#x2F;action；</li>
+<li>主目标；</li>
+<li>上一轮 plan；</li>
+<li>从 AriGraph 检索出的 semantic memories；</li>
+<li>从 AriGraph 检索出的 episodic memories；</li>
+<li>未探索出口信息。</li>
+</ul>
+<h4 id="2-Planning：生成或更新子目标"><a href="#2-Planning：生成或更新子目标" class="headerlink" title="2.Planning：生成或更新子目标"></a>2.Planning：生成或更新子目标</h4><p>Planner 根据工作记忆生成 plan</p>
+<h4 id="3-Decision-Making：ReAct-动作选择"><a href="#3-Decision-Making：ReAct-动作选择" class="headerlink" title="3.Decision Making：ReAct 动作选择"></a>3.Decision Making：ReAct 动作选择</h4><h3 id="Exploration-机制"><a href="#Exploration-机制" class="headerlink" title="Exploration 机制"></a>Exploration 机制</h3><p>AriGraph 不只是记忆，还辅助探索。它会从图中抽取类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plain">kitchen, has unexplored exit, south<br>hall, east of, kitchen<br></code></pre></td></tr></table></figure>
+
+<p>然后检测当前房间有哪些“已发现但未探索”的出口。这样 Agent 可以系统性探索环境，而不是靠 LLM 自己猜。</p>
+<p>这个机制对 Treasure Hunt 这种导航任务很重要，因为 Agent 必须构建地图、找到钥匙、箱子和目标物。论文的实验表明，去掉 exploration 后性能会下降</p>
+<h1 id="CONTRIBUTION"><a href="#CONTRIBUTION" class="headerlink" title="CONTRIBUTION"></a>CONTRIBUTION</h1><h3 id="Claimed-Contributions"><a href="#Claimed-Contributions" class="headerlink" title="Claimed Contributions"></a>Claimed Contributions</h3><p>ProPosed by the author</p>
+<h3 id="Personal-Assessment"><a href="#Personal-Assessment" class="headerlink" title="Personal Assessment"></a>Personal Assessment</h3><p>My opinion: Novelty(new tasks? new dateset? new concept? innovation? new gap?  new theory? Combinatorial methods? )</p>
+<h1 id="EXPERIMENTATION"><a href="#EXPERIMENTATION" class="headerlink" title="EXPERIMENTATION"></a>EXPERIMENTATION</h1><p>Dataset:</p>
+<p>BaseLine:</p>
+<p>Result:</p>
+<p>Ablation experiment:</p>
+<p>Case Study:</p>
+<!-- 这是一张图片，ocr 内容为： -->
+
+<p><img src="/2026/06/08/AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents/img/7-0bb4dea7.png"></p>
+<h1 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a>Limitation</h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/papers/" class="category-chain-item">papers</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/KG/" class="print-no-link">#KG</a>
+      
+        <a href="/tags/%E7%BB%93%E6%9E%84%E5%8C%96%E8%AE%B0%E5%BF%86/" class="print-no-link">#结构化记忆</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents</div>
+      <div>https://jimi-lab.github.io/2026/06/08/AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/08/GRAPHMIND_%20LLMS%20AS%20DYNAMIC%20KNOWLEDGE%20BUILDERS%20FOR%20SEQUENTIAL%20DECISION-MAKING/" title="GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/08/Paper%20Writing%20Skills/" title="Paper Writing Skills">
+                        <span class="hidden-mobile">Paper Writing Skills</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

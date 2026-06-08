@@ -1,0 +1,739 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="师傅笔记： 管理员创建成功的一个返回包界面 { “result”: true, “status”: 200, “message”: “注册成功”, “data”: { “UserId”: “87”, “TokenId”: “9e5e0eceaab9fc8d4c6dcc09d94ae7e9” } } { “result”: true, “status”: 200, “message”: “注册成功”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逻辑漏洞之垂直越权水平越权未授权">
+<meta property="og:url" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="师傅笔记： 管理员创建成功的一个返回包界面 { “result”: true, “status”: 200, “message”: “注册成功”, “data”: { “UserId”: “87”, “TokenId”: “9e5e0eceaab9fc8d4c6dcc09d94ae7e9” } } { “result”: true, “status”: 200, “message”: “注册成功”">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/img/1-5fc14da1.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/img/2-97e46110.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/img/3-e4f9baac.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/img/4-38996b2e.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/img/5-6509b8b0.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/img/6-b535a642.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/img/7-615cebea.png">
+<meta property="article:published_time" content="2024-07-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:04.648Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="越权">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2024/07/01/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E4%B9%8B%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83%E6%9C%AA%E6%8E%88%E6%9D%83/img/1-5fc14da1.png">
+  
+  
+  
+  <title>逻辑漏洞之垂直越权水平越权未授权 - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="逻辑漏洞之垂直越权水平越权未授权"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-01 08:00" pubdate>
+          2024年7月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          183 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">逻辑漏洞之垂直越权水平越权未授权</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>师傅笔记：</strong></p>
+<p>管理员创建成功的一个返回包界面</p>
+<p>{</p>
+<p>“result”: true,</p>
+<p>“status”: 200,</p>
+<p>“message”: “注册成功”,</p>
+<p>“data”: {</p>
+<p>“UserId”: “87”,</p>
+<p>“TokenId”: “9e5e0eceaab9fc8d4c6dcc09d94ae7e9”</p>
+<p>}</p>
+<p>}</p>
+<p>{</p>
+<p>“result”: true,</p>
+<p>“status”: 200,</p>
+<p>“message”: “注册成功”,</p>
+<p>“data”: {</p>
+<p>“UserId”: “88”,</p>
+<p>“TokenId”: “ff0acaf272a62fe227222fa1f9cc6b20”</p>
+<p>}</p>
+<p>}</p>
+<p>弱口令 </p>
+<p>未授权创建普通用户 未授权查看用户列表</p>
+<p>垂直越权查看用户列表 垂直越权创建管理员用户</p>
+<p><strong>个人笔记：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://app.cherry.xinyikeji.com.cn/#/system_staff?t=1724495424018">https://app.cherry.xinyikeji.com.cn/#/system_staff?t&#x3D;1724495424018</a></p>
+<!-- 这是一张图片，ocr 内容为：樱桃种质云 ANG 幸 HTTPS//APP.CHERRY.XINYIKEJI.COM.CN/#/#/LOGIN 樱桃种质云 登录 请输入用户名 大连市农业科学研究院 请输入密码 立即登录 弱口令登录 -->
+<p><img src="/2024/07/01/逻辑漏洞之垂直越权水平越权未授权/img/1-5fc14da1.png"></p>
+<p>有webpack先尝试未授权  api泄露</p>
+<!-- 这是一张图片，ocr 内容为：樱桃种质云 HTTPS://APP.CHERRY.XINYIKEJI.COM.CN/#/LIST INDEX 樱桃种质云 CHERRY GERMPLASM CLOUD 种质资源(品种) 系统设置 片区/地块 名称 请选择 搜索 数据字典 调查时间 调查人 片区/地块 种植回 原产地 种质名称 亲本 来源 序号 外文名 S基因型 数据管理 美早X蜜脆 2021-06- 1 MICUI 自育 肖敏 大连 蜜露 南山 S3S9 (9-19) 10 种质资源(品种) 东 雷尼*8-10 2021-06- 丽珠 2 大连 自育 东园 肖敏 LIZHU S1S6 种质资源(优系) O 15 南 山上/南山 巨红自然 南山资源 2021-06- 种质资源(其他) 3 大连 蜜脆 自育 MICUI 肖敏 S6S9 杂交后代 面 18 固定资产管理 ZHUANGYU 西园资源 2021-06- / 4 状元红 自育 红灯芽变 大连 肖敏 S3S9 05 ANHONG 资讯管理 2021-06- JIN HONG 5 雷尼芽变 肖敏 自育 大连 金红星 资源围 S1S4 24 XING 林 种植资源 2019-06- 6 未知 肖敏 柯迪亚 捷克 S3S6 KORDIA 外引进 面 28 HONGDEN 2019-06- 7 红灯 中国大连 自育 肖敏 那翁X黄玉 试验面 S3S9 08 山上/南山 南山品种 先锋X斯坦 2015-06- 8 肖敏 加拿大 外引进 艳阳 SUNBURST S3S4' 拉 重 14 2021-06- STELLAXEAR 9 肖敏 美国 外引进 试验园 美早 S3S9 TIETON LY BUCLAT -->
+<p><img src="/2024/07/01/逻辑漏洞之垂直越权水平越权未授权/img/2-97e46110.png"></p>
+<!-- 这是一张图片，ocr 内容为：樱桃种质云 [修 用户名:ADMIN CHERRY CERMPLASM CLOUD 员工管理 系统设置 员工管理 编辑 使用帮助 普通用户 用户类型: 用户名称: 删除 JIMI2 关于我们 删除 密码: 确定密码: 广告管理 删除 数据字典 删除 取消 确定 删除 山数据管理 删涂 125125 新建用户 重置密码 删除 重置密码 删除 168 -->
+<p><img src="/2024/07/01/逻辑漏洞之垂直越权水平越权未授权/img/3-e4f9baac.png"></p>
+<!-- 这是一张图片，ocr 内容为：RESPONSE REQUEST 5 川 RENDER PRETTY PRETTY HEX HEX RAW RAW HTTP/2  200  OK POST /API.PHP/ADDUSER HTTP/2 SERVER:NGINX HOST:APP.CHERRY.XINYIKEJI.COM.CN DATE:SUN,25 AUG 2024 03:08:32 GMT CONTENT-LENGTH:103 CONTENT-TYPE: APPLICATION/JSON; CHARSET-UTF-8 SEG-CH-UA: "CHROMIUM";VE","NOT:A-BRA-BRAND";V三M24", "MICROSOFT X-POWERED-BY:PHP/7.3.33 EDGE"V:128* DNT:1 SEC-CH-UA-HOBILE: 20 USER-AGENT: HOZILLA/5.0 (WINDOUS NT 10.0; VIN64; X64) APPLEVEBKIT/537.36 "RESULT :TRUE, (KHTHL,LIKE GECKO) CHROME/128.0.0.0 SAFARI/537.36 EDG/128.0.0.0 "STATUS*:200, "MESSAGE":"OOO口" CONTENT-TYPE:APPLICATION/X-VWW-FORM-URLENCODED ACCEPT:APPLICATION/JSON,TEXT/PLAIN,* "DATA'':( USERID":"436*, X-REQUESTED-WITH:XHLHTTPREQUEST "TOKENID":"7AD9C0640D3BF0366CDEA38C567417C2" TOKEN: SEC-CH-UA-PLATFORM: "VINDOVS" ORIGIN:HTTPS://APP.CHERRY.XINYIKEJI.COM.CN BP抓包 SEC-FETCH-SITE:SAME-ORIGIN SEC-FETCH-MODE: CORS SEC-FETCH-DEST:EMPTY REFERER:HTTPS://APP.CHERRY.XINYIKEJI.COM.CN/ ACCEPT-ENCODING:GZIP,DEFLATE ACCEPT-LANGUAGE: ZH-CN,ZH;Q-0.9,EN;Q-0.8,EN-GB;Q-0.7,EN-US;QF0.6 PRIORITY:U L, I 删除TOKENID发送包 ER TYPE-LSUSER NAME三IMILSPASSWORD-1234566RE PASSWORD-123456STOKENID- USER 149984A9C156967A17114BE2E98D1115 -->
+<p><img src="/2024/07/01/逻辑漏洞之垂直越权水平越权未授权/img/4-38996b2e.png"></p>
+<!-- 这是一张图片，ocr 内容为：重置密码 删除 JIMI2 -->
+<p><img src="/2024/07/01/逻辑漏洞之垂直越权水平越权未授权/img/5-6509b8b0.png"></p>
+<p>数据添加成功</p>
+<p><strong>垂直越权（普通用户查看<strong><strong>admin</strong></strong>的用户数据）</strong></p>
+<p>URL拼接：</p>
+<!-- 这是一张图片，ocr 内容为：樱桃种质云 不平 RA介 HTTPS//APP.CHERNY.XINYIKEJI.COM.CN/#/LIST INDEX 樱桃种质云 [退出登录] [修改密码] 用户名:JIMI1 系统设置 种质资源(品种) 普通用户 无员工管理界面 新建 名称 拽卖 使用帮助 亲本 用途 片区/地块 调查人 外文名 调查地点 关于我们 种植曲 操作 种质名称 原产地 来源 序号 调查时间 S基因型 美早X蜜脆 1 鲜食 西园 剩除 查看 肖敏 MICUI 蜜蜜 自育 南山 2021 出台 大连 四广告管理 (9-19) 10 雷尼.8-10 东园资源 数据字典 丽珠 鲜食 肖敏 东网 查看 LIZHU 自育 剩除 2021 S156 大连 乐出 0 围 15 山上/南山1- 南山资源 巨红自然 南山资源 2021-06- 山数据管理 3 蜜脆 肖敏 删除 自育 MICUI 鲜食 直看 2021 S6S9 出营 大连 团 团 杂交后代 18 西园资源 2021-06- ZHUANGYU 西屋 鲜食 查看 肖敏 自育 2021 红灯芽变 删除 大连 状元红 S359 导出 围 05 ANHONG 金州七顶 -->
+<p><img src="/2024/07/01/逻辑漏洞之垂直越权水平越权未授权/img/6-b535a642.png"></p>
+<!-- 这是一张图片，ocr 内容为：楼桃种质云 进行URL拼接 A合口面站 C HTTPS//APP.CHERRY.XINYIKEJI.COM.CN/每/SYSTEM STAFF2T-17245555656772 樱桃种质云 [退出登录] 用户名:JML1 [修改密码] CHENY GERMPLASM CLOUD 员工管理 漆系统设置 普通用户看到用户管理界面 数据字典 用户名称 ZHAOBAIXIA 山数据管理 PANFENGLONG ZHANGLIHENG LIYUTAO ZHANGWEI XIAOXIN 史入 ODXMQ YINHAOHANG 2334 15 前往1页 共141条 10条质 -->
+<p><img src="/2024/07/01/逻辑漏洞之垂直越权水平越权未授权/img/7-615cebea.png"></p>
+<p><strong>测试****xss</strong></p>
+<p>存储型，反射型（相关语句）</p>
+<p><strong>垂直越权</strong></p>
+<p>更改普通用户的user_type&#x3D;1&#x2F;2</p>
+<p>将普通用户权限提升至管理员用户权限</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" class="category-chain-item">漏洞挖掘</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%B6%8A%E6%9D%83/" class="print-no-link">#越权</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>逻辑漏洞之垂直越权水平越权未授权</div>
+      <div>https://jimi-lab.github.io/2024/07/01/逻辑漏洞之垂直越权水平越权未授权/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/01/%E9%92%88%E5%AF%B9%E5%90%8E%E5%8F%B0%E5%8A%9F%E8%83%BD%E7%82%B9%E8%BF%9B%E8%A1%8C%E6%8C%96%E6%8E%98/" title="针对后台功能点进行挖掘">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">针对后台功能点进行挖掘</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/01/CNVD%E9%80%9A%E6%9D%80%20SQL%E6%B3%A8%E5%85%A5/" title="CNVD通杀 SQL注入">
+                        <span class="hidden-mobile">CNVD通杀 SQL注入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

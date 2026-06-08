@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Webpack 是一个静态模块打包工具，从入口构建依赖图，打包有关的模块，最后用于展示你的内容 它将根据模块的依赖关系进行静态分析，然后将这些模块按照指定的规则生成对应的静态资源。 webpack是一个打包工具，他的宗旨是一切静态资源皆可打包。有人就会问为什么要webpack？ webpack是现代前端技术的基石，常规的开发方式，比如jquery,html,css静态网页开发已经落后了。 现在是M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webpack利用">
+<meta property="og:url" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="Webpack 是一个静态模块打包工具，从入口构建依赖图，打包有关的模块，最后用于展示你的内容 它将根据模块的依赖关系进行静态分析，然后将这些模块按照指定的规则生成对应的静态资源。 webpack是一个打包工具，他的宗旨是一切静态资源皆可打包。有人就会问为什么要webpack？ webpack是现代前端技术的基石，常规的开发方式，比如jquery,html,css静态网页开发已经落后了。 现在是M">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/1-23204edf.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/2-c8b14004.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/3-2cb8b574.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/4-1f4db676.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/5-752cf4e6.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/6-2b58f7c0.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/7-50544690.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/8-cac0ff3e.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/9-58acf574.png">
+<meta property="article:published_time" content="2024-06-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:04.519Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="Webpack">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2024/06/01/Webpack%E5%88%A9%E7%94%A8/img/1-23204edf.png">
+  
+  
+  
+  <title>Webpack利用 - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Webpack利用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-01 08:00" pubdate>
+          2024年6月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          401 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Webpack利用</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Webpack 是一个静态模块打包工具，从入口构建依赖图，打包有关的模块，最后用于展示你的内容</p>
+<p>它将根据模块的依赖关系进行静态分析，然后将这些模块按照指定的规则生成对应的静态资源。</p>
+<p>webpack是一个打包工具，他的宗旨是一切静态资源皆可打包。有人就会问为什么要webpack？</p>
+<p>webpack是现代前端技术的基石，常规的开发方式，比如jquery,html,css静态网页开发已经落后了。</p>
+<p>现在是MVVM的时代，数据驱动界面。webpack它做的事情是，分析你的项目结构，</p>
+<p>找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss，TypeScript等），</p>
+<p>并将其打包为合适的格式以供浏览器使用</p>
+<!-- 这是一张图片，ocr 内容为：BUNDLE YOUR STYLES JS JS .HBS PNG CSS .SASS .CJS JPG JPG PNG .SASS STATIC ASSETS .SASS MODULES WITH DEPENDENCIES -->
+<p><img src="/2024/06/01/Webpack利用/img/1-23204edf.png"></p>
+<p><strong>个人笔记：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.hvsen-mc.com/">https://www.hvsen-mc.com/</a></p>
+<p><a target="_blank" rel="noopener" href="http://sys.sdwfh.org.cn/#/login">http://sys.sdwfh.org.cn/#/login</a></p>
+<p><strong>工具：Packer-Fuzzer：（可能会捡到未授权的洞）</strong></p>
+<p>Packer-Fuzzer是一款针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具。</p>
+<p>支持自动模糊提取对应目标站点的API以及API对应的参数内容，并支持对：<u>未授权访问、敏感信息泄露、</u><u>CORS</u><u>、</u><u>SQL</u><u>注入、水平越权、弱口令、任意文件上传</u>七大漏洞进行模糊高效的快速检测。</p>
+<p>Kali:&#x2F;home&#x2F;jimi&#x2F;Packer-Fuzzer-master</p>
+<p><strong>实例一：</strong></p>
+<p>进入网站：<a target="_blank" rel="noopener" href="https://www.hvsen-mc.com/">https://www.hvsen-mc.com/</a></p>
+<!-- 这是一张图片，ocr 内容为：关于我们 解决方案 产品中心 首页 SWIPER FONT AWESOME JOUERY MIGRATE 3.4.1 > 现场测到太阳辐射值大于1400W/M?!这合理吗? 杂项 JQUERY 3.7.1 总辐射表的校准频率是多少? WEBPACK 反向代理 CMP11和CMP21之间的最大区别是什么? RSS NGINX MODULE FEDERATION 了解更多 PERFORMANCE WEB服务器 PRIORITY HINTS NGINX SOMETHING WRONG OR MISSING? AUTOMATE TECHNOLOGY LOOKUPS OUR APIS PROVIDE INSTANT ACCESS TO WEBSITE TECHNOLOGY STACKS, CONTACT DETAILS AND SOCIAL MEDIA PROFILES 关于我们 COMPARE APIS ABOUT US 北京辉盛测控科技有限公司始终专业致力于太阳能,风能,气象环 境,水文水质,农业土壤,道路交通等众多领域监测应用的研究,集成和 开发.我们专注于耐用,低功耗的系统,用于长期,独立的监测和控制, -->
+<p><img src="/2024/06/01/Webpack利用/img/2-c8b14004.png"></p>
+<!-- 这是一张图片，ocr 内容为：</>元素 小性能 欢迎 源代码 控制台 网络 夏盖 内容脚本 工作区 片段 页面 CONTENT.JS 276 TOP 277 CONST SCRIPTS WWW.HVSEN-MC.COM 278 MAP(NODE) WP-CONTENT .FILTER((SCRIP 279 280 WP-INCLUDES/IS 281 // META TAGS (索引) 282 CONST META - ARR WAPPALYZER - TECHNOLOGY PROFILER 283 (METAS,META) 284 CONST KEY APP.IMMERSIVETRANSLATE.COM 285 GLOBAL-ASSETS/IMAGES IF (KEY) F 286 FONTS.GOOGLEAPIS.COM 287 METAS [KEY 288 CSS?FAMILYROBOTO%3A100%2C100ITALIC%2C200%2C200ITALIC%2 METAS [KEY 289 290 观察是否有WEBPACK的包可能会泄露... RETURN METAS 293 一些信息. 294 295 296 297 // DETECT GOOGLE IF(//(WWW\.)?GC 298 CONST ADS DO 299 300 -->
+<p><img src="/2024/06/01/Webpack利用/img/3-2cb8b574.png"></p>
+<p>使用工具对webpack的网站进行渗透</p>
+<!-- 这是一张图片，ocr 内容为：-(JIMI@JIMI)-[~/PACKER-FUZZER-MASTER] S PYTHON PACKERFUZZER.PY -U HTTPS://WWW.HVSEN-MC.COM/ FUTUREWARNING: NODE VM2 IS DEPRECAT /USR/LOCAL/L1B/PYTNON3.11/DIST-PACKAGES/NODE_VM2/_ 1N1T- ED. PLEASE USE DENO VM INSTEAD. WARNINGS.WARN("NODE.VMZ IS DEPRECATED. PLEASE USE USE DENO.VM INSTEAD.", FUTUREWARNING) PAREKEP FURZEP PACKER FUZZER V1.4.15 02023 POC-SIR, KPLIORN, LIUCY, RACHESSEHS, LUPIN-III PROJECT HUB: HTTPS://GITHUB.COM/RTCATC/PACKER-FUZZER 西湖论剑国0首届国产优秀网络安全工具主题展参展作品 THUB.COM/RECATC/PACKER-FUZZER/':GNUTLS RECV ERROR (-110):TLS 链接非正 [+]网络连通性检测通过,当前出口IP:183.223.40 [目标站点:HTTPS://WWW.HVSEN-MC.COM/ [15:32:32] 正在解析网页中 [15:32:32] 正在下载:77777777.SCRIPT.INSIDE.HTML.JS [15:32:33 网页解析完毕,共发现27个JS文件 [15:32:33] 正在下载:HOOKS.MIN.JS [15:32:33] 正在下载:CORE.MIN.JS [15:32:33] 正在下载:LAZYLOAD.MIN.JS [15:32:34] 正在下载:JQUERY.BLOCKUI.MIN.JS [15:32:34] 正在下载 FRONTEND.MIN.JS 15:32:34 FRONTEND-MODULES.MIN.JS 正在下载 15:32:34 正在下载 PRELOADED-ELEMENTS-HANDLERS.MIN.IS -->
+<p><img src="/2024/06/01/Webpack利用/img/4-1f4db676.png"></p>
+<!-- 这是一张图片，ocr 内容为：15:34 JIMI@JIMI:~/PACKER-FUZZER-MASTER 查看帮助 动作编辑 文件 HTTPSCONNECTIONPOOL(HOSTS'WWW.HYSEN-MC.CON', PORT:443): READ TIMED TIMED OUT. (READ TIMEOUTSO) ERR 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT:6) HTTPSCONNECTIONPOOL(HOST- ENT HTTPSCONNECTIONPOOL(HOST- ERR 'WWW.HVSEN-MC.COM', PORT三443): READ TIMED OUT. (READ TIMEOUT-6) 'WWW.HVSEN-MC.COM', PORT二443): READ TIMED OUT. (READ TIMEOUT-6) HTTPSCONNECTIONPOOL(HOST- LERR HTTPSCONNECTIONPOOL(HOST- ERR 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT-6) HTTPSCONNECTIONPOOL(HOST- ERR (WWW.HVSEN-MC.COM', PORT:443): READ TIMED OUT. (READ TIMEOUT:6) HTTPSCONNECTIONPOOL(HOST- 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT:6) ERR HTTPSCONNECTIONPOOL(HOST- 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT-6) HTTPSCONNECTIONPOOL(HOST- 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT-6) ERR HTTPSCONNECTIONPOOL(HOST- LERR "WW.HVSEN-MC.COM', PORT:443): READ TIMED OUT. (READ TIMEOUT:6) HTTPSCONNECTIONPOOL(HOST- 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT:6) ERR HTTPSCONNECTIONPOOL(HOST` 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT-6) HTTPSCONNECTIONPOOL(HOST- 'WW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT-6) ERR (WWW.HVSEN-MC.COM', PORT:443): READ TIMED OUT. (READ TIMEOUT-6) HTTPSCONNECTIONPOOL(HOST- ERR 'WWW.HVSEN-MC.COM', PORT三443): READ TIMED OUT. (READ TIMEOUT:6) HTTPSCONNECTIONPOOL(HOST- ERR HTTPSCONNECTIONPOOL(HOST- 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT-6) HTTPSCONNECTIONPOOL(HOST 'WWW.HVSEN-MC.COM', PORT-443): READ TIMED OUT. (READ TIMEOUT-6) LERR (HTTPSCONNECTIONPOOL(HOSTA(WNN.HVSEN-MC.COM', PORT:443): READ TINED OUT, (READ TINEOUT-O) ERR HTTPSCONNECTIONPOOL(HOST:'WWW.HVSEN-MC.COM', M', PORT-443): READ TIMED OUT. (READ TIMEOUT:6) 开始漏洞检测 目标响应状态检测结束 5:33:071 E 开始检测未授权访问漏洞 [15:33:07] 开始检测敏感信息泄露漏洞 [15:33:07] [15:33:07] 开始检测 CORS漏洞 [!]共发现0个安全漏洞:高危0个,中危0个,低危0个 [15:33:13]检测报告正在生成中 [15:33:17]检测报告生成完毕! [-]全部扫描及检测完毕,PACKERFUZZER团队感谢您的使用! (JIMI&JIMI)-[~/PACKER-FUZZER-MASTER] -->
+<p><img src="/2024/06/01/Webpack利用/img/5-752cf4e6.png"></p>
+<!-- 这是一张图片，ocr 内容为：转到(G) 帮助(H) 书签(B) PACKER-FUZZER-MASTER REPORTS 101.201.225.52_80 README.MD 101.201.225.52_80 RES 02-UOP6LE.HTML 02-UOP6LE.DOCX WWW.HVSEN WWW.HVSEN 生成检测报告 MC.COM MC.COM B9KH7I.HTML B9KH7J.DOCX -->
+<p><img src="/2024/06/01/Webpack利用/img/6-2b58f7c0.png"></p>
+<p><strong>实例二：</strong></p>
+<!-- 这是一张图片，ocr 内容为：控科技有限公司 -北京 出东省残疾人福利基金会 LOGIR 佛中企业 ARS 不安全 SYS.SDWFH.ORG.CN//LOGIN 享法 网安学院 其他收藏夹 比赛+考证 考证 宝藏 你给老子好好学英... 论文 网安 科技 WAPPALYZER TECHNOLOGIES MORE INFO EXPORT JAVASCRIPT框架 JAVASCRIPT库 VUE.JS CORE-JS 3.36.0 WEBPACK SOMETHING WRONG OR MISSING? 基金会管理系统 GENERATE SALES LEADS 中人 FIND NEW PROSPECTS BY THE TECHNOLOGLES THEY USE. REACH OUT TO CUSTOMERS OF SHOPIFY,MAGENTO,SALESFORCE AND OTHERS. CREATE A LEAD LIST 东省残疾人福利基金会 密码 母 DONG FOUNDATION FOR DISABLED PERSONS -->
+<p><img src="/2024/06/01/Webpack利用/img/7-50544690.png"></p>
+<!-- 这是一张图片，ocr 内容为：(JIMIGJIMI)-[~/PACKER-FUZZEX- $ PYTHON PACKERFUZZER.PY -U HTTP://SYS.SDWFH.ORG.CN/#/LOGIN /UST/LOCAL/LIB/PYTHON3.11/DIST-P2CKADOC/NODO VM>/ INIT TED. PLEASE USE DENO_VM INSTEAD. IS DEPRECATED. P NODE VM2 FUTUREWARNING) S DEPRECATED. PLEASE USE DENO VM INSTEAD, WARNINGS.WARN("NODE VM2 IS  PANEKEPFUZAEF PACKER FUZZER V1.4.15 02023 POC-SIR, KPLIORN, LIUCY, RACHESSEHS, LUPIN-II PROJECT HUB: HTTPS://GITHUB.COM/RTCATC/PACKER-FUZZER 西湖论剑国首届国产优秀网络安全工具主题展参展作品 /RECATC/PACKER-FUZZER/":GNUTLS RECV ERROR (-110):TLS 链接非正常地终止了. [+]网络连通性检测通过,当前出口IP:111.53.198.24 [15:52:20] 目标站点:HTTP://SYS.SDWFH.ORG.CN/#/LOGIN [15:52:20]正在解析网页中... 网页解析完毕,共发现50个JS文件 [15:52:20] 正在下载:CHUNK-CC35AF64.618EB66B.JS [15:52:20] 正在下载:CHUNK-09831386.888B25C4.JS [15:52:20] 正在下载:CHUNK-1FCC11CD.D2FF1650.JS [15:52:20] 正在下载:CHUNK-72A130A4.E0CC8E7E.JS [15:52:20] 正在下载:CHUNK-513010E6.A32B9BFC.JS [15:52:20] 正在下载:CHUNK-3F0A249F.1A7F.JS [15:52:20] 正在下载 :CHUNK-25575A00.4BFA1B3A.JS [15:52:21] 正在下载:CHUNK-064B4A08.C6E5BE7E.JS [15:52:21] 正在下载:CHUNK-B20555AE.0CEFDDD5.JS [15:52:21] 正在下载:CHUNK-15956D93.E4487956.JS [15:52:21] 正在下载:CHUNK-41490072.9625D212.JS [15:52:21] 正在下载:CHUNK-6DF3B281.AFD11BC4.JS [15:52:21] -->
+<p><img src="/2024/06/01/Webpack利用/img/8-cac0ff3e.png"></p>
+<p>报错了  跟数据库有关</p>
+<!-- 这是一张图片，ocr 内容为：2 16:28 JIMI@JIMI~/PACKER-FUZZER-MASTER 作编辑查看帮助 文件动作 暴力提取文件: :YCFQIZ.CHUNK-DAEFFDAA.7727622A.JS [16:22:22] : 8001CN.CHUNK-314E9502.95451027.JS 暴力提取文件 [16:22:22] 暴力提取文件 :COK8GI.CHUNK-3C35A9CD.00948321.JS [16:22:22] 暴力提取文件: EXCLOY.CHUNK-6DF3B281.AFD11BC4.JS [16:22:22] 暴力提取文件 TYZUID.CHUNK-6D694C5E.3B5FE667.JS [16:22:22] 暴力提取文件 [16:22:22] ;6E72P0.CHUNK-52A77FC0.9897840E.JS 暴力提取文件 [16:22:22] :1AVIGN.CHUNK-15956D93.E4487956.JS ; FQCHWM.CHUNK-1FCC11CD.D2FF1650.JS 暴力提取文件 [16:22:22] 暴力提取文件 [16:22:22] :QZMFBT.CHUNK-25575A00.4BFA1B3A.JS 暴力提取文件 [16:22:22] :7CZZIN.CHUNK-064B4A08.C6E5BE7E.JS [16:22:22]暴力提取文件: BEN81T.CHUNK-A514977C.AA3A7AB3.JS [16:22:22]暴力提取文件: BJGY0M.CHUNK-72A130A4.E0CC8E7E.JS 暴力提取文件 [16:22:22] 7B6IA7.01.JS [16:22:22] 暴力提取文件: : BMIBXA.CHUNK-513010E6.A32B9BFC.JS 暴力提取文件 : ODQTVH.CHUNK-9513BA7C.9170CE22.JS [16:22:22] 暴力提取文件 :F2ODFQ.APP.32BC9E93.JS [16:22:22] 暴力提取文件:KC37FT.CHUNK-B20555AE.0CEFDDD5.JS [16:22:22] 暴力提取文件 [16:22:22] : XKHK4W.CHUNK-0604C902.73CCF1E2.JS 暴力提取文件 [16:22:22] CYYEFB.CHUNK-A8CE66C8.C7242CBB.JS 暴力提取文件 [16:22:22] L6YWTW.CHUNK-1081F69B.A1BELF8F.JS 暴力提取文件 UDCRLX.CHUNK-2D21AF36.7D2BDA41.JS [16:22:22] 暴力提取文件 CLLIVD.CHUNK-FD2D80D6.AE6E84D2.JS [16:22:22] 暴力提取文件 [16:22:22] 1BW2GN.CHUNK-09831386.888B25C4.JS 暴力提取文件 UK05YY.CHUNK-500680BE.7699650E.JS [16:22:22] 暴力提取文件 [16:22:22] :GDBTAI.CHUNK-69E3B01A.5D14C959.JS 暴力提取文件 [16:22:22] : 8CK5VN.CHUNK-1283CD0A.8747DB77.JS 暴力提取文件  18T8ZB.CHUNK-908E88BC.E2173249,JS [16:22:22] 暴力提取文件 8HCPCP.CHUNK-7326CAFE.D2008ADD.JS [16:22:22] 暴力提取文件 [16:22:22] ADO7WO.CHUNK-2D0CF781.36720ABC.JS 暴力提取文件 ; BEO68P.CHUNK-3F0A249F.1A702A7F.JS [16:22:22] LI LONOX [16:22:22] 罢力提取文件:MIYB8A.CHUNK-5C3D90A7.21DCCAC9.JS [16:22:22] 层力提取文件:OYTKU6.CHUNK-VENDORS.8B478D6D.JS [16:22:22] 暴力提取文件:014YRY.CHUNK-00B99097.D76D4C43.JS 暴力提取文件 [16:22:22] 4ZTDUG.CHUNK-35A2A63E.BD0C97E5.JS 暴力提取文件 [16:22:22] VTUENE.CHUNK-B7713ADE.60ACB1AF.JS 暴力提取文件 [16:22:22] HVKRJA.CHUNK-CC35AF64.618EB66B.JS 暴力提取文件 FILEBT.CHUNK-B058DA3C.C7E87FDA.JS [16:22:22] 暴力提取文件 RYWQG1.CHUNK-040084EB.B03D8EB9.JS [16:22:22] [16:22:22] 暴力提取文件: I4VF6H.CHUNK-41490072.9625D212.JS 暴力提取文件: UVSW2H.CHUNK-139A36AB.D7472E3C.JS 16:22:22 16:22:221 禁刀提取又任:OEGAZL.1CLIENT-OL.MIN.JS OU ARE ABIE TO HEAR 16:22:22]成功提取如下BASEDIR: HMAPS/, MESSAGE/CONTENT, MESSAGE/RESTORE, MESSAGE/COUNT, MESSAGE/INIT I MESSAGE HAS READ, GRAPHMAPS , MESS 16:22:22]前五条API提取结果如下: /HY-AM, /SYSTEM/ROLE, /API/VIEWENTITYSERVICE/ADD, -/PAGELIST/DATAUPLOAD/, /A/D []检测到提取结果不准确,请输入新的BASEDIR(使用逗号分隔):/ RACEBACK (MOST RECENT CALL LAST): FILE "/HOME/JIMI/PACKER-FUZZER-MASTER/PACKERFUZZER.PY", LINE 25, IN <MODULE> PACKERFUZZER.CHECK() FILE "/HOME/JIMI/PACKER-FUZZER-MASTER/PACKERFUZZER.PY",LINE 18, IN CHECK T.PARSESTART() FILE "/HOME/JIMI/PACKER-FUZZER-MASTER/LIB/CONTROLLER.PY", LINE 47, IN PARSESTART APICOLLECT(PROJECTTAG, SELF.OPTIONS).APIRECOVERSTART() ---- FILE "/HOME/JINI/PACKER-FUZZER-MASTER/LIB/APICOLLECT.PY", LINE 218, IN APIRECOVERSTART SELF.APICOMPLETE() FILE */HOME/SINI/PACKER-FUZZER-MASTER/LIB/APICALLECT,PY", LINE 175, IN APICOMPLETS IF DATABASETYPE(SELF.PROJECTTAG),APIHAVEORNOT(COMPLETEAPIPATH): FILE "HOME/JIMI/PACKER-FUZZER-MASTER/LIB/DATABASE.PY", LINE 161, IN APIHAVEORNOT CURSOR.EXECUTE((SELECT PATH FROM APILTREE WHERE PATH - \"* * API.PATH + "\"V) IQLITE3.PROGRAMMINGERROR: THE QUERY CONTAINS A NULL CHARACTER (JIMI@JIMI)-[~/PACKER-FUZZER-MASTER] -->
+<p><img src="/2024/06/01/Webpack利用/img/9-58acf574.png"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" class="category-chain-item">漏洞挖掘</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Webpack/" class="print-no-link">#Webpack</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Webpack利用</div>
+      <div>https://jimi-lab.github.io/2024/06/01/Webpack利用/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/01/api%E6%8E%A5%E5%8F%A3%E5%AF%BC%E8%87%B4%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%EF%BC%88sql%E7%9B%B2%E6%B3%A8%E3%80%81%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E7%AD%89%EF%BC%89/" title="api接口导致各种漏洞（sql盲注、报错注入等）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">api接口导致各种漏洞（sql盲注、报错注入等）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/01/fuzz%E5%88%B0sql%E6%B3%A8%E5%85%A5/" title="fuzz到sql注入">
+                        <span class="hidden-mobile">fuzz到sql注入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

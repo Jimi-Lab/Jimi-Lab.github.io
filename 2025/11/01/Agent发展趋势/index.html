@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content=":::infoCOT lan-and-Execute Plan-and-Execute Eino tRPC-A2A-Go Langfuse ::: Agent 历程阶段 1：LLM+提示词这个阶段是 23 年的东西，直接通过用户输入的提示词+调用 llm 的 api 实现一些功能，例如谈话助手，对话分析等。  无法处理复杂任务，模型幻觉问题很明显  阶段 2：AI Agent24 年中： Agen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent发展趋势">
+<meta property="og:url" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content=":::infoCOT lan-and-Execute Plan-and-Execute Eino tRPC-A2A-Go Langfuse ::: Agent 历程阶段 1：LLM+提示词这个阶段是 23 年的东西，直接通过用户输入的提示词+调用 llm 的 api 实现一些功能，例如谈话助手，对话分析等。  无法处理复杂任务，模型幻觉问题很明显  阶段 2：AI Agent24 年中： Agen">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/1-4644b2ff.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/2-836b510d.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/3-ae669795.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/4-f112c8d6.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/5-f1b52c50.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/6-7c23e637.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/7-6e981bf6.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/8-c5a9021c.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/9-b3f9d6ed.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/10-83065093.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/11-ace364c0.png">
+<meta property="article:published_time" content="2025-11-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:05.333Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="COT">
+<meta property="article:tag" content="lan-and-Execute">
+<meta property="article:tag" content="Plan-and-Execute">
+<meta property="article:tag" content="Eino">
+<meta property="article:tag" content="tRPC-A2A-Go">
+<meta property="article:tag" content="Langfuse">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2025/11/01/Agent%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF/img/1-4644b2ff.png">
+  
+  
+  
+  <title>Agent发展趋势 - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Agent发展趋势"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-01 08:00" pubdate>
+          2025年11月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Agent发展趋势</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>:::info<br>COT</p>
+<p>lan-and-Execute</p>
+<p>Plan-and-Execute</p>
+<p>Eino</p>
+<p>tRPC-A2A-Go</p>
+<p>Langfuse</p>
+<p>:::</p>
+<h1 id="Agent-历程"><a href="#Agent-历程" class="headerlink" title="Agent 历程"></a>Agent 历程</h1><h2 id="阶段-1：LLM-提示词"><a href="#阶段-1：LLM-提示词" class="headerlink" title="阶段 1：LLM+提示词"></a>阶段 1：LLM+提示词</h2><p>这个阶段是 23 年的东西，直接通过用户输入的提示词+调用 llm 的 api 实现一些功能，例如谈话助手，对话分析等。</p>
+<ul>
+<li>无法处理复杂任务，模型幻觉问题很明显</li>
+</ul>
+<h2 id="阶段-2：AI-Agent"><a href="#阶段-2：AI-Agent" class="headerlink" title="阶段 2：AI Agent"></a>阶段 2：AI Agent</h2><p>24 年中： <strong>Agent &#x3D; LLM+记忆+规划技能+工具使用（mcp）</strong></p>
+<p>规划：智能体能够根据给定目标，自行拆解任务步骤执行计划。通过规划能力，将复杂的任务拆分，智能体能够有条不紊地处理大型任务。Dify、n8n、Coze。</p>
+<p>记忆：Long-term Memory ; Working Memory ; RAG</p>
+<p>工具调用：MCP 协议</p>
+<ul>
+<li>开始逐渐好用，能处理简单的专业性问题了，比如做一道逆向题目</li>
+</ul>
+<h2 id="阶段-3：Multi-Agent"><a href="#阶段-3：Multi-Agent" class="headerlink" title="阶段 3：Multi Agent"></a>阶段 3：Multi Agent</h2><p>多 agent 系统，通过构建多个专业化的 agent 组成的协作网络，每个 agent 专注于特定的领域或者任务。人也可以是整个系统的一个 agent，加入到这个 agent 中（Human in the loop）</p>
+<p>参考：MetaGPT 开源项目 &#x2F; manus</p>
+<h3 id="Agent-协议（方便各厂商的-agent-之间进行通信；可扩展性）"><a href="#Agent-协议（方便各厂商的-agent-之间进行通信；可扩展性）" class="headerlink" title="Agent 协议（方便各厂商的 agent 之间进行通信；可扩展性）"></a>Agent 协议（方便各厂商的 agent 之间进行通信；可扩展性）</h3><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/1-4644b2ff.png"></p>
+<p><strong>两者面向的是不同的场景，但是在应用层面可能会有略微的竞争关系。</strong></p>
+<p>MCP 使得单个 agent 拥有了调用工具的能力</p>
+<p>A2A 使得不同智能体之间拥有了通信的能力，方便每个 agent 负责专业的任务后交由别的 agent 处理</p>
+<p><strong>竞争关系：</strong></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/2-836b510d.png"></p>
+<p>mcp 调用的工具可以是低级的 agent。</p>
+<p>但是这俩也有不同，也有各自的优劣：</p>
+<p>比如 mcp 仅需要一个 agent，资源浪费少，简单可控；但是中心化依赖高，不易拓展</p>
+<p>比如 A2A 每个 working 的专业度更高，输出更精准，可扩展性好；资源消耗较大</p>
+<h1 id="Agent-框架"><a href="#Agent-框架" class="headerlink" title="Agent 框架"></a>Agent 框架</h1><h2 id="Agent-思考框架"><a href="#Agent-思考框架" class="headerlink" title="Agent 思考框架"></a>Agent 思考框架</h2><p>使用思考框架是为了赋予 agent 结构化的推理喝决策的能力。一套好的方法论，指导 agent 如何理解目标、分解任务、利用工具、处理信息、并根据环境反馈调整行为。一个好的思考框架能够显著提升 Agent 的鲁棒性、效率、泛化能力。</p>
+<h3 id="思维链（COT）"><a href="#思维链（COT）" class="headerlink" title="思维链（COT）"></a>思维链（COT）</h3><p>Chain of thought，CoT</p>
+<p>CoT 核心在于，引导模型在给出最终答案前，先生成一系列结构化的中间推理步骤—-这如同模拟人类解决问题时的思考过程。通过这种方式，LLM 能够更深刻地理解问题结构，有效分解复杂任务，并逐步推导出解决方案。</p>
+<p>CoT 具有透明性和可解释性。这两点很重要，方便研究人员知道模型的处理逻辑和处理过程，修正模型不正确的地方。</p>
+<p>:::tips<br>Anthropic 精心设计了提示词，使得普通模型拥有了 CoT 的能力：<a href="https://link.zhihu.com/?target=https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking">https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking</a></p>
+<p>:::</p>
+<ul>
+<li>使得模型具有了推理规划的能力，但是局限于模型内部知识，缺乏与外界的交互。这可能会导致知识陈旧、产生幻觉、错误传播、专业性不强。</li>
+</ul>
+<h3 id="ReAct"><a href="#ReAct" class="headerlink" title="ReAct"></a>ReAct</h3><p>Reasoning and Action，ReAct</p>
+<p>推理与行动</p>
+<p>ReAct 将推理与行动相结合，允许模型在推理的过程中与外部的工具或环境进行互动，从而获取最新的信息、执行具体的操作。 </p>
+<p>核心运作机制：思考（Thought）–行动（action）–观察（Observation） </p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/3-ae669795.png"></p>
+<h3 id="Plan-and-Execute"><a href="#Plan-and-Execute" class="headerlink" title="Plan-and-Execute"></a>Plan-and-Execute</h3><p>Plan-and-Execute 是一种 ReAct 的扩展和优化，旨在处理更复杂、多步骤的任务：</p>
+<p>规划阶段：将原始任务分解为一系列更小、更易管理的子任务或步骤。有序的行动序列，指明了要达成最终目标需要完成哪些关键步骤。</p>
+<p>执行阶段：按照规划逐一执行每个子任务，在执行子任务的时候，agent 采用标准的 ReAct 循坏来处理该子任务的具体细节，例如调用特定工具、与外部环境交互、或进行更细致的推理。agent 会监控每个子任务的执行情况，若子任务执行失败，agent 会重新评估当前计划，可以动态调整计划或返回到规划阶段进行修正。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/4-f112c8d6.png"></p>
+<ul>
+<li>Plan-and-Execute 可以结构化复杂任务与优化上下文</li>
+<li>提升鲁棒性。若某个子任务失败，会重新评估计划，影响范围相对可控，也容易进行调整</li>
+<li>增强可解释性与人机协同。清晰的计划和分布执行的过程使得 agent 的行为更容易被理解和调试</li>
+</ul>
+<h2 id="开发框架"><a href="#开发框架" class="headerlink" title="开发框架"></a>开发框架</h2><p>目前 agent 的主流开发框架集中在 python、JavaScript、Go 技术栈。</p>
+<p>OpenAI：Agents SDK  <a href="https://link.zhihu.com/?target=https://openai.github.io/openai-agents-python/">https://link.zhihu.com/?target=https%3A//openai.github.io/openai-agents-python/</a></p>
+<p>Google：Agent Development Kit   <a href="https://link.zhihu.com/?target=https://google.github.io/adk-docs/">https://link.zhihu.com/?target=https%3A//google.github.io/adk-docs/</a></p>
+<p>微软：AutoGen   <a href="https://link.zhihu.com/?target=https://microsoft.github.io/autogen/stable/index.html">https://link.zhihu.com/?target=https%3A//microsoft.github.io/autogen/stable/index.html</a></p>
+<p>LangChain：LangGraph   <a href="https://link.zhihu.com/?target=https://www.langchain.com/langgraph">https://link.zhihu.com/?target=https%3A//www.langchain.com/langgraph</a></p>
+<h3 id="Eino"><a href="#Eino" class="headerlink" title="Eino"></a>Eino</h3><p>开源  更符合 go 语言编程惯例的 llm 开发框架</p>
+<ul>
+<li>高可维护性和高可扩展性并存：Eino 基于 go 1.18 版本引入的泛型，通过强类型定义各个节点的输入输出类型，并在编译时进行类型校验。</li>
+<li>丰富的开箱即用组件：chatmodel、Tool、ChatTemplate 等原子级执行节点。</li>
+<li>简单易用的开发体验：可视化 EinoDEV</li>
+</ul>
+<p>Eino 框架的组成</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/5-f1b52c50.png"></p>
+<h4 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h4><p>组件是大模型应用能力的提供者，提供原子能力的最小单元，是构建 AI Agent 的砖和瓦，组件抽象的优劣决定了大模型应用开发的复杂度，Eino 的组件抽象秉持着以下设计原则。</p>
+<ul>
+<li>模块化和标准化：将一系列功能相同的能力抽象成统一的模块，组件间职能明确、边界清晰，支持灵活地组合。</li>
+<li>可扩展性：接口的设计保持尽可能小的模块能力约束，让组件的开发者能方便地实现自定义组件的开发。</li>
+<li>可复用性：把最常用的能力和实现进行封装，提供给开发者开箱即用的工具使用</li>
+</ul>
+<h5 id="对话处理类组件"><a href="#对话处理类组件" class="headerlink" title="对话处理类组件"></a>对话处理类组件</h5><p>chatTemplate</p>
+<p>chatmodel</p>
+<h5 id="文本语义处理类组件"><a href="#文本语义处理类组件" class="headerlink" title="文本语义处理类组件"></a>文本语义处理类组件</h5><p>Document.loader、Document.Transformer</p>
+<p>Embedding</p>
+<p>Indexer</p>
+<p>Retriever</p>
+<h5 id="决策执行类组件"><a href="#决策执行类组件" class="headerlink" title="决策执行类组件"></a>决策执行类组件</h5><p>ToolsNode</p>
+<h5 id="自定义组件"><a href="#自定义组件" class="headerlink" title="自定义组件"></a>自定义组件</h5><p>Lambda</p>
+<h4 id="编排"><a href="#编排" class="headerlink" title="编排"></a>编排</h4><p>Eino通过深入洞察大模型应用的本质特征，提出了基于有向图（Graph）模型的编排解决方案。在这个模型中，各类原子能力组件（Components）作为节点（Node），通过边（Edge）串联形成数据流动网络。每个节点承担特定职责，节点间以上下游数据类型对齐为基本准则，实现类型安全的数据传递。</p>
+<h4 id="与-dify-coze-对比"><a href="#与-dify-coze-对比" class="headerlink" title="与 dify&#x2F;coze 对比"></a>与 dify&#x2F;coze 对比</h4><p>Dify、Coze主要面向业务人员和快速原型开发，而Eino则专为需要深度定制和工程化开发的技术团队设计。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/6-7c23e637.png"></p>
+<h4 id="callbacks-切面"><a href="#callbacks-切面" class="headerlink" title="callbacks  切面"></a>callbacks  切面</h4><p>callbacks 实现横切面功能注入和中间状态透出两大核心功能</p>
+<p>工作原理：用户提供并注册自定义的 callback handler 函数，component 和 graph 在执行过程中的固定时机主动回调这些函数，并传递对应的执行信息。</p>
+<h4 id="checkpoint-检查点"><a href="#checkpoint-检查点" class="headerlink" title="checkpoint 检查点"></a>checkpoint 检查点</h4><p>Human in the loop 是一种让人类用户能够实时参与和干预 AI Agent 执行过程的机制。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/7-6e981bf6.png"></p>
+<h3 id="tRPC-A2A-Go"><a href="#tRPC-A2A-Go" class="headerlink" title="tRPC-A2A-Go"></a>tRPC-A2A-Go</h3><p>tRPC-A2A-Go 框架为开发者提供了完整的 A2A 协议客户端和服务端实现，帮助开发者快速将 Agent 封装为标准的 A2A 服务，兼容主流的智能体生态，显著降低了多 agentxie’tong 协同系统继承和运维的难度。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/8-c5a9021c.png"></p>
+<h2 id="Agent-可观测性"><a href="#Agent-可观测性" class="headerlink" title="Agent 可观测性"></a>Agent 可观测性</h2><h3 id="Langfuse"><a href="#Langfuse" class="headerlink" title="Langfuse"></a>Langfuse</h3><p>Langfuse 是一款开源的 LLM 应用可观测与分析平台，专为大模型驱动的应用（如 Agent、RAG、工具链等）设计。</p>
+<p>Eino 框架可以无缝接入 Langfuse</p>
+<ul>
+<li>数据看板：通过 Dashboard，可以实时查看 LLM 应用的质量、成本、延迟等多维度指标，全面监控和分析智能体系统的运行状态</li>
+</ul>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/9-b3f9d6ed.png"></p>
+<ul>
+<li>全流程追踪：自动捕获 LLM 应用的每一次调用、嵌套的工具调用、上下文、API 请求、嵌入检索等所有关键步骤，形成完整的执行链路（Trace），用于分析每个环节的输入输出，定位问题。</li>
+</ul>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/10-83065093.png"></p>
+<ul>
+<li>多维度质量评估</li>
+</ul>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/11/01/Agent发展趋势/img/11-ace364c0.png"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>AI Agent 的发展正处于爆发前夜，从最初的 LLM 聊天机器人，到具备规划、记忆、工具调用能力的智能体，再到多 Agent 协作的复杂生态，整个行业正在经历一场范式转变。本文系统梳理了 AI Agent 的核心理念、主流协议（MCP、A2A）、思考框架（CoT、ReAct、Plan-and-Execute），并结合 Golang 生态下的 Eino、tRPC-A2A-Go 等工程化框架，结合实际例子详细讲解了如何优雅地开发、编排和观测复杂的智能体系统。</p>
+<ul>
+<li>协议标准化是 Agent 生态繁荣的基石：MCP、A2A 等协议的出现，极大降低了工具和 Agent 的集成门槛，让”能力复用”成为可能。未来，协议的进一步融合和演进，将推动智能体生态走向真正的互联互通。</li>
+<li>思考框架决定 Agent 的智能上限：从 CoT 到 ReAct，再到 Plan-and-Execute，结构化的推理与行动流程，是 Agent 能否胜任复杂任务的关键。合理选择和实现思考框架，是打造高鲁棒性、高可解释性 Agent 的核心。</li>
+<li>工程化框架让复杂 Agent 开发变得优雅高效：Eino、tRPC-A2A-Go 等框架，通过组件化、强类型、编排与切面机制，极大提升了开发效率和系统可维护性。无论是单体智能体，还是多 Agent 协作，都能快速落地生产级应用。</li>
+<li>可观测与人机协同是生产级 Agent 的必备能力：只有让 Agent 的推理过程、工具调用、任务状态对用户和开发者透明，才能实现高质量的交付和持续优化。Human In The Loop 机制，则为关键场景下的安全性和可控性提供了保障。</li>
+<li>选择适合自身场景的协议与框架才是最优解：没有万能的协议和框架，只有最适合当前业务和团队的技术选型。理解协议的边界、框架的能力，结合实际需求做出权衡，才能真正发挥 AI Agent 的价值。</li>
+</ul>
+<p>AI Agent 的世界远比想象中更广阔，同时也是 AI 领域的一大重大革新！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI/" class="category-chain-item">AI</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/COT/" class="print-no-link">#COT</a>
+      
+        <a href="/tags/lan-and-Execute/" class="print-no-link">#lan-and-Execute</a>
+      
+        <a href="/tags/Plan-and-Execute/" class="print-no-link">#Plan-and-Execute</a>
+      
+        <a href="/tags/Eino/" class="print-no-link">#Eino</a>
+      
+        <a href="/tags/tRPC-A2A-Go/" class="print-no-link">#tRPC-A2A-Go</a>
+      
+        <a href="/tags/Langfuse/" class="print-no-link">#Langfuse</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Agent发展趋势</div>
+      <div>https://jimi-lab.github.io/2025/11/01/Agent发展趋势/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/12/01/How%20to%20read%20a%20paper/" title="How to read a paper">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">How to read a paper</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/11/01/LLM+MCP+RAG/" title="LLM+MCP+RAG">
+                        <span class="hidden-mobile">LLM+MCP+RAG</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

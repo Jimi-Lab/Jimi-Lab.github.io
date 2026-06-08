@@ -1,0 +1,779 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="AIxCChttps:&#x2F;&#x2F;www.darpa.mil&#x2F;research&#x2F;programs&#x2F;ai-cyber https:&#x2F;&#x2F;aicyberchallenge.com&#x2F; ASC 比赛 AFC 比赛 网络系统推理结构 https:&#x2F;&#x2F;github.com&#x2F;AIxCyberChallenge&#x2F;example-crs-architecture 每个决赛队伍的获奖视频 https:&#x2F;&#x2F;w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AIxCC总览">
+<meta property="og:url" content="https://jimi-lab.github.io/2026/01/01/AIxCC%E6%80%BB%E8%A7%88/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="AIxCChttps:&#x2F;&#x2F;www.darpa.mil&#x2F;research&#x2F;programs&#x2F;ai-cyber https:&#x2F;&#x2F;aicyberchallenge.com&#x2F; ASC 比赛 AFC 比赛 网络系统推理结构 https:&#x2F;&#x2F;github.com&#x2F;AIxCyberChallenge&#x2F;example-crs-architecture 每个决赛队伍的获奖视频 https:&#x2F;&#x2F;w">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/01/01/AIxCC%E6%80%BB%E8%A7%88/img/1-89d337b1.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/01/01/AIxCC%E6%80%BB%E8%A7%88/img/2-92a48a7a.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/01/01/AIxCC%E6%80%BB%E8%A7%88/img/3-671da4ae.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/01/01/AIxCC%E6%80%BB%E8%A7%88/img/4-f2ef09de.png">
+<meta property="article:published_time" content="2026-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:05.453Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="AIXCC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2026/01/01/AIxCC%E6%80%BB%E8%A7%88/img/1-89d337b1.png">
+  
+  
+  
+  <title>AIxCC总览 - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AIxCC总览"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-01 08:00" pubdate>
+          2026年1月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AIxCC总览</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="AIxCC"><a href="#AIxCC" class="headerlink" title="AIxCC"></a>AIxCC</h2><p><a target="_blank" rel="noopener" href="https://www.darpa.mil/research/programs/ai-cyber">https://www.darpa.mil/research/programs/ai-cyber</a></p>
+<p><a target="_blank" rel="noopener" href="https://aicyberchallenge.com/">https://aicyberchallenge.com/</a></p>
+<p>ASC 比赛</p>
+<p>AFC 比赛</p>
+<p>网络系统推理结构</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/AIxCyberChallenge/example-crs-architecture">https://github.com/AIxCyberChallenge/example-crs-architecture</a></p>
+<p>每个决赛队伍的获奖视频</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/@ctfradiooo">https:&#x2F;&#x2F;www.youtube.com&#x2F;@ctfradiooo</a></p>
+<p>全部获奖的开源项目：</p>
+<p><a target="_blank" rel="noopener" href="https://archive.aicyberchallenge.com/">https://archive.aicyberchallenge.com/</a></p>
+<p>团队的路演介绍：</p>
+<p><a target="_blank" rel="noopener" href="https://aicyberchallenge.com/finalist-teams/">https://aicyberchallenge.com/finalist-teams/</a></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2026/01/01/AIxCC总览/img/1-89d337b1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2026/01/01/AIxCC总览/img/2-92a48a7a.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2026/01/01/AIxCC总览/img/3-671da4ae.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2026/01/01/AIxCC总览/img/4-f2ef09de.png"></p>
+<p>每个团队的优缺点</p>
+<p><a target="_blank" rel="noopener" href="https://blog.trailofbits.com/2025/08/07/aixcc-finals-tale-of-the-tape/">https://blog.trailofbits.com/2025/08/07/aixcc-finals-tale-of-the-tape/</a></p>
+<p>决赛队伍解析</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42016744/article/details/151661395">https://blog.csdn.net/weixin_42016744&#x2F;article&#x2F;details&#x2F;151661395</a></p>
+<table>
+<thead>
+<tr>
+<th align="center">排名</th>
+<th align="center">系统</th>
+<th align="center">团队</th>
+<th>路线</th>
+<th>亮点</th>
+<th>缺点</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">Atlantis</td>
+<td align="center">Team Atlanta</td>
+<td>混合式架构，将传统程序分析、定向模糊测试、语言特化模型和多组件集成结合起来</td>
+<td>1.唯一一支使用在 Llama 7B 上使用经过fine-tune的定制模型，并专门针对 C 语言进行大量微调；<br/>2.对不同语言与任务采用不同 PoV生成策略，例如定向模糊测试、LLM 生成定制 mutator、输入字典等；<br/>3.强调多模块集成（ensembling），通过多路分析引擎提升鲁棒性和多样性；<br/>4.在补丁提交上采取保守策略，只在 PoV与补丁形成高置信匹配时提交。</td>
+<td>1.系统工程复杂度高，多组件集成、模型微调、定向分析都会提升实现和维护成本；<br/>2.高度依赖系统稳定性与工程质量，任何一个环节失效都可能拖累整体效果；<br/>3.保守补丁策略虽然能保证准确率，但可能错过高风险高收益的机会；<br/>4.专门针对 C 分析优化的策略，在跨语言泛化上未必同样强势；<br/>5.对模型、分析器、编排器之间的协同要求极高，调参成本很大。</td>
+<td>总分：392.76<br/>漏洞发现数量：43<br/>成功补丁数量：31</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">Buttercup</td>
+<td align="center">Trail of Bits</td>
+<td>典型的“传统安全工具 + AI 增强”路线代表</td>
+<td>1.以传统模糊测试、静态分析和漏洞研究方法为骨架；<br/>2.利用 LLM 生成高质量 seed input 或 Python 输入生成程序，帮助 fuzzing 更快触达复杂路径；<br/>3.通过 AI 理解复杂输入格式，如 SQL、URL、路径遍历类输入；<br/>4.把 AI 生成的语义化输入纳入 coverage-guided fuzzing 的语料库；<br/>5.对 PoV和补丁进行交叉验证，避免提交低质量结果；<br/>6.补丁策略偏保守，不轻易提交没有 PoV支撑的修复。</td>
+<td>1.对 fuzzing 仍然有较强依赖，若目标程序不适合 fuzzing，效果可能受限；<br/>2.LLM 更多承担增强角色，而不是完整推理闭环，因此在某些深层语义漏洞上可能不如 AI-first 路线激进；<br/>3.AI 生成高质量 seed 的效果，仍依赖 prompt、模型能力和目标格式复杂度；<br/>4.保守提交策略提高准确率，但可能牺牲部分进攻性得分；<br/>5.系统整体效率依赖良好的 fuzz harness 和覆盖率反馈，工程门槛不低。</td>
+<td>总分：219.35<br/>漏洞发现数量：28<br/>成功补丁数量：19</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">RoboDuck</td>
+<td align="center">Theori</td>
+<td>“LLM-first”路线</td>
+<td>1.以 LLM agent 作为主要推理引擎；<br/>2.让 agent 按照逆向分析工作流推进，但对 agent 行为做强约束，避免“乱跑”；<br/>3.使用静态分析工具（如 Infer）先生成大量 bug candidate；<br/>4.再由 LLM agent 进行语义判断，筛掉误报并聚焦真实漏洞；<br/>5.在 PoV生成上依赖 LLM 的语义理解能力，尤其适合复杂格式输入；<br/>6.AI 生成失败时，再把失败样本转化为 fuzzing seed，形成反馈闭环；<br/>7.在补丁策略上比前两名更激进，甚至允许在没有 PoV的情况下按策略提交补丁。</td>
+<td>1.LLM-first 架构天然面临稳定性和可重复性问题；<br/>2.静态分析候选很多，若 LLM 过滤效果不稳定，误报仍可能很高；<br/>3.过于依赖大模型的语义推理能力，对 prompt、上下文构造、模型质量非常敏感；<br/>4.激进补丁策略可能带来准确率惩罚；<br/>5.在复杂仓库级分析中，LLM 成本、上下文窗口、并发调度都可能成为瓶颈。</td>
+<td>总分：210.68<br/>漏洞发现数量：34<br/>成功补丁数量：20</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">All You Need IS A Fuzzing Brain</td>
+<td align="center">All You Need IS A Fuzzing Brain</td>
+<td>“LLM-first”路线</td>
+<td>1.LLM 被用作主要推理引擎；<br/>2.系统将 LLM 用于漏洞分析、系统决策和代码生成；<br/>3.Trail of Bits 的文章提到，该队约 <code>90%</code> 的 PoV通过 AI reasoning 生成；<br/>4.当 AI 方法失败时，传统 fuzzing 用作 fallback 机制。</td>
+<td>1.路线高度依赖 AI 推理；<br/>2.系统仍保留 fuzzing 作为 fallback，说明 AI 路线本身并非完全覆盖所有场景。</td>
+<td>总分：153.70<br/>漏洞发现数量：28<br/>成功补丁数量：14</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">ARTIPHISHELL</td>
+<td align="center">Shellphish</td>
+<td>“传统能力 + AI 增强”的代表，但更强调 fuzzing 侧的强化。</td>
+<td>1.以 fuzzing 为核心基础设施；<br/>2.利用名为 <code>Grammar Guy</code> 的模块，让 LLM 生成和演化渐进式 grammar；<br/>3.根据覆盖率反馈持续改进 grammar，使其更适合复杂输入格式和协议；<br/>4.通过 AI 解决传统变异式 fuzzing 对复杂结构化输入不够敏感的问题；<br/>5.在补丁策略上偏保守，不提交无 PoV支撑的补丁。</td>
+<td>1.仍较依赖 fuzzing 主线，对深层逻辑漏洞未必总有优势；<br/>2.Grammar 生成虽强，但会消耗大量 LLM 预算；<br/>3.对复杂 grammar 的演化过程可能较慢，且质量波动受模型输出影响；<br/>4.补丁策略较保守，得分上可能不如更激进的队伍；<br/>5.把 CTF 经验迁移到大规模真实代码库时，仍需要额外工程打磨。</td>
+<td>总分：135.89<br/>漏洞发现数量：28<br/>成功补丁数量：11</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">BugBuster</td>
+<td align="center">42-b3yond-6ug</td>
+<td>“混合路线 + LLM 驱动补丁创新”</td>
+<td>1.以集成工具链形式运行，LLM agent 负责检测、分析和修复；<br/>2.保留传统 fuzzing 作为 PoV生成核心；<br/>3.结合静态分析报告与 SARIF 机制做验证；<br/>4.采用多 fuzzer协同和强化学习调度；<br/>5.其最有代表性的技术是“super patches”，即一个补丁同时修复多个看似无关的漏洞；<br/>6.系统能够识别多个 crash 背后的共同根因，并尝试一次性修补。</td>
+<td>1.“super patch” 很有想象力，但风险也高，修复范围越大，越容易引入副作用；<br/>2.一次修多个漏洞，对根因分析准确性要求极高；<br/>3.多工具链协同会提升系统复杂度和维护难度；<br/>4.强化学习调度、多 fuzzer编排等能力虽然先进，但也增加工程调试成本；<br/>5.如果补丁过于泛化，可能影响程序原有行为，导致功能正确性问题。</td>
+<td>总分：105.03<br/>漏洞发现数量：41<br/>成功补丁数量：3</td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Report/" class="category-chain-item">Report</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AIXCC/" class="print-no-link">#AIXCC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AIxCC总览</div>
+      <div>https://jimi-lab.github.io/2026/01/01/AIxCC总览/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年1月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/01/12/agent_skills_deep_dive/" title="Anthropic Agent Skills">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Anthropic Agent Skills</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/01/AIXCC-ButterCup%E9%A1%B9%E7%9B%AE%E8%AF%A6%E8%A7%A3/" title="AIXCC-ButterCup项目详解">
+                        <span class="hidden-mobile">AIXCC-ButterCup项目详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

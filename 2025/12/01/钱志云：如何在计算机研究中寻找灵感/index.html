@@ -1,0 +1,745 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="如何在计算机科学研究中寻找灵感：https:&#x2F;&#x2F;medium.com&#x2F;digital-diplomacy&#x2F;how-to-look-for-ideas-in-computer-science-research-7a3fa6f4696f 背景：身处一个成熟的团队，你的导师不再为学生提供具体的研究思路。相反，他们可能会给出一个非常宏观的方向，并附上几篇相关的论文。你只需要这些就能提出一个研究思路。 危机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="钱志云：如何在计算机研究中寻找灵感">
+<meta property="og:url" content="https://jimi-lab.github.io/2025/12/01/%E9%92%B1%E5%BF%97%E4%BA%91%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A0%94%E7%A9%B6%E4%B8%AD%E5%AF%BB%E6%89%BE%E7%81%B5%E6%84%9F/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="如何在计算机科学研究中寻找灵感：https:&#x2F;&#x2F;medium.com&#x2F;digital-diplomacy&#x2F;how-to-look-for-ideas-in-computer-science-research-7a3fa6f4696f 背景：身处一个成熟的团队，你的导师不再为学生提供具体的研究思路。相反，他们可能会给出一个非常宏观的方向，并附上几篇相关的论文。你只需要这些就能提出一个研究思路。 危机">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2025/12/01/%E9%92%B1%E5%BF%97%E4%BA%91%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A0%94%E7%A9%B6%E4%B8%AD%E5%AF%BB%E6%89%BE%E7%81%B5%E6%84%9F/img/1-7bb82f09.png">
+<meta property="article:published_time" content="2025-12-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:05.424Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="CS PHD">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2025/12/01/%E9%92%B1%E5%BF%97%E4%BA%91%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A0%94%E7%A9%B6%E4%B8%AD%E5%AF%BB%E6%89%BE%E7%81%B5%E6%84%9F/img/1-7bb82f09.png">
+  
+  
+  
+  <title>钱志云：如何在计算机研究中寻找灵感 - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="钱志云：如何在计算机研究中寻找灵感"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-01 08:00" pubdate>
+          2025年12月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">钱志云：如何在计算机研究中寻找灵感</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>如何在计算机科学研究中寻找灵感：<a target="_blank" rel="noopener" href="https://medium.com/digital-diplomacy/how-to-look-for-ideas-in-computer-science-research-7a3fa6f4696f">https://medium.com/digital-diplomacy/how-to-look-for-ideas-in-computer-science-research-7a3fa6f4696f</a></p>
+<h1 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h1><p>身处一个成熟的团队，你的导师不再为学生提供具体的研究思路。相反，他们可能会给出一个非常宏观的方向，并附上几篇相关的论文。你只需要这些就能提出一个研究思路。</p>
+<h1 id="危机："><a href="#危机：" class="headerlink" title="危机："></a>危机：</h1><p>要么你设法想出一个好点子去实现它，要么浪费掉博士生涯的前一两年，意识到它毫无进展，最终决定放弃。我读博士期间，目睹了第二种人为主的群体中大约50%的退学率。</p>
+<h1 id="建议："><a href="#建议：" class="headerlink" title="建议："></a>建议：</h1><h2 id="1-学会阅读论文，培养你的品味"><a href="#1-学会阅读论文，培养你的品味" class="headerlink" title="1.学会阅读论文，培养你的品味"></a>1.学会阅读论文，培养你的品味</h2><p>产生新想法最常见的方法之一是阅读其他论文并从中获得灵感。</p>
+<p>每周每节课阅读3-4篇论文</p>
+<p>为什么一篇论文是好的或坏的？是什么让一篇论文变得有趣？你不必阅读论文的每一个细节来回答这些问题。</p>
+<p>找到你最感兴趣的论文类型，并问问自己为什么。<strong>找到你最喜欢的论文类型将有助于你培养自己的研究品味，并最终缩小你的范围，形成新的研究思路</strong></p>
+<p>我总是会问自己：“这些人是如何发现这些漏洞的？进行这样的研究需要哪些技能？” </p>
+<p>每个人都是独一无二的，你总能找到自己的品味，并据此发展出一条独特的道路。事实上，这正是学术自由的魅力所在！</p>
+<h2 id="2-识别研究思路的发展模式"><a href="#2-识别研究思路的发展模式" class="headerlink" title="2.识别研究思路的发展模式"></a>2.识别研究思路的发展模式</h2><p>实现一个想法如何产生的方法。一旦你掌握了其中的一些模式，想出新的想法将是小菜一碟：</p>
+<h3 id="模式1：填空"><a href="#模式1：填空" class="headerlink" title="模式1：填空"></a>模式1：填空</h3><h4 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h4><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2025/12/01/钱志云：如何在计算机研究中寻找灵感/img/1-7bb82f09.png"></p>
+<p>阅读几篇关于某个主题的论文，记下这些论文在假设、系统提供的保证&#x2F;属性、方法论、技术、数据集等方面的差异，然后画一个表格（不一定是二维的）。寻找空白处，这些空白处就是你可以进行研究的潜在新研究思路（事实上，许多<strong>优秀的论文</strong>都会使用这样的表格或图表来清晰地与相关研究区分开来）。</p>
+<p>人们可能已经应用静态分析来自动查找某些类型的漏洞，但还没有人应用动态分析。然后，您可以研究静态分析和动态分析对特定类型漏洞的优缺点。</p>
+<p>可以制作一个更细粒度的表格，这将为您提供更多机会识别空白。同样，如果某种类型的漏洞已经被研究过，您就有可能研究不同类型的漏洞。</p>
+<p>成功运用此模式的关键在于<strong>绘制出空间中存在的维度</strong>。你研究得越深入，就越有可能找到需要填补的空白。例如，你必须熟悉不同类型的程序分析技术，才能绘制表格并说服自己某种特定技术尚未被尝试用于解决问题。同样，你需要了解不同类型的漏洞（仅内存损坏漏洞类型就有十几种）</p>
+<h4 id="做法："><a href="#做法：" class="headerlink" title="做法："></a>做法：</h4><p>1.广泛阅读，寻找类似主题的论文之间的差异。相信我，当你把这些点串联起来时，总有一天它们会派上用场</p>
+<p>2.读综述论文。在网络安全领域，IEEE 安全与隐私会议（顶级会议）每年都会以知识系统化（SoK）的形式接受并发表几篇论文。</p>
+<h3 id="模式2：扩张"><a href="#模式2：扩张" class="headerlink" title="模式2：扩张"></a>模式2：扩张</h3><p>这是“<strong>填空”的自然过程</strong>。正如我提到的，规划出一个空间的几个维度可能是最具挑战性的一步。然而，如果你已经在某个领域有了一些想法（例如，发表了一两篇论文），你就能占据优势，看到其他人不了解的维度。</p>
+<p>我们在 USENIX Security 16 上发表的一篇关于强 TCP 侧信道攻击的论文（《<strong>路径外 TCP 漏洞：全局速率限制被视为危险》）<strong>就是受此模式启发而写的。在我们之前的研究（发表于 S&amp;P 2012 和 CCS 2012）中，攻击要求非常高（甚至可以说是不切实际），假设受害者智能手机上已经安装了非特权恶意软件（或者网络中部署了某种类型的防火墙）。自然而然地，我一直在</strong>努力消除这种强要求</strong>，最终<strong>发现了一种全新的侧信道攻击。<strong>本质上，我已经基本勾勒出攻击要求的维度，可以将其</strong>可视化</strong>为 [要求：恶意软件 | 防火墙 | 非]。</p>
+<p>我们将侧信道攻击经验从TCP转移到了UDP。漏洞的性质非常相似。实际上，它的方向完全相同，即在Linux内核实现中跨TCP&#x2F;UDP套接字查找共享资源（即全局变量）。因此，这里的<strong>维度是关于不同类型的网络协议</strong>。</p>
+<h3 id="模式3：制造锤子并寻找钉子"><a href="#模式3：制造锤子并寻找钉子" class="headerlink" title="模式3：制造锤子并寻找钉子"></a>模式3：制造锤子并寻找钉子</h3><p>高层次的想法是，如果你<strong>拥有独特的专业知识、技术、系统</strong>，甚至是<strong>数据集</strong>（<u>其他人无法轻易复制</u>），你就可以利用它，用它来寻找有趣的问题来解决（我们很幸运，计算机科学领域有这么多实际问题）。</p>
+<p>:::info<br>专业壁垒就是锤子，有趣问题就是钉子（行业积累）</p>
+<p>:::</p>
+<p>密歇根大学的 Peter Chen 教授的团队–虚拟机积累了丰富的专业知识并利用这些知识开发了许多有趣的应用程序。–构建了世界上第一个完整的虚拟机记录和重放功能。</p>
+<p>我自己的团队—从2012年的TCP开始，到2020年的UDP和DNS（在S&amp;P、USENIX Security和CCS上发表了7篇论文）。–网络侧信道方面的专业知识—一个竞争相对较少的小领域。以这种方式积累专业知识的好处是，一旦你对某个主题有了深入的了解，就更容易找到新的问题来解决。</p>
+<p>加州大学圣塔芭芭拉分校（UCSB）–angr–先进的二进制分析框架专业知识–截至 2020 年 12 月 28 日，已有 540 次引用</p>
+<p>构建专业知识、系统或基础设施，直到开始获得收益，可能极其耗时。</p>
+<p>通常只有少数几个团队能够主导一个领域</p>
+<p>如果你能够找到一个<strong>很多人都需要但目前还没有好的解决方案的东西</strong>，那么它可能值得考虑。</p>
+<h3 id="模式4：从小事做起，然后推广"><a href="#模式4：从小事做起，然后推广" class="headerlink" title="模式4：从小事做起，然后推广"></a>模式4：从小事做起，然后推广</h3><p>一个研究想法往往始于一个小小的观察。经过一番挖掘，你就能知道它是否能发展成一个值得发表的完整想法。<strong>现在需要决定的是：</strong><u>你应该花多少时间去探究它，以及在放弃之前应该花多少时间去探究。</u></p>
+<h4 id="做下去的信心："><a href="#做下去的信心：" class="headerlink" title="做下去的信心："></a>做下去的信心：</h4><ol>
+<li><p>最初的观察结果（无论多么微小）在你<strong>第一次</strong>看到它时是如此<strong>有趣和令人惊讶</strong>。</p>
+</li>
+<li><p>当你深入挖掘时，你会意识到这种现象<strong>根植</strong>于一些<strong>根本</strong>的<strong>东西</strong>，无法用众所周知的概念轻易解释（例如，导致安全漏洞的新设计缺陷）。</p>
+</li>
+<li><p>这种观察不太可能是一次性的，例如，背后有更大的空间，还有许多其他<strong>类似的情况</strong>可以调查。</p>
+</li>
+</ol>
+<p>一个具体的例子是我们自己在 CCS 16 上发表的论文“ <strong>Android ION 危害：可定制内存管理系统的诅咒</strong>”。最初，我们研究了通过文件系统暴露给 Android 上任何潜在恶意应用的各种接口。我的学生 Hang <strong>偶然发现了一个看起来很有意思的设备文件</strong>“&#x2F;dev&#x2F;ion”。该接口允许任何应用在“预先存在的堆”中分配内存，并将其映射到用户空间。令人惊讶的是，我们发现这些页面返回的不是“清零页面”，而是<strong>之前使用时剩余的数据</strong>（迹象 1）。这是一个潜在的信息泄露安全漏洞。现在，这<strong>本身可能不会直接引发研究项目</strong>，因为它可能被简单地看作是一个众所周知的信息泄露漏洞的又一个实例。然而，当我们<strong>深入挖掘</strong>时，事情开始变得明朗起来。尽管这种漏洞类型并不新鲜，但其<strong>根源比最初看起来的要深得多</strong>（迹象 2）。具体来说，&#x2F;dev&#x2F;ion 接口的引入意外地暴露了操作系统内核使用的内部 API 返回的内存。与某些设计用于与用户空间交互的 API（需要清零）不同，出于性能原因，此类内部 API 不会主动将新分配的内存清零。更糟糕的是，不同的 Android 智能手机会定制 &#x2F;dev&#x2F;ion 的实现，从而留下更大的调查空间（迹象 3）。</p>
+<h3 id="模式5：复制先前的工作"><a href="#模式5：复制先前的工作" class="headerlink" title="模式5：复制先前的工作"></a>模式5：复制先前的工作</h3><p>先前的模式可能会让您思考：我首先如何进行这些小的观察或发现？好吧，其中一种方法是尝试重现已发表论文的结果。信不信由你，论文中报告的内容可能与您尝试重现时观察到的内容并不完全相同。</p>
+<p>背后有几个原因：（1）作者<strong>无意</strong>中犯下的错误，（2）某些结果在设计上<strong>并非 100％ 可重现</strong>，例如，对某些随时间变化的互联网现象的测量。（3）选择的<strong>基准或数据集有偏见</strong>，倾向于论文中提出的方法。如果您能够识别先前工作中的重要差异或局限性，通常意味着还有改进的空间。即使您设法按预期 100％ 重现了工作，也常常会出现论文中未提及的其他见解或附带发现（论文的篇幅有限）。</p>
+<p>在这篇论文中，学生们被要求复现CCS 18的论文《<strong>Domain Validation++ For MitM-Resilient PKI</strong>》，其中进行了一项特定的测量，以展示一种攻击方法的广泛适用性。有趣的是，我们论文中进行的<strong>测量结果比报告的结果要负面得多</strong>。这促使我们开发一种新方法，以克服先前研究的局限性。</p>
+<h3 id="模式6：外部来源：行业、新闻提要等"><a href="#模式6：外部来源：行业、新闻提要等" class="headerlink" title="模式6：外部来源：行业、新闻提要等"></a>模式6：外部来源：行业、新闻提要等</h3><p>抓住机会与<strong>业内人士</strong>联系，了解他们的迫切<strong>需求和痛点</strong>。</p>
+<p>他们是研究灵感的重要来源。尽管行业比学术界更足智多谋，但在解决技术问题时，行业有着不同的优先级和思维方式。例如，他们对可靠的解决方案更感兴趣，而不太可能投资高风险的解决方案。学术界的好处在于，我们不必一次性 100% 解决问题，而且<strong>学术研究本质上是探索性的</strong>。事实上，从某种意义上说，你可以自行定义成功的指标&#x2F;门槛。<strong>如果你正在解决行业中尚未出现好的解决方案的<u>实际问题</u></strong>，那么“成功”研究项目的门槛就会大大降低</p>
+<p>我个人经常利用这种模式，并且非常享受。我将用一个最近的例子来说明这种模式，它与“补丁”有关。你可能会问：**“为什么补丁是一个有趣的研究课题？”**几年前，通过与业内人士的交流，我意识到这仍然是业界的一个大问题，目前还没有真正好的解决方案。Linux 和 Android 内核中的情况如下：当补丁提交到上游 Linux 内核（即主线）时，下游内核分支（例如 Linux LTS、Ubuntu 和 Android）的维护人员需要手动检查这些补丁是否“适用”。如果适用，他们就会将其反向移植。这是一个耗时且容易出错的过程。重要的安全补丁常常因此被遗漏或延迟。更糟糕的是，除了下游内核分支的所有者之外，第三方也很难审计这些补丁并查找缺失的补丁。例如，在 Android 领域，大多数供应商都没有提供其内核源代码的完整历史记录（例如，git 仓库）。这促成了一款自动化工具的开发，该工具可以测试二进制内核中补丁的存在性。该成果发表于 USENIX Security 18 期刊《<strong>精准的二进制补丁存在性测试</strong>》。随后，我们完善了该工具，并在 USENIX Security 21 期刊上发表了另一篇论文《<strong>Android 内核补丁生态系统调查</strong>》，进一步探究了补丁传播缓慢的延迟及其根本原因。事实上，该补丁项目已经为一系列正在酝酿的相关项目打开了大门。</p>
+<p>有时候，<strong>关注新闻推送和身边发生的事情也能带来好处！<strong>我从几位经常使用Twitter查看科技新闻的教授那里学到了这一点。我们做的一个有趣的项目就是受此启发（论文发表在CCS 15上，题为《<strong>Android Root及其提供商：一把双刃剑</strong>》）。当时，获取Android手机的Root权限非常流行，这样用户就可以自定义操作系统，解锁一些原本无法实现的新功能。许多“一键Root应用”应运而生，只需单击一下按钮即可自动获取多种手机型号的Root权限。在意识到这些应用实际上是在攻击操作系统内核后，我开始思考：“他们到底有多少不同的漏洞，可以攻击这么多手机？他们是否拥有一些你在互联网上找不到的专有漏洞？攻击者是否有可能窃取这些漏洞并重新利用它们（例如，构建勒索软件）？”事实证明，其中一些</strong>应用程序是由业内顶尖黑客开发的，包含一百多个漏洞</strong>，<strong>只需经过一些工作（逆向工程），就可以拥有它们全部（是的，相当可怕，是吧）。</strong></p>
+<h3 id="网络安全研究特有的其他模式："><a href="#网络安全研究特有的其他模式：" class="headerlink" title="网络安全研究特有的其他模式："></a>网络安全研究特有的其他模式：</h3><ol>
+<li><p>**对抗性研究。**由于安全本质上是对抗性的，因此攻击和防御是一个反复出现的主题。你总是可以尝试打破现有的防御，或者构建一个防御机制来抵御攻击。事实上，我经常看到一篇新颖的攻击论文之后紧接着一篇防御论文（这些论文可能来自同一个团队，也可能不同）。</p>
+</li>
+<li><p>**流程自动化。**许多系统安全分析，例如逆向工程、漏洞发现、错误分类、漏洞利用以及检查补丁是否已应用，一直以来都需要一些人工操作，至少在某些情况下如此。应用程序分析等技术，使此类流程（即使只是部分自动化）自动化，可以带来重要的研究价值。这种模式可能不仅限于网络安全，在系统安全领域也十分常见。</p>
+</li>
+</ol>
+<h2 id="3-养成思考-研究思路-的好习惯"><a href="#3-养成思考-研究思路-的好习惯" class="headerlink" title="3.养成思考 研究思路 的好习惯"></a>3.养成思考 研究思路 的好习惯</h2><ul>
+<li><strong>要意识到项目的执行与想法的产生和形成有着根本的不同。<strong>不要完全沉浸在正在进行的项目中而将自己与外界隔绝（很多学生都会犯这个错误）。定期阅读一些论文，例如，当会议上发表了一批新的论文时。你</strong>至少可以浏览一下所有论文的标题</strong>。阅读一些听起来有趣的论文的<strong>摘要</strong>。如果它们真的让你感兴趣，就更仔细地阅读（这又回到了你的研究品味）。确保你<strong>搞清楚这些论文中的研究思路</strong>（而不仅仅是技术层面）。</li>
+<li><strong>认真对待论文评审</strong>。导师通常会把论文评审任务交给学生，然后与学生讨论这些论文。这是一个学习“香肠是如何制作的”的好机会。通常情况下，你只会阅读那些具有良好创新性和影响力（且文笔优美）的已发表论文。不过，在论文评审期间，<strong>你可以看到被拒的论文，并了解它们为何被认为不合格。</strong></li>
+<li><strong>保持好奇心，并保持开放的心态</strong>，看看你可能感兴趣的论文类型。我的建议是“<strong>广泛阅读</strong>”。在计算机科学的实际领域（例如系统、网络、安全、软件工程），我们正处于一个<u>每个领域都越来越成熟的阶段</u>，许多好的想法都来自于不同领域的交叉。<strong>尽管我的导师当时主要从事网络研究，但我一直在阅读系统和程序分析方面的论文，这在我成为教授后对我帮助很大。</strong></li>
+<li><strong>经常参加读书小组和讲座，并<u>提出问题</u>。<strong>如果是讨论密集的会议，例如你自己的研究小组组织的会议，一定要尽量参与。如果你因为缺乏知识或经验而感到畏惧，要知道你的导师正在努力帮助小组里的每个人（尤其是低年级学生），<strong>没有人会嘲笑你问了一个“愚蠢”的问题或类似的东西</strong>。如果你真的没有什么可以问的或想为讨论贡献什么，试着</strong>提前阅读要讨论的论文，以获得优势</strong>。事实上，你当然可以就我们在本文中讨论的内容进行讨论，例如，哪种思维模式促成了论文的构思。一旦你开始这样做一两次，并感受到回报（能够进行良好的讨论），随着时间的推移，你就会越来越得心应手。我非常喜欢的一件事就是就一个想法是否好进行辩论（即使它已经在一个好的会议上发表了）。一些学生扮演攻击者的角色，寻找论文的弱点和局限性，而其他学生则试图为论文辩护。这将让你感受到一个想法的“可辩护性”，就像论文评审的过程一样。</li>
+<li>非正式地，<strong>经常和你的实验室同事交流，了解他们，建立良好的关系</strong>。你和同事交流的时间可能比和导师交流的时间要多得多。所以，为什么不努力创造一个美好的体验呢？能够就一个研究课题展开轻松的对话，<strong>就一篇论文进行一些小辩论</strong>，并与他人交流你的想法，感觉真是太好了。营造良好氛围的一个方法是定期与他们交谈，询问他们的项目进展情况，并主动提供你真诚的反馈。他们很可能会回应你，这会让事情进展顺利。除此之外，当你遇到一些障碍时，交流也非常有帮助。与他人交谈可以为你提供新的视角，帮助你走出困境（我自己就从中受益匪浅）。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%97%BB%E9%81%93/" class="category-chain-item">闻道</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CS-PHD/" class="print-no-link">#CS PHD</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>钱志云：如何在计算机研究中寻找灵感</div>
+      <div>https://jimi-lab.github.io/2025/12/01/钱志云：如何在计算机研究中寻找灵感/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年12月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/12/01/diff%E6%95%B4%E4%B8%AAlinux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9A%E4%BD%8D%E6%BC%8F%E6%B4%9E%E4%BB%A3%E7%A0%81/" title="diff整个linux文件系统定位漏洞代码">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">diff整个linux文件系统定位漏洞代码</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/12/01/How%20to%20read%20a%20paper/" title="How to read a paper">
+                        <span class="hidden-mobile">How to read a paper</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

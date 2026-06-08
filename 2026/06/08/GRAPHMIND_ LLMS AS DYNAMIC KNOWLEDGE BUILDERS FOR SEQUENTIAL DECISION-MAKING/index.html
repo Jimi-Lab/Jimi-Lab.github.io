@@ -1,0 +1,792 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Graphmind：llm 作为一个动态的知识构建者对于时序决策制定  发表时间：ICLR 2026 作者：Yutong Li 论文链接：https:&#x2F;&#x2F;openreview.net&#x2F;pdf?id&#x3D;XromAiEaE3 代码&#x2F;数据集链接：https:&#x2F;&#x2F;anonymous.4open.science&#x2F;r&#x2F;GraphMind-1080 Tag：   ABSTRACT当前 llm 有了强大的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING">
+<meta property="og:url" content="https://jimi-lab.github.io/2026/06/08/GRAPHMIND_%20LLMS%20AS%20DYNAMIC%20KNOWLEDGE%20BUILDERS%20FOR%20SEQUENTIAL%20DECISION-MAKING/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="Graphmind：llm 作为一个动态的知识构建者对于时序决策制定  发表时间：ICLR 2026 作者：Yutong Li 论文链接：https:&#x2F;&#x2F;openreview.net&#x2F;pdf?id&#x3D;XromAiEaE3 代码&#x2F;数据集链接：https:&#x2F;&#x2F;anonymous.4open.science&#x2F;r&#x2F;GraphMind-1080 Tag：   ABSTRACT当前 llm 有了强大的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/GRAPHMIND_%20LLMS%20AS%20DYNAMIC%20KNOWLEDGE%20BUILDERS%20FOR%20SEQUENTIAL%20DECISION-MAKING/img/1-94550c17.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/06/08/GRAPHMIND_%20LLMS%20AS%20DYNAMIC%20KNOWLEDGE%20BUILDERS%20FOR%20SEQUENTIAL%20DECISION-MAKING/img/2-2ed00b77.png">
+<meta property="article:published_time" content="2026-06-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T07:03:14.401Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="KG">
+<meta property="article:tag" content="动态决策制定">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2026/06/08/GRAPHMIND_%20LLMS%20AS%20DYNAMIC%20KNOWLEDGE%20BUILDERS%20FOR%20SEQUENTIAL%20DECISION-MAKING/img/1-94550c17.png">
+  
+  
+  
+  <title>GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-08 00:00" pubdate>
+          2026年6月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Graphmind：llm 作为一个动态的知识构建者对于时序决策制定</p>
+<blockquote>
+<p>发表时间：ICLR 2026</p>
+<p>作者：Yutong Li</p>
+<p>论文链接：<a target="_blank" rel="noopener" href="https://openreview.net/pdf?id=XromAiEaE3">https://openreview.net/pdf?id=XromAiEaE3</a></p>
+<p>代码&#x2F;数据集链接：<a target="_blank" rel="noopener" href="https://anonymous.4open.science/r/GraphMind-1080">https://anonymous.4open.science/r/GraphMind-1080</a></p>
+<p>Tag：</p>
+</blockquote>
+<hr>
+<h1 id="ABSTRACT"><a href="#ABSTRACT" class="headerlink" title="ABSTRACT"></a>ABSTRACT</h1><p>当前 llm 有了强大的推理能力，归咎于他们拓展外部知识，有效地内在化并且充分利用新消息在动态环境中一直是一个有意义的挑战。</p>
+<p>这个限制是尤其明显的在部分可观测到的环境，这需要 agent 去管理统计且执行有效的探索在不完全信息中。</p>
+<p>为了解决这个问题，我们提出了一个 llm agent 架构（整合一个知识图谱作为一个基于图的记忆模块去促进高级别行为规划。agent 逐步的从交互式环境中构建知识图谱，检索相关信息去生成有效规划。</p>
+<p>我们评估了我们的方法，在复杂的导航式特殊任务，专为现有长时序和部分客观测挑战。实验结果表明，结合一个知识图谱作为一个拓展记忆显著增强了 llm 规划能力的成功率和有效性</p>
+<h1 id="PROBLEM-TO-SOLVE"><a href="#PROBLEM-TO-SOLVE" class="headerlink" title="PROBLEM TO SOLVE"></a>PROBLEM TO SOLVE</h1><h3 id="problem-description"><a href="#problem-description" class="headerlink" title="problem description:"></a>problem description:</h3><p>要解决 LLM agent 的长期交互记忆组织问题，不是单纯的知识图谱构建。</p>
+<h3 id="Limitations-of-Existing-Methods"><a href="#Limitations-of-Existing-Methods" class="headerlink" title="Limitations of Existing Methods"></a>Limitations of Existing Methods</h3><p>1.只放最近轨迹的上下文：上下文窗口有限，长程任务中旧信息丢失</p>
+<p>2.把历史压缩成摘要或者 stack memory：信息线形堆叠，难以区分空间位置、对象身份、门的连接关系</p>
+<p>3.普通 RAG&#x2F;GraphRAG 多是静态知识源：适合问答文档检索，不适合 agent 在探索过程中不断生成新知识、修正旧知识的场景。作者明确把自己和静态 rag&#x2F;graphRAG 区分开：GraphMind 的知识库是不完整切不断演化的。</p>
+<p>它的关键 insight 是：</p>
+<p>对部分可观测的长程决策任务，mem 的结构化比 mem 的容量更重要。</p>
+<p>线性记忆会让 agent“记得很多但用不好”；图结构能显示表示实体、位置、连接、方向和距离，从而服务规划。</p>
+<h1 id="METHOD"><a href="#METHOD" class="headerlink" title="METHOD"></a>METHOD</h1><h3 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h3><!-- 这是一张图片，ocr 内容为：PLANNING AND EXECUTION KNOWLEDGE GRAPH CONSTRUCTION EXTRACT PLAN WITH VERIFY NODE EXECUTE DSLS TRANSITION INFORMATION RETRY/COMPLETED NOT TRANSITIONED TRANSITIONED REVISE PLAN DETERMINE THE VERIFY UPDATE ENTITY COMPLETION CURRENT NODE INFORMATION FIGURE 3: OVERVIEW OF THE PROPOSED FRAN ID FRAMEWORK. THE LEFT PANEL ILLUSTRATES THE CONSTRUCTION OF THE THE KNOWLEDGE GRAPH, WHERE TH WHERE THE AGENT VERIFIES NODE TRANSITIONS, EXTRACTS INFORMATION FROM A OBSERVATIONS, DETERMINES THE CURRENT NODE, AND UPDATES ENTITY INFORMATION. THE RIGHT PANEL D PANEL DEPICTS THE PLANNING AND EXECUTION LOOP. IN WHICH THE LLM GENERATES DSL-BASED PLANS, THE ACTOR EXECUTES INSTRUCTIONS. COMPLETION IS VERIFIED, AND PLANS ARE REVISED IF NECESSARY.ARROWS IN E INFORMATION WS INDICATE THE FLOW OF INF D ITERATIVE FEEDBACK BETWEEN MODULES. AND ITER -->
+
+<p><img src="/2026/06/08/GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING/img/1-94550c17.png"></p>
+<p>KG：把每一步执行的结果总结进入图谱</p>
+<p>Planing and execution：LLM 调用图谱工具，生成 DSL 计划、执行、验证、修正</p>
+<!-- 这是一张图片，ocr 内容为：VERIFY NODE TRANSITION KNOWLEDGE GRAPH EXTRACT INFORMATION OUTPUT INPUT OUTPUT INPUT RELATIONSHIPS IS CONNECTED WITH RED BALL CONTAINS TRANSITION:TRUE BLUE OPEN DOOR IS LOCATED_TO PURPLE CLOSED DOOR ARE_APART ROOM O ROOM ROOM 2 UPDATE ENTITY INFORMATION DETERMINE THE CURRENT NODE OUTPUT INPUT INPUT OUTPUT ROOM  2 OBSERVATION RED BALL UPDATED ROOM 2 ROOM 2 TRANSITION:TRUE BLUE OPEN DOOR EXTRACTED INFO PURPLE CLOSED DOOR FIGURE 4: EXAMPLE OF UPDATING THE KNOWLEDGE GRAPH IN BABYAL. WHEN THE AGENT ( ) OBSERVES A RED ) AND A PURPLE DOOR ( ) AFTER TRAVERSING A BLUE DOOR (I), THE CORRESPONDING MODULES VERIFY BALL THE DOOR TRAVERSAL, EXTRACT OBJECT INFORMATION, AND EXPAND THE GRAPH BY ADDING A NEW ROOM NODE,ITS CONNECTING EDGE, AND THE ASSOCIATED RELATIONSHIPS, BUILDING UPON THE EXISTING GRAPH (SHADED AREA)- -->
+
+<p><img src="/2026/06/08/GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING/img/2-2ed00b77.png"></p>
+<h3 id="知识图谱设计"><a href="#知识图谱设计" class="headerlink" title="知识图谱设计"></a>知识图谱设计</h3><p>GraphMind 的图谱节点主要是 rooms &#x2F; entities，边表示实体和位置之间的关系。论文中用了四类关系：</p>
+<table>
+<thead>
+<tr>
+<th>Relation</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>is_connected_with</code></td>
+<td>房间&#x2F;门之间的空间连接</td>
+</tr>
+<tr>
+<td><code>contains</code></td>
+<td>某个房间包含哪些对象</td>
+</tr>
+<tr>
+<td><code>is_located_to</code></td>
+<td>对象相对方向</td>
+</tr>
+<tr>
+<td><code>are_apart</code></td>
+<td>对象之间的相对距离，用于区分视觉上相似的实体</td>
+</tr>
+</tbody></table>
+<p>作者把房间建模为节点，把门作为连接房间的边，房间中的对象通过 contains 和 is_located_to 注入图谱，同房间对象之间用 are_apart 表示相对距离。</p>
+<p>图谱构建有四个 LLM 模块：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Verify Node Transition</strong></td>
+<td>判断 agent 是否真的从一个房间转移到了另一个房间，并更新连接关系</td>
+</tr>
+<tr>
+<td><strong>Extract Information</strong></td>
+<td>从当前 observation 里抽取对象、方向、相对距离</td>
+</tr>
+<tr>
+<td><strong>Determine Current Node</strong></td>
+<td>根据观察、上一节点、连接关系判断当前所在图节点</td>
+</tr>
+<tr>
+<td><strong>Update Entity Information</strong></td>
+<td>把当前观察和已有节点信息融合，维护一致的实体状态</td>
+</tr>
+</tbody></table>
+<p>其中 Verify Node Transition 很关键，因为一旦误判“进入了新房间”，图谱会错误扩张。作者对这个模块用了 5 次 LLM 查询投票，并加入 self-evaluation 来提高鲁棒性</p>
+<h3 id="图谱工具调用"><a href="#图谱工具调用" class="headerlink" title="图谱工具调用"></a>图谱工具调用</h3><p>GraphMind 不是每轮都把完整图谱塞进 prompt，而是提供外部工具，让 LLM 按需查询。工具包括：</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Get Neighbor Entity Information</strong></td>
+<td>查询某节点及邻居节点的信息，并返回访问次数，辅助探索</td>
+</tr>
+<tr>
+<td><strong>Search Closest Entity</strong></td>
+<td>用 BFS 找离当前节点最近的目标实体</td>
+</tr>
+<tr>
+<td><strong>Find Unexplored Closed Door</strong></td>
+<td>用 BFS 找最近的未探索关闭&#x2F;锁定门</td>
+</tr>
+</tbody></table>
+<h1 id="CONTRIBUTION"><a href="#CONTRIBUTION" class="headerlink" title="CONTRIBUTION"></a>CONTRIBUTION</h1><h3 id="Claimed-Contributions"><a href="#Claimed-Contributions" class="headerlink" title="Claimed Contributions"></a>Claimed Contributions</h3><p>ProPosed by the author</p>
+<h3 id="Personal-Assessment"><a href="#Personal-Assessment" class="headerlink" title="Personal Assessment"></a>Personal Assessment</h3><p>My opinion: Novelty(new tasks? new dateset? new concept? innovation? new gap?  new theory? Combinatorial methods? )</p>
+<p>部分可观测环境中，如何动态构建结构化外部记忆，并通过工具调用图谱来做长期规划。</p>
+<h1 id="EXPERIMENTATION"><a href="#EXPERIMENTATION" class="headerlink" title="EXPERIMENTATION"></a>EXPERIMENTATION</h1><p>Dataset:</p>
+<p>BaseLine:</p>
+<p>Result:</p>
+<p>Ablation experiment:</p>
+<p>Case Study:</p>
+<h1 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a>Limitation</h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Papers/" class="category-chain-item">Papers</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/KG/" class="print-no-link">#KG</a>
+      
+        <a href="/tags/%E5%8A%A8%E6%80%81%E5%86%B3%E7%AD%96%E5%88%B6%E5%AE%9A/" class="print-no-link">#动态决策制定</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING</div>
+      <div>https://jimi-lab.github.io/2026/06/08/GRAPHMIND_ LLMS AS DYNAMIC KNOWLEDGE BUILDERS FOR SEQUENTIAL DECISION-MAKING/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/08/AriGraph_%20Learning%20Knowledge%20Graph%20World%20Models%20with%20Episodic%20Memory%20for%20LLM%20Agents/" title="AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents">
+                        <span class="hidden-mobile">AriGraph_ Learning Knowledge Graph World Models with Episodic Memory for LLM Agents</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

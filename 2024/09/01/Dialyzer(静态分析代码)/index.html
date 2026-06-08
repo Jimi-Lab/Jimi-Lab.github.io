@@ -1,0 +1,756 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="https:&#x2F;&#x2F;www.erlang.org&#x2F;doc&#x2F;apps&#x2F;dialyzer&#x2F;dialyzer_chapter.html https:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;section&#x2F;1122977 简介：Dialyzer从调试编译的BEAM字节码或Erlang源代码开始分析。报告差异的文件和行号以及差异是关于什么的指示。Dialyzer基于成功典型的概念进行分析，这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dialyzer(静态分析代码)">
+<meta property="og:url" content="https://jimi-lab.github.io/2024/09/01/Dialyzer(%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E4%BB%A3%E7%A0%81)/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="https:&#x2F;&#x2F;www.erlang.org&#x2F;doc&#x2F;apps&#x2F;dialyzer&#x2F;dialyzer_chapter.html https:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;section&#x2F;1122977 简介：Dialyzer从调试编译的BEAM字节码或Erlang源代码开始分析。报告差异的文件和行号以及差异是关于什么的指示。Dialyzer基于成功典型的概念进行分析，这">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-09-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-08T06:49:04.673Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="Dialyzer">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Dialyzer(静态分析代码) - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Dialyzer(静态分析代码)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-01 08:00" pubdate>
+          2024年9月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Dialyzer(静态分析代码)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><a target="_blank" rel="noopener" href="https://www.erlang.org/doc/apps/dialyzer/dialyzer_chapter.html">https://www.erlang.org/doc/apps/dialyzer/dialyzer_chapter.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/section/1122977">https://cloud.tencent.com/developer/section/1122977</a></p>
+<h4 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h4><p>Dialyzer从调试编译的BEAM字节码或Erlang源代码开始分析。报告差异的文件和行号以及差异是关于什么的指示。Dialyzer基于成功典型的概念进行分析，这种概念允许发出合理的警告（没有误报）。</p>
+<h4 id="Dialyzer的核心功能"><a href="#Dialyzer的核心功能" class="headerlink" title="Dialyzer的核心功能"></a>Dialyzer的核心功能</h4><p>Dialyzer 的目标是通过静态分析帮助开发人员识别潜在的错误和不一致之处，而无需运行代码。它主要用于以下几类检查：</p>
+<p>**类型错误：**检查函数参数和返回值是否符合预期类型。</p>
+<p>**不可达代码：**检查由于编程错误导致的死代码。</p>
+<p>**冗余检查：**识别冗余的测试和无用的代码。</p>
+<h4 id="Persistent-Lookup-Table-PLT"><a href="#Persistent-Lookup-Table-PLT" class="headerlink" title="Persistent Lookup Table (PLT)"></a>Persistent Lookup Table (PLT)</h4><p>Dialyzer 使用一个称为 <strong>Persistent Lookup Table (PLT)</strong> 的机制来存储分析结果。通过该表格，Dialyzer 能够在后续的分析中避免重复工作，从而提高效率。PLT 存储了关于被分析应用程序的所有类型信息。</p>
+<p><strong>PLT的构建与管理</strong></p>
+<p>Dialyzer 推荐在使用前构建一个包含 Erlang&#x2F;OTP 应用的 PLT，您可以通过以下命令来构建 PLT：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">bash<br><br><br>复制代码<br>dialyzer --build_plt --apps erts kernel stdlib mnesia<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>--apps</code> 选项用于指定要包含在 PLT 中的应用程序。</li>
+<li>PLT 文件默认保存在 <code>user_cache</code> 目录下，但也可以使用 <code>--plt</code> 和 <code>--output_plt</code> 选项来指定 PLT 文件的位置。</li>
+</ul>
+<p>PLT 文件可以添加、删除或更新：</p>
+<ul>
+<li><strong>添加应用程序</strong>：将某个应用程序添加到现有的 PLT 中：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">bash<br><br><br>复制代码<br>dialyzer --add_to_plt --apps compiler --output_plt my.plt<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>删除应用程序</strong>：从 PLT 中删除某个应用程序：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">bash<br><br><br>复制代码<br>dialyzer --remove_from_plt --plt my.plt --apps compiler<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>检查 PLT 一致性</strong>：当代码发生更改后，可以使用以下命令来确保 PLT 一致性：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">bash<br><br><br>复制代码<br>dialyzer --check_plt --plt my.plt<br></code></pre></td></tr></table></figure>
+
+<p><strong>获取 PLT 信息</strong></p>
+<p>要查看 PLT 的信息，可以使用 <code>--plt_info</code> 命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">bash<br><br><br>复制代码<br>dialyzer --plt_info --plt my.plt<br></code></pre></td></tr></table></figure>
+
+<h4 id="Dialyzer-类型推断示例"><a href="#Dialyzer-类型推断示例" class="headerlink" title="Dialyzer 类型推断示例"></a>Dialyzer 类型推断示例</h4><ol>
+<li><strong>参数不重叠的示例</strong>：</li>
+</ol>
+<p>假设你有以下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plain">erlang<br><br><br>复制代码<br>-spec foo(boolean()) -&gt; string().<br>foo(N) -&gt; integer_to_list(N).<br></code></pre></td></tr></table></figure>
+
+<p>Dialyzer 推断 <code>foo/1</code> 的类型是 <code>integer() -&gt; string()</code>，但函数规范声明它是 <code>boolean() -&gt; string()</code>。由于这两者不重叠，Dialyzer 会发出警告：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plain">php<br><br><br>复制代码<br>some_module.erl:7:2: Invalid type specification for function some_module:foo/1.<br>The success typing is some_module:foo<br>      (integer()) -&gt; string()<br>But the spec is some_module:foo<br>      (boolean()) -&gt; string()<br>They do not overlap in the 1st argument<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>返回值不重叠的示例</strong>：</li>
+</ol>
+<p>另一个例子是返回值类型不匹配：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plain">erlang<br><br><br>复制代码<br>-spec bar(a | b) -&gt; atom().<br>bar(a) -&gt; &lt;&lt;&quot;a&quot;&gt;&gt;;<br>bar(b) -&gt; &lt;&lt;&quot;b&quot;&gt;&gt;.<br></code></pre></td></tr></table></figure>
+
+<p>Dialyzer 会推断返回值类型是二进制（<code>binary()</code>），而规范要求返回值为 <code>atom()</code>。因此，Dialyzer 会发出警告：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plain">rust<br><br><br>复制代码<br>some_module.erl:11:2: Invalid type specification for function some_module:bar/1.<br>The success typing is some_module:bar<br>      (&#x27;a&#x27; | &#x27;b&#x27;) -&gt; &lt;&lt;_:8&gt;&gt;<br>But the spec is some_module:bar<br>      (&#x27;a&#x27; | &#x27;b&#x27;) -&gt; atom()<br>The return types do not overlap<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>规范和推断类型的交集</strong>：</li>
+</ol>
+<p>假设你有以下规范和实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plain">erlang<br><br><br>复制代码<br>-spec baz(a | b) -&gt; non_neg_integer().<br>baz(b) -&gt; -1;<br>baz(c) -&gt; 0;<br>baz(d) -&gt; 1.<br></code></pre></td></tr></table></figure>
+
+<p>Dialyzer 会推断 <code>baz/1</code> 的类型是 <code>b | c | d -&gt; -1 | 0 | 1</code>。由于函数规范要求返回 <code>non_neg_integer()</code>，交集是 <code>0 | 1</code>。在这种情况下，Dialyzer 会信任规范并将返回类型限制为 <code>0 | 1</code>。</p>
+<p>如果后续代码调用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plain">erlang<br><br><br>复制代码<br>call_baz1(A) -&gt; case baz(A) of<br>    -1 -&gt; negative;<br>    0 -&gt; zero;<br>    1 -&gt; positive<br>end.<br></code></pre></td></tr></table></figure>
+
+<p>由于 <code>baz/1</code> 只会返回 <code>0</code> 或 <code>1</code>，Dialyzer 会警告：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plain">lua<br><br><br>复制代码<br>some_module.erl:25:9: The pattern<br>      -1 can never match the type<br>      0 | 1<br></code></pre></td></tr></table></figure>
+
+<h3 id="使用Dialyzer的好处"><a href="#使用Dialyzer的好处" class="headerlink" title="使用Dialyzer的好处"></a>使用Dialyzer的好处</h3><ol>
+<li><strong>早期发现错误</strong>：Dialyzer 可以在开发阶段通过静态分析提前发现潜在的错误，而不需要运行程序。</li>
+<li><strong>无需完整的类型注解</strong>：即使没有提供完整的类型规格，Dialyzer 也能推断出类型并识别问题。</li>
+<li><strong>跨模块分析</strong>：它可以分析整个代码库，发现跨模块的数据流问题和潜在的运行时错误。</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Dialyzer 是 Erlang 中强大的静态分析工具，适用于查找潜在的类型错误、死代码和冗余测试。通过使用 PLT 和函数规格，Dialyzer 能够提供深入的分析，帮助开发人员提高代码质量并减少运行时错误。对于没有强制要求的类型注解，它仍然能够通过推断提供有用的警告。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Tools/" class="category-chain-item">Tools</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Dialyzer/" class="print-no-link">#Dialyzer</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Dialyzer(静态分析代码)</div>
+      <div>https://jimi-lab.github.io/2024/09/01/Dialyzer(静态分析代码)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/01/BinAbsInspector(ghidra%E6%8F%92%E4%BB%B6%EF%BC%8C%E6%A3%80%E6%B5%8B%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E)/" title="BinAbsInspector(ghidra插件，检测二进制漏洞)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">BinAbsInspector(ghidra插件，检测二进制漏洞)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/01/SonarQube/" title="SonarQube">
+                        <span class="hidden-mobile">SonarQube</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

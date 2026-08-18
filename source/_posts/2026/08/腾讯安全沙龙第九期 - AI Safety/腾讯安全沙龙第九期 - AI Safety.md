@@ -1,11 +1,13 @@
-
 ---
-title: 腾讯安全沙龙第九期 - AI Safety
+title: "腾讯安全沙龙第九期 - AI Safety"
 date: 2026-08-01
 categories: [Report]
-tags:
-  - AI Safety
+tags: [AI Safety]
 ---
+
+
+
+
 
 ## 腾讯安全沙龙第九期 - AI Safety
 
@@ -13,51 +15,51 @@ tags:
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038587092-da93b9b4-bf10-4705-8878-6ef912144ec3.png)
+![](img/remote-ad64bd55cf0a.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038609930-0a0ddbc0-ef25-4d0d-b8e0-196aed9f0c22.png)
+![](img/remote-be40defdb273.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038617345-69010b47-99fb-4966-8324-4e0aed55c327.png)
+![](img/remote-1902cff17912.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038623022-64af7401-fafc-4e35-9e4f-0df333c3419a.png)
+![](img/remote-e395e35369d0.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038629423-c5f22803-afef-4be0-bf61-f9a4048c8d07.png)
+![](img/remote-921925646216.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038638884-14e20cc3-7280-4045-86f9-e64605a6feda.png)
+![](img/remote-82317a6d0da7.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038645738-d17ec58d-880c-4ea0-9ece-c228a8731e32.png)
+![](img/remote-423669a2b124.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038652221-6646324f-b232-4510-a5d2-c6a1e8b5e412.png)
+![](img/remote-3e1c6382d35c.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038659575-18c94d83-ded2-463d-bb8a-19a7a1ae5af2.png)
+![](img/remote-e72c63f6d171.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038666676-8e208aea-1efa-4c34-aa84-dce2b85fbdb8.png)
+![](img/remote-ca0080e45310.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787038569983-a24d5cc5-8235-48c5-ac56-9c38b81bf645.png)
+![](img/remote-271a61b012f9.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787039134526-68e9eb5d-6929-4e9d-9eda-9189d3f05e0b.png)
+![](img/remote-6fbf58dfee0e.png)
 
 近源渗透：
 
@@ -65,32 +67,32 @@ DMA 是针对 win 内存设计的，针对 LLM 的显存是否也有类似 DMA �
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787040328904-b4abbd17-6318-4902-87b1-3d8c2d8c3e22.png)
+![](img/remote-c3a774207b97.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787041299046-54d2d556-d3f1-461a-b18a-be434569a189.png)
+![](img/remote-ad4239563134.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787041328086-1d3d1cb9-df21-4d24-acbe-dd70ca9d4816.png)
+![](img/remote-4c6bdf1294ac.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787041335372-9d452849-3907-45a8-8648-9d11351b1c5b.png)
+![](img/remote-eca8a2c66c1c.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787041342161-da560320-abf4-419a-9def-5668a393c552.png)
+![](img/remote-ff8acc4ec57e.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787041412580-c131c7dd-0253-47b0-a648-c62916075d63.png)
+![](img/remote-10dcadef7cf2.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787041422265-08cc1844-60b1-4331-b12d-98f9c35d54e7.png)
+![](img/remote-53c978d323ae.png)
 
 <!-- 这是一张图片，ocr 内容为： -->
 
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787041465121-d15569ef-6f67-41dc-a6e1-ae79de4785e1.png)
+![](img/remote-f1a69df67b2f.png)

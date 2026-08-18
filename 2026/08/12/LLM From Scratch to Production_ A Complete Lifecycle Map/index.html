@@ -1,0 +1,685 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="LLM From Scratch to Production: A Complete Lifecycle Map123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM From Scratch to Production_ A Complete Lifecycle Map">
+<meta property="og:url" content="https://jimi-lab.github.io/2026/08/12/LLM%20From%20Scratch%20to%20Production_%20A%20Complete%20Lifecycle%20Map/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="LLM From Scratch to Production: A Complete Lifecycle Map123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-18T10:28:10.050Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Lifecycle Map">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>LLM From Scratch to Production_ A Complete Lifecycle Map - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="LLM From Scratch to Production_ A Complete Lifecycle Map"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-12 00:00" pubdate>
+          2026年8月12日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          772 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">LLM From Scratch to Production_ A Complete Lifecycle Map</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="LLM-From-Scratch-to-Production-A-Complete-Lifecycle-Map"><a href="#LLM-From-Scratch-to-Production-A-Complete-Lifecycle-Map" class="headerlink" title="LLM From Scratch to Production: A Complete Lifecycle Map"></a>LLM From Scratch to Production: A Complete Lifecycle Map</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br><span class="line">662</span><br><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br><span class="line">675</span><br><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br><span class="line">688</span><br><span class="line">689</span><br><span class="line">690</span><br><span class="line">691</span><br><span class="line">692</span><br><span class="line">693</span><br><span class="line">694</span><br><span class="line">695</span><br><span class="line">696</span><br><span class="line">697</span><br><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br><span class="line">719</span><br><span class="line">720</span><br><span class="line">721</span><br><span class="line">722</span><br><span class="line">723</span><br><span class="line">724</span><br><span class="line">725</span><br><span class="line">726</span><br><span class="line">727</span><br><span class="line">728</span><br><span class="line">729</span><br><span class="line">730</span><br><span class="line">731</span><br><span class="line">732</span><br><span class="line">733</span><br><span class="line">734</span><br><span class="line">735</span><br><span class="line">736</span><br><span class="line">737</span><br><span class="line">738</span><br><span class="line">739</span><br><span class="line">740</span><br><span class="line">741</span><br><span class="line">742</span><br><span class="line">743</span><br><span class="line">744</span><br><span class="line">745</span><br><span class="line">746</span><br><span class="line">747</span><br><span class="line">748</span><br><span class="line">749</span><br><span class="line">750</span><br><span class="line">751</span><br><span class="line">752</span><br><span class="line">753</span><br><span class="line">754</span><br><span class="line">755</span><br></pre></td><td class="code"><pre><code class="hljs plain"><br>================================================================================<br>                     从 0 到可部署 LLM：完整生命周期<br>================================================================================<br><br><br>┌─────────────────────────────────────────────────────────────────────────────┐<br>│ 0. 目标定义 / Scaling Planning                                             │<br>├─────────────────────────────────────────────────────────────────────────────┤<br>│ 决定：                                                                      │<br>│                                                                             │<br>│ • 模型用途：通用 / Code / Math / Security / Agent / Multilingual           │<br>│ • Dense 还是 MoE                                                           │<br>│ • 目标参数规模：1B / 7B / 32B / 70B / 200B+                               │<br>│ • 训练 Token Budget                                                        │<br>│ • Context Length                                                           │<br>│ • GPU / 训练 FLOPs / 时间 / 成本预算                                       │<br>│ • 数据规模和数据配比                                                       │<br>│                                                                             │<br>│ 常通过小模型实验 + Scaling Law 决定最终 recipe                             │<br>└──────────────────────────────────┬──────────────────────────────────────────┘<br>                                   │<br>                                   ▼<br><br>================================================================================<br>                            第一阶段：DATA<br>================================================================================<br><br>┌─────────────────────────────────────────────────────────────────────────────┐<br>│ 1. 原始数据采集 Raw Data Collection                                          │<br>├─────────────────────────────────────────────────────────────────────────────┤<br>│                                                                             │<br>│ Web Crawl                                                                   │<br>│ Books                                                                       │<br>│ Wikipedia                                                                   │<br>│ Papers                                                                      │<br>│ GitHub / Source Code                                                        │<br>│ StackOverflow / Forums                                                      │<br>│ Math / STEM                                                                 │<br>│ 多语言语料                                                                  │<br>│ 对话数据                                                                    │<br>│ 合成数据 Synthetic Data                                                    │<br>│ 专业领域数据                                                                │<br>│                                                                             │<br>│                     ↓ Raw Corpus                                            │<br>└──────────────────────────────────┬──────────────────────────────────────────┘<br>                                   │<br>                                   ▼<br><br>┌─────────────────────────────────────────────────────────────────────────────┐<br>│ 2. 数据清洗 / Curating                                                      │<br>├─────────────────────────────────────────────────────────────────────────────┤<br>│                                                                             │<br>│ ① 格式清洗                                                                  │<br>│    HTML / JS / Boilerplate 删除                                             │<br>│    Unicode Normalize                                                        │<br>│    Language Detection                                                       │<br>│                                                                             │<br>│ ② 去重 Deduplication                                                        │<br>│    Exact Dedup                                                              │<br>│    Near Dedup                                                               │<br>│    Semantic Dedup                                                           │<br>│                                                                             │<br>│ ③ 质量过滤 Quality Filtering                                               │<br>│    Heuristic Filter                                                         │<br>│    Classifier / LLM Quality Score                                           │<br>│                                                                             │<br>│ ④ 内容过滤                                                                  │<br>│    Spam                                                                     │<br>│    NSFW                                                                     │<br>│    Malware / Low-quality                                                    │<br>│                                                                             │<br>│ ⑤ 隐私与合规                                                                │<br>│    PII                                                                      │<br>│    License                                                                  │<br>│    Copyright                                                                │<br>│                                                                             │<br>│ ⑥ Benchmark Decontamination                                                 │<br>│    防止测试集泄漏到训练集                                                   │<br>│                                                                             │<br>│ ⑦ Data Mixture                                                             │<br>│    Web : Code : Math : Academic : Multilingual : ...                        │<br>│                                                                             │<br>└──────────────────────────────────┬──────────────────────────────────────────┘<br>                                   │<br>                                   ▼<br>                             Curated Corpus<br><br>================================================================================<br>                        第二阶段：TOKEN REPRESENTATION<br>================================================================================<br><br>┌─────────────────────────────────────────────────────────────────────────────┐<br>│ 3. Tokenizer                                                               │<br>├─────────────────────────────────────────────────────────────────────────────┤<br>│                                                                             │<br>│ Curated Text                                                                │<br>│      │                                                                      │<br>│      ▼                                                                      │<br>│ 训练 / 选择 Tokenizer                                                      │<br>│                                                                             │<br>│ BPE / SentencePiece / Unigram 等                                            │<br>│                                                                             │<br>│ 决定：                                                                      │<br>│ • Vocabulary Size                                                          │<br>│ • Special Tokens                                                           │<br>│ • BOS / EOS / PAD                                                           │<br>│ • Chat Control Tokens                                                       │<br>│                                                                             │<br>│ 文本                                                                        │<br>│ &quot;我喜欢打篮球&quot;                                                             │<br>│      ↓                                                                      │<br>│ Tokens                                                                      │<br>│ [&quot;我&quot;,&quot;喜欢&quot;,&quot;打&quot;,&quot;篮球&quot;]                                                   │<br>│      ↓                                                                      │<br>│ Token IDs                                                                   │<br>│ [1234, 8123, 726, 19283]                                                    │<br>│                                                                             │<br>└──────────────────────────────────┬──────────────────────────────────────────┘<br>                                   │<br>                                   ▼<br><br>┌─────────────────────────────────────────────────────────────────────────────┐<br>│ 4. Pretraining Dataset Construction                                        │<br>├─────────────────────────────────────────────────────────────────────────────┤<br>│                                                                             │<br>│ Token IDs                                                                   │<br>│      ↓                                                                      │<br>│ Sequence Packing                                                            │<br>│      ↓                                                                      │<br>│ 固定训练长度，例如 4K / 8K tokens                                          │<br>│      ↓                                                                      │<br>│ Shuffle                                                                     │<br>│      ↓                                                                      │<br>│ Batch / Micro-batch                                                         │<br>│      ↓                                                                      │<br>│ Train / Validation Split                                                    │<br>│                                                                             │<br>└──────────────────────────────────┬──────────────────────────────────────────┘<br>                                   │<br>                                   ▼<br><br>================================================================================<br>                         第三阶段：MODEL DESIGN<br>================================================================================<br><br>┌─────────────────────────────────────────────────────────────────────────────┐<br>│ 5. 定义模型架构 Model Architecture                                         │<br>├─────────────────────────────────────────────────────────────────────────────┤<br>│                                                                             │<br>│ Decoder-only Transformer                                                    │<br>│                                                                             │<br>│ ├── Vocabulary Size                                                        │<br>│ ├── Number of Layers                  32 / 80 / ...                         │<br>│ ├── Hidden Size                       d_model                               │<br>│ ├── Attention Heads                                                        │<br>│ ├── KV Heads                           MHA / GQA / MQA                      │<br>│ ├── Head Dimension                                                          │<br>│ ├── FFN Intermediate Size                                                   │<br>│ ├── Activation                         SwiGLU / GELU                        │<br>│ ├── Normalization                      RMSNorm                             │<br>│ ├── Positional Encoding                RoPE                                │<br>│ ├── Context Length                                                          │<br>│ ├── Dense / MoE                                                             │<br>│ │      ├── Number of Experts                                               │<br>│ │      ├── Top-K Experts                                                   │<br>│ │      └── Router                                                          │<br>│ └── Weight Tying / LM Head                                                  │<br>│                                                                             │<br>└──────────────────────────────────┬──────────────────────────────────────────┘<br>                                   │<br>                                   ▼<br><br>┌─────────────────────────────────────────────────────────────────────────────┐<br>│ 6. 创建并初始化全部 Trainable Parameters                                   │<br>├─────────────────────────────────────────────────────────────────────────────┤<br>│                                                                             │<br>│ Embedding Matrix                                                            │<br>│                                                                             │<br>│ Layer 0                                                                     │<br>│ ├── Wq⁰                                                                     │<br>│ ├── Wk⁰                                                                     │<br>│ ├── Wv⁰                                                                     │<br>│ ├── Wo⁰                                                                     │<br>│ ├── FFN W1⁰ W2⁰ W3⁰                                                       │<br>│ └── Norm Parameters                                                        │<br>│                                                                             │<br>│ Layer 1                                                                     │<br>│ ├── Wq¹ Wk¹ Wv¹ Wo¹                                                       │<br>│ └── FFN                                                                     │<br>│                                                                             │<br>│ ...                                                                         │<br>│                                                                             │<br>│ Layer N                                                                     │<br>│                                                                             │<br>│ LM Head                                                                     │<br>│                                                                             │<br>│ Dense：普通 FFN                                                             │<br>│ MoE：Router Weight + N 套 Expert FFN Weights                               │<br>│                                                                             │<br>│ 此时这些 Weight 基本还是随机初始化 → 模型什么都不会                        │<br>│                                                                             │<br>└──────────────────────────────────┬──────────────────────────────────────────┘<br>                                   │<br>                                   ▼<br><br><br>================================================================================<br>                       第四阶段：PRETRAINING<br>================================================================================<br><br><br>                          一批 Token IDs<br>                                │<br>                                ▼<br>                         Embedding Lookup<br>                                │<br>                                ▼<br>                               X⁰<br>                                │<br>                                ▼<br>                  ┌─────────────────────────┐<br>                  │ Transformer Layer 0     │<br>                  │                         │<br>                  │ X × Wq⁰ → Q            │<br>                  │ X × Wk⁰ → K            │<br>                  │ X × Wv⁰ → V            │<br>                  │                         │<br>                  │ Q,K,V                   │<br>                  │   ↓                     │<br>                  │ Causal Attention        │<br>                  │   ↓                     │<br>                  │ × Wo                    │<br>                  │   ↓                     │<br>                  │ Residual + Norm         │<br>                  │   ↓                     │<br>                  │ FFN                     │<br>                  │ W1 W2 W3                │<br>                  │   ↓                     │<br>                  │ Residual                │<br>                  └────────────┬────────────┘<br>                               │<br>                               ▼<br>                              X¹<br>                               │<br>                               ▼<br>                          Layer 1<br>                               │<br>                              ...<br>                               │<br>                               ▼<br>                          Layer N<br>                               │<br>                               ▼<br>                       Final Hidden States<br>                               │<br>                               ▼<br>                           LM Head<br>                               │<br>                               ▼<br>                            Logits<br><br><br>================================================================================<br>            第五阶段：Loss → Backward → Optimizer<br>================================================================================<br><br>                     FORWARD<br>                        │<br>                        ▼<br>                     Logits<br>                        │<br>                        ▼<br>              Softmax / Cross Entropy<br>                        │<br>                        ▼<br>                       Loss<br>                        │<br>                        │<br>====================== BACKWARD ==============================================<br>                        │<br>                        ▼<br><br>                  ∂L / ∂LMHead<br>                        ↑<br>                  ∂L / ∂Layer N<br>                        ↑<br>                        ...<br>                        ↑<br>                  ∂L / ∂Layer 1<br>                        ↑<br>                  ∂L / ∂Layer 0<br>                        ↑<br>                  ∂L / ∂Embedding<br><br>                        │<br>                        ▼<br>             每个 trainable parameter<br>                 得到 Gradient<br>                        │<br>                        ▼<br>                    Optimizer<br>                 Adam / AdamW ...<br>                        │<br>                        ▼<br><br>              更新所有 Trainable Weights<br><br>                   简化理解：<br><br>              W ← W - η ∂L/∂W<br><br>                        │<br>                        ▼<br>              Learning-rate Schedule<br>                        │<br>                        ▼<br>                 下一 Micro/Batch<br>                        │<br>                        ▼<br>              再次 Forward...<br><br><br>================================================================================<br>                     第六阶段： DISTRIBUTED TRAINING SYSTEM<br>================================================================================<br><br>                          大模型<br>                            │<br>          ┌─────────────────┼──────────────────┐<br>          ▼                 ▼                  ▼<br>     Data Parallel     Tensor Parallel    Pipeline Parallel<br>       DP / FSDP             TP                  PP<br>          │                  │                   │<br>          └──────────────────┼───────────────────┘<br>                             │<br>                       Sequence Parallel<br>                       Expert Parallel<br>                         (for MoE)<br>                             │<br>                             ▼<br>                       Thousands GPUs<br><br>GPU<br>│<br>├── Parameters<br>├── Gradients<br>├── Optimizer States<br>├── Activations<br>└── Communication Buffers<br><br><br><br>Training Step<br>    │<br>    ├──────────────► Training Loss<br>    │<br>    ├──────────────► Validation Loss<br>    │<br>    ├──────────────► Learning Rate<br>    │<br>    ├──────────────► Gradient Norm<br>    │<br>    ├──────────────► Throughput<br>    │<br>    └──────────────► GPU Utilization<br>    │<br>    ▼<br><br>每 N steps<br>    │<br>    ├── Save Checkpoint<br>    └── Evaluation<br><br>    <br>================================================================================<br>                           第七阶段：BASE MODEL<br>================================================================================<br><br>          海量 Raw Text<br>                │<br>                ↓<br>           Pretraining<br>                │<br>                ↓<br><br>      ┌────────────────────────┐<br>      │       Base LLM         │<br>      │                        │<br>      │ 会语言                 │<br>      │ 有世界知识             │<br>      │ 会一定程度代码         │<br>      │ 会一定程度推理         │<br>      │                        │<br>      │ 但未必善于聊天         │<br>      │ 未必听指令             │<br>      │ 未必安全               │<br>      └────────────────────────┘<br>      <br><br><br><br><br>================================================================================<br>                 第八阶段:MID-TRAINING / CONTINUED PRETRAINING<br>================================================================================<br><br>Base Model<br>   │<br>   ├── Domain Continued Pretraining<br>   │      Code / Security / Medical / Math<br>   │<br>   ├── Knowledge-intensive Training<br>   │<br>   ├── Long-context Training<br>   │<br>   ├── Context Extension<br>   │<br>   ├── Multilingual Enhancement<br>   │<br>   └── Reasoning-oriented Data<br>            │<br>            ▼<br>       Stronger Base Model<br><br><br><br>================================================================================<br>                       第九阶段：POST-TRAINING DATA<br>================================================================================<br><br>                   Prompt / Instruction<br>                           │<br>        ┌──────────────────┼─────────────────────┐<br>        ▼                  ▼                     ▼<br> Human Written        Synthetic Data       Model-generated<br>        │                  │                     │<br>        ▼                  ▼                     ▼<br> Instructions        Reasoning Traces        Responses<br>        │                  │                     │<br>        └──────────────────┼─────────────────────┘<br>                           ▼<br>                       Filtering<br>                           │<br>                           ▼<br>                     Quality Checking<br>                           │<br>                           ▼<br>                 Instruction Dataset<br><br><br>同时可能构造：<br><br>Prompt<br>  │<br>  ├── Response A<br>  └── Response B<br>          │<br>          ▼<br> Human / Judge Preference<br>          │<br>          ▼<br> Preferred / Rejected Dataset<br><br><br><br><br><br> ================================================================================<br>                          第十阶段：POST-TRAINING<br>================================================================================<br><br><br>                         Base Model<br>                             │<br>                             ▼<br><br>                 ┌────────────────────┐<br>                 │ SFT                │<br>                 │ Supervised         │<br>                 │ Fine-Tuning        │<br>                 └─────────┬──────────┘<br>                           │<br>                           ▼<br>                     Instruct Model<br>                           │<br>             ┌─────────────┴─────────────┐<br>             │                           │<br>             ▼                           ▼<br><br>     Preference Alignment          Reasoning Training<br><br>     DPO / IPO / ORPO ...          SFT Reasoning Trace<br>             │                           │<br>             ▼                           ▼<br>     Preference Model                  RL / RLVR<br>             │                      GRPO/PPO/... <br>             │                           │<br>             └─────────────┬─────────────┘<br>                           │<br>                           ▼<br>                      Aligned Model<br><br>                           │<br>                           ▼<br>                    General / Safety RL<br><br><br><br>================================================================================<br>                         第十一阶段：Safety Alignment<br>================================================================================<br><br>Training-side<br>│<br>├── Safety SFT<br>├── Preference Alignment<br>├── Safety RL<br>├── Adversarial Data<br>└── Refusal / Helpfulness balancing<br><br><br>Model-side<br>│<br>├── Safety Model / Guard Model<br>├── Input Moderation<br>└── Output Moderation<br><br><br>Evaluation-side<br>│<br>├── Jailbreak<br>├── Prompt Injection<br>├── Harmful Content<br>├── Privacy<br>├── Memorization<br>├── Bias<br>└── Red Teaming<br><br><br><br><br><br><br>================================================================================<br>                         第十二阶段：EVALUATION<br>================================================================================<br><br>Capability<br>├── Knowledge<br>├── Math<br>├── Coding<br>├── Reasoning<br>├── Science<br>├── Multilingual<br>├── Long Context<br>└── Instruction Following<br><br><br>Alignment<br>├── Helpfulness<br>├── Safety<br>├── Truthfulness<br>└── Refusal Quality<br><br><br>Agent<br>├── Tool Use<br>├── Function Calling<br>├── Web<br>├── Coding Agent<br>└── Long-horizon Tasks<br><br><br>Systems<br>├── Throughput<br>├── TTFT<br>├── TPOT<br>├── Latency<br>├── VRAM<br>└── Cost<br><br><br>Robustness / Security<br>├── Jailbreak<br>├── Prompt Injection<br>├── Data Leakage<br>├── Backdoor<br>├── Model Extraction<br>└── Runtime Attacks<br><br><br><br>================================================================================<br>                        第十三阶段：MODEL ARTIFACT<br>================================================================================<br><br>训练后的参数<br>    │<br>    ▼<br>Checkpoint Conversion<br>    │<br>    ▼<br><br>model.safetensors<br>config.json<br>tokenizer.json<br>tokenizer_config.json<br>generation_config.json<br>chat_template<br>...<br>    │<br>    ▼<br>Model Repository<br><br><br><br><br>================================================================================<br>                     第十四阶段：INFERENCE OPTIMIZATION<br>================================================================================<br><br>Final Model<br>    │<br>    ├── Precision<br>    │    FP32<br>    │    BF16<br>    │    FP16<br>    │    FP8<br>    │<br>    ├── Quantization<br>    │    INT8<br>    │    INT4<br>    │    GPTQ<br>    │    AWQ<br>    │    GGUF<br>    │<br>    ├── Model Compression<br>    │    Distillation<br>    │    Pruning<br>    │<br>    ├── Kernel Optimization<br>    │    FlashAttention<br>    │    Fused Kernels<br>    │<br>    └── Distributed Inference<br>         Tensor Parallel<br>         Pipeline Parallel<br>         Expert Parallel<br><br><br><br>================================================================================<br>                         第十五阶段：LLM SERVING<br>================================================================================<br><br>                    Client Request<br>                          │<br>                          ▼<br>                   API / Scheduler<br>                          │<br>                          ▼<br>                     Tokenizer<br>                          │<br>                          ▼<br>                    Token IDs<br>                          │<br>                          ▼<br>                  ┌─────────────────┐<br>                  │   GPU Runtime   │<br>                  │                 │<br>                  │ Model Weights   │<br>                  │ KV Cache        │<br>                  │ Activations     │<br>                  │ CUDA Kernels    │<br>                  └────────┬────────┘<br>                           │<br>                           ▼<br>                        Logits<br>                           │<br>                           ▼<br>                 Sampling / Decoding<br>                           │<br>                           ▼<br>                      Next Token<br>                           │<br>                           └─────┐<br>                                 │<br>                          Autoregressive<br>                             Loop<br><br>Serving Engine：                             <br>  vLLM<br>  SGLang<br>  TensorRT-LLM<br>  llama.cpp<br>  Transformers<br>  ...<br><br><br>Serving Optimization：<br>    Requests<br>       │<br>       ▼<br>    Scheduler<br>       │<br>       ├── Continuous Batching<br>       │<br>       ├── Prefix Caching<br>       │<br>       ├── KV Cache Management<br>       │<br>       ├── Paged Attention<br>       │<br>       ├── Speculative Decoding<br>       │<br>       └── Pre-fill / Decode Optimization<br>       │<br>       ▼<br>    GPU(s)<br><br><br><br><br>================================================================================<br>                       第十六阶段：PRODUCTION / LLMOps<br>================================================================================<br><br>Model<br>  │<br>  ▼<br>Deploy<br>  │<br>  ▼<br>Monitor<br>  │<br>  ├── Latency<br>  ├── Cost<br>  ├── GPU Utilization<br>  ├── Failure Rate<br>  ├── Quality<br>  ├── Safety incidents<br>  ├── Abuse<br>  └── Distribution Drift<br>  │<br>  ▼<br>Collect Feedback<br>  │<br>  ▼<br>New Data<br>  │<br>  ▼<br>SFT / RL / Continued Training<br>  │<br>  └────────────────────────────► New Model Version<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Report/" class="category-chain-item">Report</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/Lifecycle-Map/" class="print-no-link">#Lifecycle Map</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>LLM From Scratch to Production_ A Complete Lifecycle Map</div>
+      <div>https://jimi-lab.github.io/2026/08/12/LLM From Scratch to Production_ A Complete Lifecycle Map/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/01/%E8%85%BE%E8%AE%AF%E5%AE%89%E5%85%A8%E6%B2%99%E9%BE%99%E7%AC%AC%E4%B9%9D%E6%9C%9F%20-%20AI%20Safety/" title="腾讯安全沙龙第九期 - AI Safety">
+                        <span class="hidden-mobile">腾讯安全沙龙第九期 - AI Safety</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

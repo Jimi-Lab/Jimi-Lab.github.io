@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/24.png">
+  <link rel="icon" href="/img/24.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jimi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="说明：本文是 Transformer &#x2F; LLM 架构的学习与代码复现笔记。内容与代码实践参考了 Bilibili 视频 《手撕一个大模型看这个视频就够了【代码精读】》；本文在此基础上按个人学习逻辑进行了整理，并针对 Hexo Blog 的阅读体验做了排版适配。    window.MathJax &#x3D; { tex: { inlineMath: [[&#39;$&#39;, &#39;$&#39;], [&#39;\\(&#39;, &#39;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手撕LLM（Transformer）">
+<meta property="og:url" content="https://jimi-lab.github.io/2026/04/03/%E6%89%8B%E6%92%95LLM%EF%BC%88Transformer%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jimi&#39;s blog">
+<meta property="og:description" content="说明：本文是 Transformer &#x2F; LLM 架构的学习与代码复现笔记。内容与代码实践参考了 Bilibili 视频 《手撕一个大模型看这个视频就够了【代码精读】》；本文在此基础上按个人学习逻辑进行了整理，并针对 Hexo Blog 的阅读体验做了排版适配。    window.MathJax &#x3D; { tex: { inlineMath: [[&#39;$&#39;, &#39;$&#39;], [&#39;\\(&#39;, &#39;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/04/03/%E6%89%8B%E6%92%95LLM%EF%BC%88Transformer%EF%BC%89/img/remote-3276f7c6ac29.jpeg">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/04/03/%E6%89%8B%E6%92%95LLM%EF%BC%88Transformer%EF%BC%89/img/remote-6958b4ed2b83.png">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/04/03/%E6%89%8B%E6%92%95LLM%EF%BC%88Transformer%EF%BC%89/img/remote-cab298451c25.jpeg">
+<meta property="og:image" content="https://jimi-lab.github.io/2026/04/03/%E6%89%8B%E6%92%95LLM%EF%BC%88Transformer%EF%BC%89/img/remote-ce8e26fd9689.jpeg">
+<meta property="article:published_time" content="2026-04-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-18T09:03:27.113Z">
+<meta property="article:author" content="Jimi">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="Attention">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jimi-lab.github.io/2026/04/03/%E6%89%8B%E6%92%95LLM%EF%BC%88Transformer%EF%BC%89/img/remote-3276f7c6ac29.jpeg">
+  
+  
+  
+  <title>手撕LLM（Transformer） - Jimi&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/background_video.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"jimi-lab.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Jimi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/trees.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="手撕LLM（Transformer）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-04-03 00:00" pubdate>
+          2026年4月3日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">手撕LLM（Transformer）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>说明</strong>：本文是 Transformer &#x2F; LLM 架构的学习与代码复现笔记。内容与代码实践参考了 Bilibili 视频 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1rDfDB4EAN/">《手撕一个大模型看这个视频就够了【代码精读】》</a>；本文在此基础上按个人学习逻辑进行了整理，并针对 Hexo Blog 的阅读体验做了排版适配。</p>
+<!-- 本站当前没有单独安装数学公式 Markdown 渲染器，因此本文章单独加载 MathJax。 -->
+
+<script> window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] } }; </script> <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<p>本文从代码出发，完整梳理 Transformer 的基础架构、核心模块以及大模型从训练到推理的基本流程。重点不是只会调用现成模型，而是把 Tokenizer、Embedding、Position Encoding、Multi-Head Attention、FFN、Normalization 和 Decoder 串起来，理解一个自回归大模型究竟是怎样工作的。</p>
+<p><strong>大模型生命周期（概念图）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plain">             ┌──────────────┐<br>             │   模型架构    │<br>             │ Transformer  │<br>             └──────┬───────┘<br>                    │<br>     ┌──────────────┼──────────────┐<br>     │              │              │<br>     v              v              v<br>┌─────────┐    ┌─────────┐    ┌─────────┐<br>│   数据   │    │   算力   │    │  AI Infra│<br>│训练/评测 │    │ GPU/集群 │    │训练与部署 │<br>└────┬────┘    └────┬────┘    └────┬────┘<br>     └──────────────┼───────────────┘<br>                    v<br>   Pretraining → SFT → RL/Post-training → Inference<br></code></pre></td></tr></table></figure>
+
+
+
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2026/04/03/手撕LLM（Transformer）/img/remote-3276f7c6ac29.jpeg"></p>
+<p><strong>High Level Insight</strong></p>
+<ul>
+<li>算法（大模型架构）：完全从零手撕大模型</li>
+<li>数据（训练数据、评测数据）：完全从零评测大模型</li>
+<li>算力（基础设施建设，即AI Infra）：完全从零训练大模型、完全从零部署大模型</li>
+</ul>
+<span id="more"></span>
+
+<p>pip install torch modelscope tokenizers</p>
+<h2 id="Step1-Transformer架构总览（Overview）"><a href="#Step1-Transformer架构总览（Overview）" class="headerlink" title="Step1 Transformer架构总览（Overview）"></a>Step1 Transformer架构总览（Overview）</h2><p><strong>Transformer 架构总览</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs plain">输入 Token<br>   │<br>   v<br>Token Embedding + Position Encoding<br>   │<br>   ├──────────────────────────────┐<br>   │                              │<br>   v                              v<br>Encoder Block × N             Decoder Block × N<br>Self-Attention               Masked Self-Attention<br>      │                              │<br>      v                              v<br>Feed Forward                 Cross-Attention（Encoder-Decoder 架构）<br>      │                              │<br>      └──────────────┬───────────────┘<br>                     v<br>                  LM Head<br>                     │<br>                     v<br>               Next Token Logits<br></code></pre></td></tr></table></figure>
+
+<p>GPT 类大模型通常采用 <strong>Decoder-only</strong> 架构；T5 则是典型的 <strong>Encoder-Decoder</strong> 架构。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2026/04/03/手撕LLM（Transformer）/img/remote-6958b4ed2b83.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs plain">from modelscope import AutoModelForSeq2SeqLM, snapshot_download<br><br>print(&quot;正在下载T5模型...&quot;)<br>model_dir = snapshot_download(<br>    &#x27;AI-ModelScope/t5-small&#x27;,<br>    local_dir=&#x27;models/t5-small&#x27;,<br>    ignore_file_pattern=[<br>        &#x27;*.bin&#x27;,              <br>        &#x27;*.h5&#x27;,            <br>        &#x27;*.ot&#x27;,      <br>        &#x27;*.msgpack&#x27;,<br>        &#x27;onnx/*&#x27;,<br>        &#x27;onnx/**&#x27;,            # 排除onnx文件夹及其子目录所有内容<br>    ]<br>)<br>model = AutoModelForSeq2SeqLM.from_pretrained(model_dir)<br><br>print(&quot;T5模型结构:&quot;)<br>print(model)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出（点击展开）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><code class="hljs plain">正在下载T5模型...<br>T5模型结构:<br>T5ForConditionalGeneration(<br>  (shared): Embedding(32128, 512)<br>  (encoder): T5Stack(<br>    (embed_tokens): Embedding(32128, 512)<br>    (block): ModuleList(<br>      (0): T5Block(<br>        (layer): ModuleList(<br>          (0): T5LayerSelfAttention(<br>            (SelfAttention): T5Attention(<br>              (q): Linear(in_features=512, out_features=512, bias=False)<br>              (k): Linear(in_features=512, out_features=512, bias=False)<br>              (v): Linear(in_features=512, out_features=512, bias=False)<br>              (o): Linear(in_features=512, out_features=512, bias=False)<br>              (relative_attention_bias): Embedding(32, 8)<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>          (1): T5LayerFF(<br>            (DenseReluDense): T5DenseActDense(<br>              (wi): Linear(in_features=512, out_features=2048, bias=False)<br>              (wo): Linear(in_features=2048, out_features=512, bias=False)<br>              (dropout): Dropout(p=0.1, inplace=False)<br>              (act): ReLU()<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>        )<br>      )<br>      (1-5): 5 x T5Block(<br>        (layer): ModuleList(<br>          (0): T5LayerSelfAttention(<br>            (SelfAttention): T5Attention(<br>              (q): Linear(in_features=512, out_features=512, bias=False)<br>              (k): Linear(in_features=512, out_features=512, bias=False)<br>              (v): Linear(in_features=512, out_features=512, bias=False)<br>              (o): Linear(in_features=512, out_features=512, bias=False)<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>          (1): T5LayerFF(<br>            (DenseReluDense): T5DenseActDense(<br>              (wi): Linear(in_features=512, out_features=2048, bias=False)<br>              (wo): Linear(in_features=2048, out_features=512, bias=False)<br>              (dropout): Dropout(p=0.1, inplace=False)<br>              (act): ReLU()<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>        )<br>      )<br>    )<br>    (final_layer_norm): T5LayerNorm()<br>    (dropout): Dropout(p=0.1, inplace=False)<br>  )<br>  (decoder): T5Stack(<br>    (embed_tokens): Embedding(32128, 512)<br>    (block): ModuleList(<br>      (0): T5Block(<br>        (layer): ModuleList(<br>          (0): T5LayerSelfAttention(<br>            (SelfAttention): T5Attention(<br>              (q): Linear(in_features=512, out_features=512, bias=False)<br>              (k): Linear(in_features=512, out_features=512, bias=False)<br>              (v): Linear(in_features=512, out_features=512, bias=False)<br>              (o): Linear(in_features=512, out_features=512, bias=False)<br>              (relative_attention_bias): Embedding(32, 8)<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>          (1): T5LayerCrossAttention(<br>            (EncDecAttention): T5Attention(<br>              (q): Linear(in_features=512, out_features=512, bias=False)<br>              (k): Linear(in_features=512, out_features=512, bias=False)<br>              (v): Linear(in_features=512, out_features=512, bias=False)<br>              (o): Linear(in_features=512, out_features=512, bias=False)<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>          (2): T5LayerFF(<br>            (DenseReluDense): T5DenseActDense(<br>              (wi): Linear(in_features=512, out_features=2048, bias=False)<br>              (wo): Linear(in_features=2048, out_features=512, bias=False)<br>              (dropout): Dropout(p=0.1, inplace=False)<br>              (act): ReLU()<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>        )<br>      )<br>      (1-5): 5 x T5Block(<br>        (layer): ModuleList(<br>          (0): T5LayerSelfAttention(<br>            (SelfAttention): T5Attention(<br>              (q): Linear(in_features=512, out_features=512, bias=False)<br>              (k): Linear(in_features=512, out_features=512, bias=False)<br>              (v): Linear(in_features=512, out_features=512, bias=False)<br>              (o): Linear(in_features=512, out_features=512, bias=False)<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>          (1): T5LayerCrossAttention(<br>            (EncDecAttention): T5Attention(<br>              (q): Linear(in_features=512, out_features=512, bias=False)<br>              (k): Linear(in_features=512, out_features=512, bias=False)<br>              (v): Linear(in_features=512, out_features=512, bias=False)<br>              (o): Linear(in_features=512, out_features=512, bias=False)<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>          (2): T5LayerFF(<br>            (DenseReluDense): T5DenseActDense(<br>              (wi): Linear(in_features=512, out_features=2048, bias=False)<br>              (wo): Linear(in_features=2048, out_features=512, bias=False)<br>              (dropout): Dropout(p=0.1, inplace=False)<br>              (act): ReLU()<br>            )<br>            (layer_norm): T5LayerNorm()<br>            (dropout): Dropout(p=0.1, inplace=False)<br>          )<br>        )<br>      )<br>    )<br>    (final_layer_norm): T5LayerNorm()<br>    (dropout): Dropout(p=0.1, inplace=False)<br>  )<br>  (lm_head): Linear(in_features=512, out_features=32128, bias=False)<br>)<br></code></pre></td></tr></table></figure>
+
+</details>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plain">total_params = sum(p.numel() for p in model.parameters())<br>print(f&quot;总参数量: &#123;total_params:,&#125; (&#123;total_params/1e6:.1f&#125;M)&quot;)<br><br><br>config = model.config<br>print(f&quot;&quot;&quot;<br>T5模型配置:<br>隐藏维度 (d_model): &#123;config.d_model&#125;<br>FFN中间维度 (d_ff): &#123;config.d_ff&#125;<br>注意力头数 (num_heads): &#123;config.num_heads&#125;<br>Encoder层数: &#123;config.num_layers&#125;<br>Decoder层数: &#123;config.num_decoder_layers&#125;<br>词表大小: &#123;config.vocab_size&#125;<br>注意力头维度 (d_kv): &#123;config.d_kv&#125;<br>&quot;&quot;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plain">总参数量: 60,506,624 (60.5M)<br><br>T5模型配置:<br>隐藏维度 (d_model): 512<br>FFN中间维度 (d_ff): 2048<br>注意力头数 (num_heads): 8<br>Encoder层数: 6<br>Decoder层数: 6<br>词表大小: 32128<br>注意力头维度 (d_kv): 64<br></code></pre></td></tr></table></figure>
+
+<h2 id="Step2-实现Transformer大类（Building-Blocks）"><a href="#Step2-实现Transformer大类（Building-Blocks）" class="headerlink" title="Step2 实现Transformer大类（Building Blocks）"></a>Step2 实现Transformer大类（Building Blocks）</h2><p><strong>Decoder-only Transformer 的核心数据流</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs plain">Token IDs<br>   │<br>   v<br>Token Embedding<br>   │<br>   + Position Encoding<br>   │<br>   v<br>┌─────────────────────────────┐<br>│ Transformer Decoder Block   │  × N<br>│                             │<br>│  RMSNorm / LayerNorm        │<br>│          │                  │<br>│          v                  │<br>│  Masked Multi-Head Attention│<br>│          │                  │<br>│       Residual              │<br>│          │                  │<br>│          v                  │<br>│  RMSNorm / LayerNorm        │<br>│          │                  │<br>│          v                  │<br>│     Feed Forward            │<br>│          │                  │<br>│       Residual              │<br>└──────────┬──────────────────┘<br>           v<br>        LM Head<br>           │<br>           v<br>        Logits<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2026/04/03/手撕LLM（Transformer）/img/remote-cab298451c25.jpeg"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs plain">from modelscope import AutoModelForCausalLM, snapshot_download<br><br><br>print(&quot;正在下载GPT2模型...&quot;)<br>model_dir = snapshot_download(<br>    &#x27;AI-ModelScope/gpt2&#x27;, # Qwen/Qwen3-0.6B<br>    local_dir=&#x27;models/gpt2&#x27;, # models/Qwen3-0.6B<br>    ignore_file_pattern=[<br>        &#x27;*.bin&#x27;,<br>        &#x27;*.tflite&#x27;,           <br>        &#x27;*.h5&#x27;,              <br>        &#x27;*.ot&#x27;,               <br>        &#x27;*.msgpack&#x27;,          <br>        &#x27;onnx/*&#x27;,             <br>        &#x27;onnx/**&#x27;,            <br>    ]<br>)<br>model = AutoModelForCausalLM.from_pretrained(model_dir)<br><br>print(&quot;GPT2模型结构:&quot;)<br>print(model)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出（点击展开）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs plain">正在下载GPT2模型...<br>GPT2模型结构:<br>GPT2LMHeadModel(<br>  (transformer): GPT2Model(<br>    (wte): Embedding(50257, 768)<br>    (wpe): Embedding(1024, 768)<br>    (drop): Dropout(p=0.1, inplace=False)<br>    (h): ModuleList(<br>      (0-11): 12 x GPT2Block(<br>        (ln_1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)<br>        (attn): GPT2Attention(<br>          (c_attn): Conv1D(nf=2304, nx=768)<br>          (c_proj): Conv1D(nf=768, nx=768)<br>          (attn_dropout): Dropout(p=0.1, inplace=False)<br>          (resid_dropout): Dropout(p=0.1, inplace=False)<br>        )<br>        (ln_2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)<br>        (mlp): GPT2MLP(<br>          (c_fc): Conv1D(nf=3072, nx=768)<br>          (c_proj): Conv1D(nf=768, nx=3072)<br>          (act): NewGELUActivation()<br>          (dropout): Dropout(p=0.1, inplace=False)<br>        )<br>      )<br>    )<br>    (ln_f): LayerNorm((768,), eps=1e-05, elementwise_affine=True)<br>  )<br>  (lm_head): Linear(in_features=768, out_features=50257, bias=False)<br>)<br></code></pre></td></tr></table></figure>
+
+</details>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plain">total_params = sum(p.numel() for p in model.parameters())<br>print(f&quot;总参数量: &#123;total_params:,&#125; (&#123;total_params/1e6:.1f&#125;M)&quot;)<br><br><br>config = model.config<br>print(f&quot;&quot;&quot;<br>模型配置:<br>隐藏维度: &#123;config.n_embd&#125;<br>层数: &#123;config.n_layer&#125;<br>注意力头数: &#123;config.n_head&#125;<br>词表大小: &#123;config.vocab_size&#125;<br>&quot;&quot;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plain">总参数量: 124,439,808 (124.4M)<br><br>模型配置:<br>隐藏维度: 768<br>层数: 12<br>注意力头数: 12<br>词表大小: 50257<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plain">from modelscope import AutoModelForCausalLM, AutoTokenizer<br><br><br>print(&quot;正在加载GPT2模型...&quot;)<br>model_dir = &#x27;models/gpt2&#x27;<br>model = AutoModelForCausalLM.from_pretrained(model_dir)<br>tokenizer = AutoTokenizer.from_pretrained(model_dir)<br><br><br>question = &quot;What is artificial intelligence?&quot; # input_ids（数字）<br><br><br>inputs = tokenizer(question, return_tensors=&quot;pt&quot;)<br>print(inputs)<br>print(inputs.input_ids)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plain">正在加载GPT2模型...<br>&#123;&#x27;input_ids&#x27;: tensor([[ 2061,   318, 11666,  4430,    30]]), &#x27;attention_mask&#x27;: tensor([[1, 1, 1, 1, 1]])&#125;<br>tensor([[ 2061,   318, 11666,  4430,    30]])<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plain">print(f&quot;\n问题: &#123;question&#125;&quot;)<br>print(&quot;正在生成回答...&quot;)<br>outputs = model.generate(<br>    inputs.input_ids, # inditifications<br>    max_length=100,<br>    num_return_sequences=1,<br>    temperature=0.7,<br>    do_sample=True<br>)<br><br>print(outputs)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plain">问题: What is artificial intelligence?<br>正在生成回答...<br>tensor([[ 2061,   318, 11666,  4430,    30,   198,   198,  2025, 11666,  4430,<br>           318,   281, 11666,  4430,   326,   468,   587,  4166,   290,  9177,<br>           329,   257,  2176,  4007,    11,   290,   326,   468,   587,  6789,<br>           290, 31031,   416,   281,  1981,  1074,   286,  5519,    13,   198,<br>           198,  3633,   777,  8514,   389,  1049,    11,   484,   389,   407,<br>           262,   691,   835,   262,   995,   338,  1266,  4837,   481,   307,<br>          1498,   284,  7073,   290,  1833,  1692, 31119,    13,   198,   198,<br>          1890,  4554,    11,   611,   356,   765,   284,  2193,   546,   674,<br>         10825,   290, 28140,    11,   356,  1183,   761,   284,  2193,   546,<br>           262,  3632,    13,   198,   198,    40,  1101,   407,  1654,   314]])<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plain">answer = tokenizer.decode(outputs[0], skip_special_tokens=True)<br>print(f&quot;\nGPT-2回答:\n&#123;answer&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plain">GPT-2回答:<br>What is artificial intelligence?<br><br>An artificial intelligence is an artificial intelligence that has been developed and implemented for a specific purpose, and that has been tested and validated by an individual team of scientists.<br><br>While these technologies are great, they are not the only way the world&#x27;s best researchers will be able to discover and understand human cognition.<br><br>For instance, if we want to learn about our emotions and motivations, we&#x27;ll need to learn about the brain.<br><br>I&#x27;m not sure I<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs plain">import torch<br>import torch.nn as nn<br><br>class Transformer(nn.Module):<br>    def __init__(self, config):<br>        super().__init__()<br>        self.config = config<br>        # 后续在Step3中补全<br>        self.embedding = None      # Module2: 词嵌入 (TokenEmbedding)<br>        self.pos_encoding = None   # Module3: 位置编码 (PositionalEncoding)<br>        self.layers = None         # Module4+5+6: Transformer层 (nn.ModuleList of TransformerBlock)<br>        self.norm = None           # Module6: 最终归一化 (RMSNorm 或 LayerNorm)<br>        self.lm_head = None        # 模型输出头 (nn.Linear: hidden_size -&gt; vocab_size)<br>    <br>    def forward(self, input_ids, labels=None):<br>        &quot;&quot;&quot;<br>        Transformer前向传播<br>        <br>        Args:<br>            input_ids: 输入token ID, shape: (batch_size, seq_len)<br>            labels: 训练时的标签, shape: (batch_size, seq_len)，用于计算损失<br>        <br>        Returns:<br>            如果 labels 不为 None: 返回 (loss, logits)<br>            如果 labels 为 None: 返回 logits<br>        &quot;&quot;&quot;<br>        # ==================== Step 1: 词嵌入 ====================<br>        # input_ids: (B, L) -&gt; x: (B, L, hidden_size) 768<br>        x = self.embedding(input_ids) #我喜欢打篮球 -》 tensor([10, 10001, 40000, 381])    (1, 4) -&gt; (1, 4, 768)<br>        <br>        # ==================== Step 2: 位置编码 ====================<br>        # 添加位置信息: (B, L, hidden_size) -&gt; (B, L, hidden_size)<br>        x = self.pos_encoding(x)  # pos_encoding的大小 (1000, 768)<br>        <br><br><br>        # ==================== Step 3: 创建因果注意力掩码 ====================<br>        # Decoder-only 模型需要因果掩码，防止看到未来的token<br>        seq_len = input_ids.size(1)<br>        # 创建下三角矩阵作为因果掩码<br>        causal_mask = torch.tril(torch.ones(seq_len, seq_len, device=input_ids.device))<br><br>        <br>        # ==================== Step 4: 通过N层Transformer层 ====================<br>        # 每层包含: MultiHeadAttention + FFN + LayerNorm/RMSNorm + 残差连接<br>        for layer in self.layers:<br>            x = layer(x, mask=causal_mask)  # (B, L, hidden_size)<br>        <br>        # ==================== Step 5: 最终归一化 ====================<br>        x = self.norm(x)  # (B, L, hidden_size)<br>        <br>        # ==================== Step 6: 语言模型头 (LM Head) ====================<br>        # 将隐藏状态映射到词表大小 x是一个(1,4,768)-&gt;(1,4, 50257)<br>        logits = self.lm_head(x)<br>        <br>        # ==================== Step 7: 计算损失（如果提供labels）====================<br>        loss = None<br>        if labels is not None:<br>            # 自回归语言模型: 用当前位置预测下一个token<br>            # shift操作: logits[:-1] 预测 labels[1:]<br>            shift_logits = logits[:, :-1, :].contiguous()  # (B, L-1, vocab_size)<br>            shift_labels = labels[:, 1:].contiguous()       # (B, L-1)           <br>            <br>            # 交叉熵损失<br>            loss_fn = nn.CrossEntropyLoss(ignore_index=-100)  # -100 通常是padding的标签<br>            loss = loss_fn(<br>                shift_logits.view(-1, shift_logits.size(-1)),  # (B*(L-1), vocab_size)<br>                shift_labels.view(-1)                           # (B*(L-1),)<br>            )<br>        <br>        # ==================== Step 8: 返回结果 ====================<br>        if loss is not None:<br>            return loss, logits<br>        return logits<br></code></pre></td></tr></table></figure>
+
+<h2 id="Step3-实现Transformer各个模块（Coarse-to-Fine）"><a href="#Step3-实现Transformer各个模块（Coarse-to-Fine）" class="headerlink" title="Step3 实现Transformer各个模块（Coarse to Fine）"></a>Step3 实现Transformer各个模块（Coarse to Fine）</h2><h3 id="Module1-分词器（Tokenizer）"><a href="#Module1-分词器（Tokenizer）" class="headerlink" title="Module1 分词器（Tokenizer）"></a>Module1 分词器（Tokenizer）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs plain"># 方法1: 使用HuggingFace tokenizers库训练BPE分词器（推荐）<br>from tokenizers import Tokenizer, models, trainers, pre_tokenizers, processors, decoders<br>from tokenizers.normalizers import NFKC<br>import os<br><br>def train_bpe_tokenizer(texts, vocab_size=6400, save_path=&quot;tokenizer.json&quot;):<br>    &quot;&quot;&quot;<br>    训练BPE分词器<br>    <br>    Args:<br>        texts: 训练文本列表 或 文本文件路径列表<br>        vocab_size: 词表大小<br>        save_path: 保存路径<br>    &quot;&quot;&quot;<br>    # 1. 初始化BPE模型<br>    tokenizer = Tokenizer(models.BPE(unk_token=&quot;&lt;unk&gt;&quot;))<br>    <br>    # 2. 设置预处理：Unicode归一化 + 按字节级别分割<br>    tokenizer.normalizer = NFKC()<br>    tokenizer.pre_tokenizer = pre_tokenizers.ByteLevel(add_prefix_space=False)<br>    <br>    # 3. 添加ByteLevel解码器<br>    tokenizer.decoder = decoders.ByteLevel()<br>    <br>    # 4. 设置BPE训练器<br>    trainer = trainers.BpeTrainer(<br>        vocab_size=vocab_size,<br>        special_tokens=[&quot;&lt;pad&gt;&quot;, &quot;&lt;bos&gt;&quot;, &quot;&lt;eos&gt;&quot;, &quot;&lt;unk&gt;&quot;],<br>        min_frequency=2,<br>        show_progress=True<br>    )<br>    <br>    # 5. 训练<br>    if isinstance(texts[0], str) and os.path.isfile(texts[0]):<br>        # 从文件训练<br>        tokenizer.train(texts, trainer)<br>    else:<br>        # 从文本列表训练<br>        tokenizer.train_from_iterator(texts, trainer)<br>    <br>    # 6. 设置后处理：添加特殊token<br>    tokenizer.post_processor = processors.TemplateProcessing(<br>        single=&quot;&lt;bos&gt; $A &lt;eos&gt;&quot;,<br>        special_tokens=[(&quot;&lt;bos&gt;&quot;, 1), (&quot;&lt;eos&gt;&quot;, 2)]<br>    )<br>    <br>    # 7. 保存<br>    tokenizer.save(save_path)<br>    print(f&quot;✅ 分词器已保存到 &#123;save_path&#125;，词表大小: &#123;tokenizer.get_vocab_size()&#125;&quot;)<br>    <br>    return tokenizer<br><br><br># 准备训练数据（示例）<br>train_texts = [<br>    &quot;人工智能是计算机科学的一个分支，致力于创建能够模拟人类智能的系统。&quot;,<br>    &quot;深度学习是机器学习的一个子领域，使用多层神经网络来学习数据的表示。&quot;,<br>    &quot;Transformer是一种基于注意力机制的神经网络架构，广泛用于自然语言处理任务。&quot;,<br>    &quot;大语言模型通过在大规模文本数据上进行预训练，学习了丰富的语言知识。&quot;,<br>    &quot;预训练和微调是当前NLP的主流范式，先在通用数据上预训练，再在特定任务上微调。&quot;,<br>    &quot;自然语言处理让计算机能够理解、生成和处理人类语言。&quot;,<br>    &quot;神经网络由多个层组成，每层包含多个神经元，通过权重连接。&quot;,<br>    &quot;注意力机制允许模型关注输入的不同部分，捕获长距离依赖关系。&quot;,<br>] * 100<br><br># 训练分词器<br>tokenizer = train_bpe_tokenizer(train_texts, vocab_size=1000, save_path=&quot;my_tokenizer.json&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<p>✅ 分词器已保存到 my_tokenizer.json，词表大小: 481</p>
+<p>注意：<code>**ByteLevel**</code> 预分词器会将 <strong>UTF-8 字节</strong> 映射到 <strong>可打印的 Unicode 字符</strong>。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>中文</strong></th>
+<th align="left"><strong>UTF-8 字节</strong></th>
+<th align="left"><strong>ByteLevel 映射</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">是</td>
+<td align="left"><code>**0xE6 0x98 0xAF**</code></td>
+<td align="left"><code>**æ**``**ĺ**``**¯**</code>→ <code>**æĺ¯**</code></td>
+</tr>
+<tr>
+<td align="left">的</td>
+<td align="left"><code>**0xE7 0x9A 0x84**</code></td>
+<td align="left"><code>**ç**``**ļ**``**Ħ**</code>→ <code>**çļĦ**</code></td>
+</tr>
+<tr>
+<td align="left">学习</td>
+<td align="left">…</td>
+<td align="left"><code>**åŃ¦ä¹ł**</code></td>
+</tr>
+<tr>
+<td align="left">神经</td>
+<td align="left">…</td>
+<td align="left"><code>**ç¥ŀç»ı**</code></td>
+</tr>
+</tbody></table>
+<p>tokenizer.json 中: “æĺ¯” → 代表中文 “是” “çļĦ” → 代表中文 “的” “åŃ¦ä¹ł” → 代表中文 “学习”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs plain"># 加载和使用分词器<br>from tokenizers import Tokenizer<br><br>class BPETokenizer:<br>    &quot;&quot;&quot;BPE分词器封装类&quot;&quot;&quot;<br>    <br>    def __init__(self, tokenizer_path=&quot;my_tokenizer.json&quot;):<br>        self.tokenizer = Tokenizer.from_file(tokenizer_path)<br>        # 特殊token ID<br>        self.pad_id = self.tokenizer.token_to_id(&quot;&lt;pad&gt;&quot;)<br>        self.bos_id = self.tokenizer.token_to_id(&quot;&lt;bos&gt;&quot;)<br>        self.eos_id = self.tokenizer.token_to_id(&quot;&lt;eos&gt;&quot;)<br>        self.unk_id = self.tokenizer.token_to_id(&quot;&lt;unk&gt;&quot;)<br>    <br>    @property<br>    def vocab_size(self):<br>        return self.tokenizer.get_vocab_size()<br>    <br>    def encode(self, text, max_length=None, padding=False):<br>        &quot;&quot;&quot;编码文本为token ID&quot;&quot;&quot;<br>        encoded = self.tokenizer.encode(text)<br>        ids = encoded.ids<br>        <br>        if max_length:<br>            ids = ids[:max_length]<br>            if padding:<br>                ids = ids + [self.pad_id] * (max_length - len(ids))<br>        return ids<br>    <br>    def decode(self, ids, skip_special=True):<br>        &quot;&quot;&quot;解码token ID为文本&quot;&quot;&quot;<br>        if skip_special:<br>            ids = [i for i in ids if i not in [self.pad_id, self.bos_id, self.eos_id]]<br>        return self.tokenizer.decode(ids)<br>    <br>    def tokenize(self, text):<br>        &quot;&quot;&quot;获取token列表&quot;&quot;&quot;<br>        return self.tokenizer.encode(text).tokens<br><br><br># 测试<br>tokenizer = BPETokenizer(&quot;my_tokenizer.json&quot;)<br>print(f&quot;词表大小: &#123;tokenizer.vocab_size&#125;&quot;)<br><br>text = &quot;Transformer是深度学习的核心架构&quot;<br>ids = tokenizer.encode(text)<br>tokens = tokenizer.tokenize(text)<br>decoded = tokenizer.decode(ids)<br><br>print(f&quot;原文: &#123;text&#125;&quot;)<br>print(f&quot;Tokens: &#123;tokens&#125;&quot;)<br>print(f&quot;Token IDs: &#123;ids&#125;&quot;)<br>print(f&quot;解码: &#123;decoded&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">词表大小: 481<br>原文: Transformer是深度学习的核心架构<br>Tokens: [&#x27;&lt;bos&gt;&#x27;, &#x27;Tran&#x27;, &#x27;sfo&#x27;, &#x27;rmer&#x27;, &#x27;æĺ¯&#x27;, &#x27;æ·±å&#x27;, &#x27;º¦åŃ¦ä¹ł&#x27;, &#x27;çļĦ&#x27;, &#x27;æ&#x27;, &#x27;ł&#x27;, &#x27;¸&#x27;, &#x27;å&#x27;, &#x27;¿&#x27;, &#x27;ĥ&#x27;, &#x27;æŀ¶æŀĦ&#x27;, &#x27;&lt;eos&gt;&#x27;]<br>Token IDs: [1, 395, 227, 226, 126, 283, 260, 93, 49, 85, 38, 48, 45, 56, 446, 2]<br>解码: Transformer是深度学习的核心架构<br></code></pre></td></tr></table></figure>
+
+<h3 id="Module2-词嵌入（Word-Token-Embedding）"><a href="#Module2-词嵌入（Word-Token-Embedding）" class="headerlink" title="Module2 词嵌入（Word Token Embedding）"></a>Module2 词嵌入（Word Token Embedding）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plain">import torch<br>import torch.nn as nn<br>import math<br><br>class TokenEmbedding(nn.Module):<br>    def __init__(self, vocab_size, hidden_size):<br>        super().__init__()<br>        self.embedding = nn.Embedding(vocab_size, hidden_size)<br>        self.hidden_size = hidden_size<br>    <br>    def forward(self, x):<br>        return self.embedding(x) * math.sqrt(self.hidden_size)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plain">embed = TokenEmbedding(1000, 256)<br>x = torch.randint(0, 1000, (2, 10))<br>print(f&quot;输入: &#123;x.shape&#125; -&gt; 输出: &#123;embed(x).shape&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<p>输入: torch.Size([2, 10]) -&gt; 输出: torch.Size([2, 10, 256])</p>
+<h3 id="Module3-位置嵌入（Word-Position-Embedding）"><a href="#Module3-位置嵌入（Word-Position-Embedding）" class="headerlink" title="Module3 位置嵌入（Word Position Embedding）"></a>Module3 位置嵌入（Word Position Embedding）</h3><p>$$PE_{(pos, 2i)} &#x3D; \sin\left(\frac{pos}{10000^{2i&#x2F;d_{model}}}\right)$$</p>
+<p>$$PE_{(pos, 2i+1)} &#x3D; \cos\left(\frac{pos}{10000^{2i&#x2F;d_{model}}}\right)$$</p>
+<p>其中$pos$为位置索引（0, 1, 2, …），$i$为维度索引（0, 1, 2, …, d_model&#x2F;2）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs plain">import torch <br>import torch.nn as nn<br>import math<br><br>class PositionalEncoding(nn.Module):<br>    def __init__(self, hidden_size, max_len=512, dropout=0.1):<br>        super().__init__()<br>        self.dropout = nn.Dropout(dropout)<br>        <br>        # 计算正弦余弦位置编码<br>        pe = torch.zeros(max_len, hidden_size)<br>        position = torch.arange(max_len).unsqueeze(1).float()<br>        div_term = torch.exp(torch.arange(0, hidden_size, 2).float() * (-math.log(10000.0) / hidden_size))<br>        pe[:, 0::2] = torch.sin(position * div_term)<br>        pe[:, 1::2] = torch.cos(position * div_term)<br>        self.register_buffer(&#x27;pe&#x27;, pe.unsqueeze(0))<br>    <br>    def forward(self, x):<br>        x = x + self.pe[:, :x.size(1)]<br>        return self.dropout(x)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plain">pos_enc = PositionalEncoding(256)<br>x = torch.randn(2, 10, 256)<br>print(f&quot;位置编码后: &#123;pos_enc(x).shape&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<p>位置编码后: torch.Size([2, 10, 256])</p>
+<h3 id="Module4-多头注意力机制（Multi-Head-Attention）"><a href="#Module4-多头注意力机制（Multi-Head-Attention）" class="headerlink" title="Module4 多头注意力机制（Multi-Head Attention）"></a>Module4 多头注意力机制（Multi-Head Attention）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs plain">import torch.nn.functional as F<br><br>class MultiHeadAttention(nn.Module):<br>    def __init__(self, hidden_size=256, num_heads=4, dropout=0.1):<br>        super().__init__()<br>        self.num_heads = num_heads <br>        self.head_dim = hidden_size // num_heads # 64<br>        <br>        self.q_proj = nn.Linear(hidden_size, hidden_size) # 256*256<br>        self.k_proj = nn.Linear(hidden_size, hidden_size)<br>        self.v_proj = nn.Linear(hidden_size, hidden_size)<br>        self.o_proj = nn.Linear(hidden_size, hidden_size)<br>        self.dropout = nn.Dropout(dropout)<br>    <br>    def forward(self, x, mask=None): # x是[2, 10, 256]<br>        B, L, _ = x.shape<br>        <br>        # 投影并分头<br>        q = self.q_proj(x).view(B, L, self.num_heads, self.head_dim).transpose(1, 2) #[2, 4, 10, 64]<br>        k = self.k_proj(x).view(B, L, self.num_heads, self.head_dim).transpose(1, 2)<br>        v = self.v_proj(x).view(B, L, self.num_heads, self.head_dim).transpose(1, 2)<br>        <br>        # 注意力计算: softmax(QK^T / sqrt(d)) * V<br>        scores = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(self.head_dim) # [2,4,10,64] * [2,4,64,10] -&gt; [2,4,10,10]<br>        if mask is not None:<br>            scores = scores.masked_fill(mask == 0, float(&#x27;-inf&#x27;))<br>        attn = F.softmax(scores, dim=-1)<br>        attn = self.dropout(attn)<br>        <br>        # 合并多头<br>        out = torch.matmul(attn, v).transpose(1, 2).contiguous().view(B, L, -1) # [2,4,10,10] * [2,4, 10,64] -&gt;[2,4, 10,64] -&gt;[2,10,4, 64]-&gt;[2,10,256]<br>        return self.o_proj(out) # [2,10,256] -&gt;[2,10,256]<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plain">attn = MultiHeadAttention(256, 8)<br>x = torch.randn(2, 10, 256)<br>mask = torch.tril(torch.ones(10, 10)).unsqueeze(0).unsqueeze(0)  # 因果掩码<br>print(f&quot;注意力输出: &#123;attn(x, mask).shape&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<p>注意力输出: torch.Size([2, 10, 256])</p>
+<h3 id="Module5-前馈神经网络（Feed-Forward-Network）"><a href="#Module5-前馈神经网络（Feed-Forward-Network）" class="headerlink" title="Module5 前馈神经网络（Feed Forward Network）"></a>Module5 前馈神经网络（Feed Forward Network）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plain">class FeedForward(nn.Module):<br>    def __init__(self, hidden_size, intermediate_size, dropout=0.1):<br>        super().__init__()<br>        self.fc1 = nn.Linear(hidden_size, intermediate_size) #[2,10,256]-&gt;[2,10,1024]<br>        self.fc2 = nn.Linear(intermediate_size, hidden_size) #[2,10,1024]-&gt;[2,10,256]<br>        self.dropout = nn.Dropout(dropout)<br>    <br>    def forward(self, x):<br>        return self.dropout(self.fc2(F.gelu(self.fc1(x))))<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plain">ffn = FeedForward(256, 1024)<br>print(f&quot;FFN输出: &#123;ffn(torch.randn(2, 10, 256)).shape&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<p>FFN输出: torch.Size([2, 10, 256])</p>
+<h3 id="Module6-层归一化（Layer-Normalization）"><a href="#Module6-层归一化（Layer-Normalization）" class="headerlink" title="Module6 层归一化（Layer Normalization）"></a>Module6 层归一化（Layer Normalization）</h3><p><strong>LayerNorm</strong>$$\text{LayerNorm}(x) &#x3D; \gamma \odot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$$其中：</p>
+<ul>
+<li>$\mu &#x3D; \frac{1}{H} \sum_{i&#x3D;1}^{H} x_i$ （均值）</li>
+<li>$\sigma^2 &#x3D; \frac{1}{H} \sum_{i&#x3D;1}^{H} (x_i - \mu)^2$ （方差）</li>
+</ul>
+<p><strong>RMSNorm</strong>$$\text{RMSNorm}(x) &#x3D; \frac{x}{\text{RMS}(x)} \cdot \gamma$$$$\text{RMS}(x) &#x3D; \sqrt{\frac{1}{H} \sum_{i&#x3D;1}^{H} x_i^2 + \epsilon}$$</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plain">class RMSNorm(nn.Module):<br>    def __init__(self, hidden_size, eps=1e-6):<br>        super().__init__()<br>        self.weight = nn.Parameter(torch.ones(hidden_size))<br>        self.eps = eps<br>    <br>    def forward(self, x): # x:[2,10,256]<br>        rms = torch.sqrt(x.pow(2).mean(-1, keepdim=True) + self.eps)<br>        return x / rms * self.weight<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plain">norm = RMSNorm(256)<br>print(f&quot;归一化输出: &#123;norm(torch.randn(2, 10, 256)).shape&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<p>归一化输出: torch.Size([2, 10, 256])</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plain"># 大模型配置<br>from dataclasses import dataclass<br><br>@dataclass<br>class LMConfig:<br>    vocab_size: int = 6400<br>    hidden_size: int = 512<br>    num_layers: int = 8<br>    num_heads: int = 8 # head_dim = 512 / 8 =64<br>    intermediate_size: int = 4 * hidden_size<br>    max_seq_len: int = 512<br>    dropout: float = 0.1<br><br>config = LMConfig()<br>print(f&quot;配置: &#123;config&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<p>配置: LMConfig(vocab_size&#x3D;6400, hidden_size&#x3D;512, num_layers&#x3D;8, num_heads&#x3D;8, intermediate_size&#x3D;2048, max_seq_len&#x3D;512, dropout&#x3D;0.1)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs plain">class TransformerBlock(nn.Module):<br>    def __init__(self, config):<br>        super().__init__()<br>        self.attn = MultiHeadAttention(config.hidden_size, config.num_heads, config.dropout)<br>        self.ffn = FeedForward(config.hidden_size, config.intermediate_size, config.dropout)<br>        self.norm1 = RMSNorm(config.hidden_size)<br>        self.norm2 = RMSNorm(config.hidden_size)<br>    <br>    def forward(self, x, mask=None):<br>        x = x + self.attn(self.norm1(x), mask)<br>        x = x + self.ffn(self.norm2(x))<br>        return x<br><br>class Transformer(nn.Module):<br>    def __init__(self, config):<br>        super().__init__()<br>        self.config = config<br>        self.embedding = TokenEmbedding(config.vocab_size, config.hidden_size)<br>        self.pos_encoding = PositionalEncoding(config.hidden_size, config.max_seq_len, config.dropout)<br>        self.layers = nn.ModuleList([TransformerBlock(config) for _ in range(config.num_layers)])<br>        self.norm = RMSNorm(config.hidden_size)<br>        self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)<br>        <br>        # 权重共享<br>        self.lm_head.weight = self.embedding.embedding.weight<br>    <br>    def forward(self, input_ids, labels=None):<br>        B, L = input_ids.shape<br>        mask = torch.tril(torch.ones(L, L, device=input_ids.device)).unsqueeze(0).unsqueeze(0)<br>        <br>        x = self.embedding(input_ids)<br>        x = self.pos_encoding(x)<br>        for layer in self.layers:<br>            x = layer(x, mask)<br>        x = self.norm(x)<br>        logits = self.lm_head(x)<br>        <br>        loss = None<br>        if labels is not None:<br>            loss = F.cross_entropy(logits[:, :-1].reshape(-1, logits.size(-1)), labels[:, 1:].reshape(-1))<br>        return loss, logits<br>    <br>    @torch.no_grad()<br>    def generate(self, input_ids, max_new_tokens=50, temperature=1.0):<br>        for _ in range(max_new_tokens):<br>            logits = self(input_ids[:, -self.config.max_seq_len:])[1][:, -1] / temperature<br>            next_token = torch.multinomial(F.softmax(logits, dim=-1), 1)<br>            input_ids = torch.cat([input_ids, next_token], dim=1)<br>            if next_token.item() == 2:  # &lt;eos&gt;<br>                break<br>        return input_ids<br><br># 测试<br>config = LMConfig(vocab_size=tokenizer.vocab_size, hidden_size=256, num_layers=4, num_heads=4, intermediate_size=512, max_seq_len=128)<br>model = Transformer(config)<br>print(f&quot;模型参数量: &#123;sum(p.numel() for p in model.parameters()):,&#125;&quot;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>运行输出：</strong></p>
+<p>模型参数量: 2,229,760</p>
+<h2 id="Step4-训练一个属于你自己的大模型"><a href="#Step4-训练一个属于你自己的大模型" class="headerlink" title="Step4 训练一个属于你自己的大模型"></a>Step4 训练一个属于你自己的大模型</h2><h3 id="1-构造数据集（Data）"><a href="#1-构造数据集（Data）" class="headerlink" title="1 构造数据集（Data）"></a>1 构造数据集（Data）</h3><p><a target="_blank" rel="noopener" href="https://www.modelscope.cn/datasets/gongjy/minimind_dataset">https://www.modelscope.cn/datasets/gongjy/minimind_dataset</a></p>
+<h1 id="预训练阶段数据集、有监督微调数据集和强化学习数据集"><a href="#预训练阶段数据集、有监督微调数据集和强化学习数据集" class="headerlink" title="预训练阶段数据集、有监督微调数据集和强化学习数据集"></a>预训练阶段数据集、有监督微调数据集和强化学习数据集</h1><h3 id="2-预训练阶段（Pretraining）"><a href="#2-预训练阶段（Pretraining）" class="headerlink" title="2 预训练阶段（Pretraining）"></a>2 预训练阶段（Pretraining）</h3><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/2026/04/03/手撕LLM（Transformer）/img/remote-ce8e26fd9689.jpeg"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs plain"># 用下一个token预测的形式，让大模型学会单词接龙<br><br>input_ids: (B, L)<br>     │<br>     ▼<br>┌─────────────────┐<br>│  TokenEmbedding │  →  (B, L, hidden_size)<br>└─────────────────┘<br>     │<br>     ▼<br>┌─────────────────────┐<br>│  PositionalEncoding │  →  (B, L, hidden_size)<br>└─────────────────────┘<br>     │<br>     ▼<br>┌─────────────────────────────────────┐<br>│     TransformerBlock × N 层         │<br>│  ┌─────────────────────────────┐    │<br>│  │ Attention + Residual + Norm │    │<br>│  │ FFN + Residual + Norm       │    │<br>│  └─────────────────────────────┘    │<br>└─────────────────────────────────────┘<br>     │<br>     ▼<br>┌─────────────────┐<br>│   Final Norm    │  →  (B, L, hidden_size)<br>└─────────────────┘<br>     │<br>     ▼<br>┌─────────────────┐<br>│    LM Head      │  →  (B, L, vocab_size)<br>└─────────────────┘<br>     │<br>     ▼ <br>logits / (loss, logits)<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-有监督微调（Supervised-Fine-Tuning）"><a href="#3-有监督微调（Supervised-Fine-Tuning）" class="headerlink" title="3 有监督微调（Supervised Fine Tuning）"></a>3 有监督微调（Supervised Fine Tuning）</h3><h1 id="用对话数据集的形式，让大模型学会遵循指令和回答问题"><a href="#用对话数据集的形式，让大模型学会遵循指令和回答问题" class="headerlink" title="用对话数据集的形式，让大模型学会遵循指令和回答问题"></a>用对话数据集的形式，让大模型学会遵循指令和回答问题</h1><h3 id="4-强化学习（Reinforcement-Learning）"><a href="#4-强化学习（Reinforcement-Learning）" class="headerlink" title="4 强化学习（Reinforcement Learning）"></a>4 强化学习（Reinforcement Learning）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plain"># 用奖励函数，让大模型学会自主做出决策（比如推理和思考）<br># PPO、DPO、GRPO、GSPO、GDPO等<br># 后训练框架：verl、LLaMA-Factory、OpenRLHF、TRL等<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-模型部署（Inference）"><a href="#5-模型部署（Inference）" class="headerlink" title="5 模型部署（Inference）"></a>5 模型部署（Inference）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plain"># 高效部署，节省GPU资源和更快响应<br># vLLM、SGLang、llama.cpp……<br></code></pre></td></tr></table></figure>
+
+<p>主要参考资料如下：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/karpathy/nanoGPT">https://github.com/karpathy/nanoGPT</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/karpathy/nanochat">https://github.com/karpathy/nanochat</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rasbt/LLMs-from-scratch">https://github.com/rasbt/LLMs-from-scratch</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jingyaogong/minimind">https://github.com/jingyaogong/minimind</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI/" class="category-chain-item">AI</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/Transformer/" class="print-no-link">#Transformer</a>
+      
+        <a href="/tags/Attention/" class="print-no-link">#Attention</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>手撕LLM（Transformer）</div>
+      <div>https://jimi-lab.github.io/2026/04/03/手撕LLM（Transformer）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jimi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年4月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/05/01/THINK-ON-GRAPH_%20DEEP%20AND%20RESPONSIBLE%20REASON-ING%20OF%20LARGE%20LANGUAGE%20MODEL%20ON%20KNOWLEDGEGRAPH/" title="THINK-ON-GRAPH DEEP AND RESPONSIBLE REASON-ING OF LARGE LANGUAGE MODEL ON KNOWLEDGEGRAPH">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">THINK-ON-GRAPH DEEP AND RESPONSIBLE REASON-ING OF LARGE LANGUAGE MODEL ON KNOWLEDGEGRAPH</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/04/01/%E8%85%BE%E8%AE%AF%E7%AC%AC%E4%BA%8C%E7%95%8Cagent%E6%BC%8F%E6%8C%96/" title="腾讯第二界agent漏挖">
+                        <span class="hidden-mobile">腾讯第二界agent漏挖</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Jimi-Lab/Jimi-Lab.github.io');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+<a href="https://github.com/Jimi-Lab" target="_blank" rel="nofollow noopener"><span>@Jimi.github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

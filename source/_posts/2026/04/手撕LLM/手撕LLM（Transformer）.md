@@ -39,7 +39,7 @@ tags:
 
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](https://cdn.nlark.com/yuque/0/2026/jpeg/34357387/1787043114327-7eda19fd-ce2b-423d-9520-35757cf5515f.jpeg)
+![](img/remote-3276f7c6ac29.jpeg)
 
 
 
@@ -84,7 +84,7 @@ GPT 类大模型通常采用 **Decoder-only** 架构；T5 则是典型的 **Enco
 
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](https://cdn.nlark.com/yuque/0/2026/png/34357387/1787043146600-4564ed4f-b7f1-40aa-85f0-295ded3b9ae3.png)
+![](img/remote-6958b4ed2b83.png)
 
 
 
@@ -330,7 +330,7 @@ Token Embedding
 
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](https://cdn.nlark.com/yuque/0/2026/jpeg/34357387/1787043174350-db2d0f1e-9d28-4af1-8ee7-2b22ac44e0ec.jpeg)
+![](img/remote-cab298451c25.jpeg)
 
 
 
@@ -990,7 +990,7 @@ print(f"模型参数量: {sum(p.numel() for p in model.parameters()):,}")
 
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](https://cdn.nlark.com/yuque/0/2026/jpeg/34357387/1787043298166-c1a12505-b50f-4134-a283-3d892446d477.jpeg)
+![](img/remote-ce8e26fd9689.jpeg)
 
 
 

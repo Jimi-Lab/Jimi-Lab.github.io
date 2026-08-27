@@ -31,6 +31,14 @@ date: 2025-05-18 20:33:53
   </section>
 
   <section class="about-card">
+    <h3 class="about-section-title">vulnerabilities</h3>
+    <p><b>CVE:</B> CVE-2024-4820，CVE-2026-4041，CVE-2026-4042，CVE-2026-4043，CVE-2026-5988，CVE-2026-5989，CVE-2026-5990，CVE-2026-5991，CVE-2026-5992，CVE-2026-6120，CVE-2026-6121，CVE-2026-6122，CVE-2026-6123，CVE-2026-6124，CVE-2026-6133，CVE-2026-6134，CVE-2026-6135，CVE-2026-6136，CVE-2026-6137，CVE-2026-6630，CVE-2026-6631，CVE-2026-6632 ...</p>
+    <p><b>CNVD:</B> CNVD-2026-17276 ...</p>
+  </section>
+
+
+
+  <section class="about-card">
     <h3 class="about-section-title">Competition Awards</h3>
     <div class="about-subsection">
       <h4 class="about-subtitle">2025</h4>

@@ -11,7 +11,13 @@ date: 2025-05-18 20:33:53
     <div class="about-hero__info">
       <h1 class="about-name">Xianmao Ji <span class="about-name-cn">(冀贤懋)</span></h1>
       <p>I am a Ph.D. student in Cyberspace Security at Huazhong University of Science and Technology (HUST), advised by Prof. Cai Fu, starting in September 2025. I earned my bachelor’s degree from North University of China in June 2025 as an Outstanding Graduate. My research focuses on software and code security, vulnerability discovery, and the application of AI to security.</p>
-      <div class="about-contact-inline"><a href="mailto:d202580973@hust.edu.cn">Email</a></div>
+      <div class="about-contact-inline">
+        📧 <a href="mailto:xianmao_ji@hust.edu.cn">Email</a>
+        &nbsp;&nbsp;·&nbsp;&nbsp;
+        🌐 <a href="https://jimi-lab.github.io/" target="_blank">Homepage</a>
+        &nbsp;&nbsp;·&nbsp;&nbsp;
+        🐙 <a href="https://github.com/Jimi-Lab" target="_blank">GitHub</a>
+      </div>
     </div>
   </section>
 
@@ -108,7 +114,10 @@ date: 2025-05-18 20:33:53
   <section class="about-card">
     <h3 class="about-section-title">Contact</h3>
     <ul class="about-list">
-      <li>Email: d202580973@hust.edu.cn</li>
+      <li>📧 Email: <a href="mailto:xianmao_ji@hust.edu.cn">xianmao_ji@hust.edu.cn</a></li>
+      <li>🌐 Homepage: <a href="https://jimi-lab.github.io/" target="_blank">https://jimi-lab.github.io/</a></li>
+      <li>🐙 GitHub: <a href="https://github.com/Jimi-Lab" target="_blank">https://github.com/Jimi-Lab</a></li>
     </ul>
   </section>
+
 </div>
